@@ -1,0 +1,22 @@
+@import '_global';
+
+HTML {
+  font: $font-weight-normal $font-size-root $font-family;
+  line-height: 1.4em;
+}
+
+BODY {
+  font-size: $font-size;
+  line-height: 1.4em;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+@media screen and (min-width: $viewport-width-fullhd) {
+  HTML {
+    font-size: $font-size-l;
+    line-height: 1.4em;
+  }
+}

@@ -1,0 +1,13 @@
+.order-successful {
+  width: 80%;
+  max-width: $viewport-width-s;
+  margin: 1em auto;
+
+  &-getcontract {
+    margin: 3em 0 1.5em;
+  }
+
+  FORM {
+    text-align: center;
+  }
+}

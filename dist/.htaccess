@@ -1,0 +1,21 @@
+# Seite nicht als Frame einbinden lassen
+Header always set X-Frame-Options "SAMEORIGIN"
+
+# XSS-Schutz der Browser einschalten
+Header always set X-Xss-Protection "1; mode=block"
+
+# MIME-Typ-Pruefung des Browsers ausschalten
+Header always set X-Content-Type-Options "nosniff"
+
+
+## Einstellungen vor Besuchern verstecken
+#RewriteEngine On
+#RewriteRule ^compiled/(.*)$ /index.php
+#RewriteRule ^compiled$ /index.php
+#RewriteRule ^include/(.*)$ /index.php
+#RewriteRule ^include$ /index.php
+#RewriteRule ^settings/(.*)$ /index.php
+#RewriteRule ^settings$ /index.php
+#RewriteRule ^templates/(.*)$ /index.php
+#RewriteRule ^templates$ index.php
+#RewriteRule ^.htaccess$ /index.php

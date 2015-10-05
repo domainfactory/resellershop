@@ -1,0 +1,36 @@
+.aboutus {
+
+  &-header {
+    $padding-top: 1.5em;
+    padding-top: $padding-top;
+    padding-bottom: 1em;
+
+    H1 {
+      padding-top: 0;
+    }
+
+    .column-picture {
+      padding-top: ($padding-top + $font-size-h1);
+      IMG {
+        width: auto;
+        max-height: 35em;
+        margin: 0 auto;
+        display: block;
+      }
+    }
+  }
+
+  .accordion {
+    LI {
+      border-bottom-color: $color-neutral-bg;
+    }
+
+    &-title {
+      @extend %block-invert-light;
+    }
+
+    &-content {
+      opacity: .8;
+    }
+  }
+}

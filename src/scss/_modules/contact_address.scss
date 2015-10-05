@@ -1,0 +1,104 @@
+.contact-address {
+
+  // Hintergrundfarbe des Bereichs
+  $color-bg: $color-neutral;
+  $border-color: $color-neutral-bg;
+
+  .contact-map {
+    padding: .125em;
+    height: 8em;
+    border: .0625em solid $border-color;
+
+    // Scrollleisten verstecken
+    overflow: hidden;
+  }
+
+
+  .address-vcard {
+    $logo-width: sprite-scaled($sprite-logo-only-width);
+    position: relative;
+    margin: 0;
+    padding: 1em 0 1em ($logo-width + .5em);
+    border-bottom: .0625em solid $border-color;
+
+    P {
+      margin: 0;
+      padding: 0;
+    }
+
+    // Logo
+    &:BEFORE {
+      @extend %icon-logo-only;
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 1.125em;
+      width: $logo-width;
+      height: sprite-scaled($sprite-logo-only-height);
+    }
+  }
+
+  .address-tel,
+  [property="address"] {
+    @include rp-choose-color((
+      bg: $color-bg,
+      color: $color-text,
+      invert: $color-text-invert-light
+    ));
+  }
+
+  .address-tel {
+    font-size: $font-size-s;
+    font-weight: $font-weight-light;
+    margin: 0;
+    padding: 1em 0;
+  }
+
+  [property="legalName"] {
+    font-weight: bold;
+    font-size: $font-size-xl;
+    margin-bottom: rp-cem(.125em, $font-size-xl);
+  }
+
+  [property="address"] {
+    font-size: $font-size-s;
+    font-weight: $font-weight-light;
+  }
+
+  [property="addressCountry"]:BEFORE {
+    content: '/';
+    padding-right: .25em;
+  }
+
+
+  [property="telephone"],
+  [property="faxNumber"] {
+    @include rp-choose-color((
+      bg: $color-bg,
+      color: $color-text,
+      invert: $color-text-invert
+    ));
+    display: block;
+    font-size: $font-size-xl;
+    font-style: italic;
+    text-decoration: none;
+    margin: .25em 0 0;
+    padding-top: .25em;
+    padding-bottom: .25em;
+
+    &:HOVER {
+      @include rp-choose-color((
+        bg: $color-bg,
+        color: $color-text-light,
+        invert: $color-text-invert-light
+      ));
+    }
+
+    &:FOCUS {
+      outline: .125em solid $color-text-invert-light;
+    }
+  }
+
+}
+

@@ -1,0 +1,42 @@
+{
+  "name": "reseller-shopdemo",
+  "description": "Beispiel-Shop für domainFACTORY-Reseller",
+  "version": "1.0.0beta",
+  "homepage": "https://www.reseller-shop.eu",
+  "private": true,
+  "author": {
+    "name": "domainfactory GmbH",
+    "url": "https://www.df.eu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.reseller-shop.eu"
+  },
+  "devDependencies": {
+    "autoprefixer": "~6.0",
+    "postcss-cli": ">=2.1",
+    "jshint": "~2.8",
+    "uglify-js": ">=2.4.24"
+  },
+  "config": {
+    "uglify": "--compress --mangle --screw-ie8 --reserved='$,shop'"
+  },
+  "scripts": {
+    "build": "npm run build:images && npm run build:css && npm run build:js",
+    "clean": "npm run clean:compiled && npm run clean:rpc",
+    "lint": "npm run lint:js",
+
+    "lint:js": "./node_modules/.bin/jshint --config src/js/.jshintrc --exclude src/js/jquery.js src/js",
+    "prebuild:js": "npm run lint:js",
+    "build:js": "/bin/bash bin/merge-js.sh",
+    "postbuild:js": "./node_modules/.bin/uglifyjs $npm_package_config_uglify --output dist/js/shop.js dist/js/shop.js",
+
+    "build:css": "/bin/bash bin/scss-compile",
+    "postbuild:css": "./node_modules/.bin/postcss --use autoprefixer --browsers='last 2 versions, > 5%, not ie <= 8' --cascade=false --dir=dist/css dist/css/shop.css",
+
+    "build:images": "/bin/bash bin/color-update.sh",
+
+    "clean:compiled": "rm -rf dist/compiled",
+    "clean:rpc": "rm -f dist/bb.rpc.cookie.php"
+  }
+}

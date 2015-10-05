@@ -1,0 +1,139 @@
+%list-horizontal {
+  margin: 0;
+  padding: 0;
+
+  > LI {
+    list-style: none;
+    display: inline-block;
+  }
+}
+
+%list-horizontal-xxs {
+  @extend %list-horizontal;
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    > LI { display: block; }
+  }
+}
+
+%list-horizontal-xs {
+  @extend %list-horizontal;
+  @media screen and (max-width: $viewport-max-width-xs) {
+    > LI { display: block; }
+  }
+}
+
+%list-horizontal-s {
+  @extend %list-horizontal;
+  @media screen and (max-width: $viewport-max-width-s) {
+    > LI { display: block; }
+  }
+}
+
+%list-scroll {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+%list-boxed {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+
+  > LI {
+    list-style: none;
+    display: inline-block;
+    width: 48%;
+    margin: .25em .5%;
+    padding-top: .5em;
+    padding-bottom: .75em;
+    padding-right: .5em;
+    text-align: left;
+    vertical-align: top;
+    box-sizing: border-box;
+
+    
+    &.icon {
+      padding-left: 3.25em;
+    }
+  }
+}
+
+%list-vertical {
+  display: block;
+}
+
+.list {
+  &-horizontal {
+    @extend %list-horizontal;
+  }
+
+  &-scroll {
+    @extend %list-scroll;
+  }
+
+  &-boxed {
+    @extend %list-boxed;
+
+    LI {
+      border-radius: .25em;
+
+      @media screen and (max-width: $viewport-max-width-xs),
+             screen and (min-width: $viewport-width-m) and (max-width: $viewport-max-width-m) {
+        display: block;
+        width: auto;
+      }
+    }
+  }
+}
+
+UL {
+  padding-left: 1em;
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    padding-left: 0;
+  }
+}
+
+LI {
+  list-style: square;
+
+  &.icon {
+    list-style: none;
+    padding-left: .75em;
+
+    &:BEFORE {
+      position: absolute;
+      margin-left: -1.5em;
+      margin-top: .25em;
+      margin-right: .5em;
+    }
+  }
+}
+
+
+.list-icon-bg-small,
+.list-icon-bg-big {
+  margin: 1em 0;
+
+  H3,
+  H4 {
+    margin: 0 0 .5em;
+    line-height: 1.25em;
+  }
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    .icon-big {
+      position: relative;
+      padding-left: .75em;
+      padding-top: 6em;
+
+      &:BEFORE {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -5.75em;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,150 @@
+%button-hover {
+  background-color: $color-main-dark;
+  border-color: $color-main-dark;
+}
+
+%button-accent-hover {
+  background-color: $color-accent-dark;
+  border-color: $color-accent-dark;
+}
+
+%button-disabled-hover {
+  background-color: $color-neutral-bg-tint;
+  border-color: $color-neutral-bg-shade;
+}
+
+%button {
+  @extend %block-brand-invert;
+  @include rp-button-icon(
+    $border: .0625em,
+    $padding-topbottom: .25em,
+    $padding-leftright: .5em
+  );
+
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
+
+  border-radius: 0;
+  border-style: solid;
+  border-color: $color-main;
+  
+  // Spezialgestaltung von iOS zerstÃÂ¶ren
+  -webkit-appearance: none;
+  appearance: none;
+
+  text-decoration: none;
+
+  transition: background-color .25s, color .25s, border-color .25s;
+
+  &.icon {
+    padding-bottom: 0;
+  }
+
+  &.button-action {
+    @extend %block-accent;
+    border-color: $color-accent;
+
+    &:HOVER {
+      @extend %button-accent-hover;
+    }
+  }
+
+  &.button-disabled {
+    @extend %button-disabled-hover;
+    color: $color-neutral;
+
+    &:HOVER {
+      @extend %button-disabled-hover;
+    }
+  }
+
+  &.icon:BEFORE {
+    @extend %button-hover;
+    border-style: solid;
+  }
+
+  &.icon.button-action:BEFORE {
+    @extend %button-accent-hover;
+    border-style: solid;
+  }
+
+  &.icon.button-disabled:BEFORE {
+    @extend %button-disabled-hover;
+    background-color: $color-neutral-bg-shade;
+    border-style: solid;
+  }
+
+  &.icon-only {
+    &,
+    &-with-hover:not(:hover) {
+      padding: 0;
+    }
+  }
+
+  // Text ausblenden
+  &.icon-only-with-hover {
+    text-indent: -1000em;
+    text-indent: -200vw;
+  }
+
+
+  &.icon-only,
+  &.icon-only-with-hover {
+    border-color: transparent;
+    padding-bottom: 0;
+
+    &:BEFORE {
+      margin-top: 0;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    &:FOCUS {
+      outline: none;
+      background-color: $color-neutral-dark;
+    }
+  }
+
+  &.icon.icon-only-with-hover {
+    &:HOVER,
+    &:FOCUS {
+      text-indent: 0;
+    }
+  }
+
+  &:HOVER {
+    @extend %button-hover;
+  }
+
+  &:FOCUS {
+    outline: .1875em solid $color-neutral-dark;
+  }
+}
+
+%button-big {
+  @include rp-button-icon(
+    $border: rp-cem(.0625em, $font-size-l),
+    $padding-topbottom: rp-cem(.5em, $font-size-l),
+    $padding-leftright: rp-cem(.5em, $font-size-l),
+    $border-icon: .333333em
+  );
+
+  font-size: $font-size-l;
+  &.icon {
+    padding-bottom: 0;
+  }
+}
+
+.button,
+A.button,
+BUTTON,
+SECTION A.button {
+  @extend %button;
+}
+
+.button-big,
+A.button-big {
+  @extend %button-big;
+}
+

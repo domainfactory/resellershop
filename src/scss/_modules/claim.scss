@@ -1,0 +1,44 @@
+.claim {
+  text-align: center;
+  padding: 1.5em .5em;
+
+  H2 {
+    font-size: $font-size-claim;
+    padding: 0 0 rp-cem(.5em, $font-size-claim);
+  }
+
+  H3 {
+    font-size: $font-size-price;
+    padding: 0 0 rp-cem(.5em, $font-size-price);
+  }
+
+  H2,
+  H3 {
+    font-weight: $font-weight-normal;
+    line-height: 120%;
+
+    display: block;
+
+    margin: 0;
+  }
+
+  .subheadline {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-light;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  @media screen and (max-width: $viewport-max-width-xs) {
+    H2 {
+      font-size: $font-size-price;
+    }
+    H3 {
+      font-size: $font-size-xxl;
+    }
+    .subheadline {
+      font-size: $font-size-l;
+    }
+  }
+}

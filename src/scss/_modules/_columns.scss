@@ -1,0 +1,154 @@
+@mixin columns-3 {
+  .column {
+    width: 30%;
+  }
+}
+
+@mixin column-mainbox-3 {
+  .column {
+    width: 23%;
+  }
+  .column-main {
+    width: 46%;
+  }
+}
+
+@mixin columns-2 {
+  .column {
+    width: 46%;
+  }
+}
+
+@mixin column-mainbox-2 {
+  .column {
+    width: 36%;
+  }
+  .column-main {
+    width: 56%;
+  }
+}
+
+.column {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+
+  box-sizing: border-box;
+  padding: 1em 1%;
+
+  text-align: left;
+
+
+  &-boxed {
+    padding: 0;
+
+    .column-box {
+      padding: .5em 1em;
+    }
+  }
+
+  &-multiple-3 {
+    @include columns-3;
+
+    &.column-mainbox {
+      @include column-mainbox-3;
+    }
+  }
+
+  &-multiple-2 {
+    @include columns-2;
+
+    &.column-mainbox {
+      @include column-mainbox-2;
+    }
+  }
+
+  &-multiple-wrapper {
+    position: relative;
+    text-align: center;
+    max-width: $center-max-width;
+    margin-left: auto;
+    margin-right: auto;
+
+    .column {
+      margin: 0 1%;
+    }
+  }
+
+
+  &-picture {
+    IMG {
+      width: 100%;
+    }
+  }
+
+  H1,
+  H2 {
+    font-weight: $font-weight-normal;
+    line-height: 1.2em;
+    margin: 0 0 1em;
+    padding: 1em 0 0;
+  }
+
+  &-subsection {
+    $subsection-distance: 1.25em;
+    margin: $subsection-distance 0 0;
+    padding: $subsection-distance 0 0;
+    border-top: .0625em solid $color-neutral-bg;
+    border-top-color: rgba($color-neutral, .2);
+
+    H2,
+    H3,
+    H4 {
+      margin-top: 0;
+    }
+
+    P:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+
+  @media screen and (max-width: $viewport-max-width-m) {
+    &-multiple-3 {
+      &,
+      &.column-mainbox {
+        .column {
+          width: auto;
+          display: block;
+        }
+
+        .column-picture {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-s) {
+    &-multiple-2 {
+      &,
+      &.column-mainbox {
+        .column {
+          width: auto;
+          display: block;
+        }
+
+        .column-picture {
+          display: none;
+        }
+      }
+    }
+
+    &-boxed {
+      .column-box {
+        padding: .25em .5em;
+      }
+    }
+  }
+}
+
+UL.column-multiple-wrapper {
+  padding-left: 0;
+  margin: 0 auto;
+}

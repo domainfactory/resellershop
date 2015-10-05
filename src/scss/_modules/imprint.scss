@@ -1,0 +1,80 @@
+.imprint {
+  $list-label-font-size: $font-size-h5;
+  $list-label-line-height: 1.3em;
+  $address-label-width: 5em;
+
+  [property="legalName"] {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
+    line-height: 1.4em;
+    margin-top: 0;
+  }
+
+  [property="streetAdress"] {
+    margin: 0;
+  }
+
+  &-address-list {
+    margin-bottom: 2em;
+
+    DT {
+      &:AFTER {
+        content: ':';
+      }
+    }
+
+    DD {
+      margin: 0 0 1em;
+    }
+  }
+
+  &-list {
+    DT {
+      font-size: $list-label-font-size;
+      font-weight: $font-weight-semibold;
+      line-height: $list-label-line-height;
+      padding: rp-cem(.25em, $list-label-font-size) 0 0;
+
+      &:AFTER {
+        content: ':';
+      }
+    }
+
+    DD {
+      padding-left: 0;
+      margin: .125em 0 1em;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-s) {
+    &-list {
+      $label-width: 16em;
+
+      DT {
+        position: absolute;
+        display: inline-block;
+        max-width: rp-cem($label-width - 1em, $list-label-font-size);
+      }
+
+      DD {
+        padding-left: $label-width;
+        padding-top: .3125em;
+      }
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-xs) {
+    &-address-list {
+      DT {
+        position: absolute;
+        max-width: ($address-label-width - .25em);
+      }
+
+      DD {
+        padding-left: $address-label-width;
+        margin-bottom: 0;
+      }
+    }
+    
+  }
+}

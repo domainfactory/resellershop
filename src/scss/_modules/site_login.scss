@@ -1,0 +1,121 @@
+.site-login {
+  @extend %block-brand-invert;
+
+  position: absolute;
+  top: (0 - $login-mobile-height);
+  left: 0;
+  right: 0;
+  padding: .5em 1em 1.75em;
+  min-height: $login-height;
+  max-height: $login-mobile-height + $header-bar-height;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 10;
+
+  HEADER {
+    padding: .5em 0;
+  }
+
+  H2 {
+    margin: 0 .5em;
+  }
+
+  .subheadline {
+    margin: .25em .5em;
+  }
+
+  FORM {
+    display: inline-block;
+  }
+
+
+  .login-opened & {
+    top: 0;
+  }
+
+  .form-line {
+    text-align: left;
+  }
+
+  .form-line-margin {
+    text-align: center;
+  }
+
+  .button {
+    display: block;
+    width: 100%;
+  }
+
+  @media screen and (min-width: $viewport-width-s) {
+    max-height: $login-height + $header-bar-height;
+    top: (0 - $login-height);
+
+    .form-line {
+      display: inline-block;
+      vertical-align: bottom;
+      margin: 0 .5em;
+    }
+
+    .login-opened & {
+      top: 0;
+    }
+
+    .button {
+      display: inline-block;
+      width: auto;
+    }
+
+    .toggle-login {
+      position: absolute;
+      right: .5em;
+      top: .5em;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-s) and (max-width: $viewport-max-width-s) {
+    .form-line {
+      width: 46%;
+      .button {
+        display: block;
+        width: 100%;
+      }
+    }
+
+    .site-login-form .form-line-margin {
+      display: inline-block;
+      margin-right: 49.5%;
+    }
+
+    .site-login-forgotpw {
+      position: absolute;
+      margin-top: -2em;
+      width: 96%;
+      text-align: center;
+
+      .form-line {
+        width: 46%;
+        margin-left: 49.5%;
+      }
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-s) {
+    .subheadline {
+      display: none;
+    }
+
+    FORM {
+      display: block;
+    }
+
+    .form-line-margin {
+      display: block;
+      padding-top: .375em;
+    }
+
+    .toggle-login {
+      margin-top: -.5em;
+      margin-bottom: .5em;
+    }
+  }
+}

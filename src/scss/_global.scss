@@ -1,0 +1,132 @@
+// Globale Variablen für alle SCSS-Dateien.
+// Die Einstellungen, die Sie hier vornehmen,
+// haben Auswirkungen auf die gesamte Darstellung des Shops.
+
+
+//////////////////// BREAKPOINTS / VIEWPORTS //////////////////////
+
+// An dieser Stelle geben Sie die Größenangaben für die jeweiligen
+// Darstellungsmodi an. Bitte stellen Sie sicher, dass zwischen dem
+// max-width-Breakpoint und der folgenden Breite maximal ein einziger "echter"
+// Pixel befindet, um unerwünschte Darstellungsprobleme bei Fenstergrößen
+// in diesem Bereich zu vermeiden.
+
+$viewport-width-min: 12.5em; // 200px
+$viewport-max-width-min: 19.99375em;
+$viewport-width-xxs: 20em; // 320px
+$viewport-max-width-xxs: 31.99375em;
+$viewport-width-xs: 32em; // 512px
+$viewport-max-width-xs: 39.99375em;
+$viewport-width-s: 40em; // 640px
+$viewport-max-width-s: 51.99375em;
+$viewport-width-m: 52em; // 832px
+$viewport-max-width-m: 59.99375em;
+$viewport-width-l: 60em; // 960px
+$viewport-max-width-l: 69.99375em;
+$viewport-width-xl: 70em; // 1120px
+$viewport-max-width-xl: 79.99375em;
+$viewport-width-hd: 80em; // 1280px
+$viewport-max-width-hd: 104.99375em;
+$viewport-width-xxl: 105em; // 1680px
+$viewport-max-width-xxl: 119.99375em;
+$viewport-width-fullhd: 120em; // 1920px
+$center-max-width: $viewport-width-xl;
+$center-text-max-width: $viewport-width-m;
+
+
+//////////////////// FONTS / SCHRIFTEN //////////////////////
+
+// Basisangaben zur Berechnung von Schriften (z.B. fuer Mixin rp-cem)
+// Die Browser-Standardschriftgröße liegt bei 16px.
+
+$font-size-base: 16;
+$font-size-root: 1em;
+
+$font-size: 1em; // Standardschriftgröße
+
+
+// Zu verwendende Schriftgrößen
+// Basis ist der Wert unter $font-size
+
+$font-size-xs: .875em; // 14px
+$font-size-s: .9375em; // 15px
+$font-size-l: 1.125em; // 18px
+$font-size-xl: 1.25em; // 20px
+$font-size-xxl: 1.5em; // 24px
+$font-size-xxxl: 1.75em; // 28px
+$font-size-price: 2em; // 32px
+$font-size-textonly: 2.5em; // 40px
+$font-size-claim: 3em; // 48px
+$font-size-quotmarks: $font-size-claim;
+
+
+// Schriftgrößen für Überschriften
+
+$font-size-h1: 1.75em; // 28px
+$font-size-h2: $font-size-xxl; // 24px
+$font-size-h3: 1.375em; // 22px
+$font-size-h4: $font-size-xl; // 20px
+$font-size-h5: $font-size-l; // 18px
+$font-size-h6: 1em; // 16px
+
+
+// Schriftstärken
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-semibold: 600; // 600 = semibold
+$font-weight-bold: 600; // 700 = bold
+
+
+// Schriftarten
+// Eingebettete Dateien werden in der fonts-sources.scss angegeben
+
+$font-family: "Open Sans", "Arial", "helvetica", sans-serif;
+$font-family-fancy: "Georgia", serif;
+$font-family-head: $font-family;
+$font-family-mono: "Consolas", monospace;
+
+
+//////////////////// ANIMATION / TRANSITION //////////////////////
+
+// Sollen Animationen verwendet werden?
+$use-fx: true;
+
+
+// Animationsgeschwindigkeiten
+
+$fx-duration: .333333s;
+$fx-duration-inc: $fx-duration / 2;
+$fx-duration-fast: $fx-duration - ($fx-duration-inc);
+$fx-duration-faster: $fx-duration-fast - ($fx-duration-inc);
+$fx-duration-slow: $fx-duration + ($fx-duration-inc);
+$fx-duration-slower: $fx-duration-slow + ($fx-duration-inc);
+
+
+//////////////////// BILDER / IMAGES //////////////////////
+
+// Pfade
+// Die Pfade müssen relativ vom Verzeichnis dist/css angegeben werden
+
+$img-folder: '../images/';
+$img-folder-header: '#{$img-folder}header/';
+
+
+// Grafiken
+
+// Sprite aller Symbole
+$img-shop-sprite: url("#{$img-folder}sprite-shop.svg");
+
+// Hintergrund der Überschrift-Seiten
+$img-header-bg: url('#{$img-folder-header}bg.svg');
+$img-header-tariff: url('#{$img-folder-header}tariff.svg');
+$img-header-addons: url('#{$img-folder-header}addons.svg');
+
+// Logo
+$img-logo-sprite: url("#{$img-folder}logo/sprite.svg");
+
+
+// Skalierungsfaktor innerhalb der Sprites
+// 1 = Grafik wird 1:1 eingebunden
+// 2 = Grafik wird auf 50% runterskaliert. (empfohlen)
+$sprite-default-background-scale: 2;

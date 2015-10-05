@@ -1,0 +1,11 @@
+.site-chat {
+  position: fixed;
+  bottom: 0;
+  right: 1em;
+  display: none;
+
+  .chat-opened & {
+    display: block;
+  }
+}
+

@@ -1,0 +1,131 @@
+$color-order-bg: $color-main-bg-bright;
+
+.shop-order,
+.page-order {
+  @include rp-block((
+    bg: $color-order-bg,
+    color: $color-text,
+    invert: $color-text-invert,
+  ));
+}
+
+.page-brand-order-text {
+  @include rp-block((
+    bg: $color-order-bg,
+    color: $color-main-text,
+    invert: $color-main-bg,
+  ));
+}
+
+
+.order-buttons {
+  @include rp-center();
+}
+
+.order-button-line {
+  padding-left: 5.5em;
+  padding-right: .5em;
+
+  box-sizing: border-box;
+  position: relative;
+
+  .button {
+    text-align: center;
+  }
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    .button {
+      display: block;
+      width: 100%;
+      margin: .5em auto;
+    }
+
+    .button-big {
+      padding-top: .5em;
+      padding-bottom: .5em;
+      font-size: $font-size-xl;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-xs) {
+    padding-left: 5.5em;
+    text-align: right;
+
+    .button {
+      min-width: 5em;
+    }
+
+    .order-back {
+      position: absolute;
+      left: .5em;
+    }
+
+    .order-forward {
+      min-width: 6em;
+      text-align: center;
+    }
+  }
+}
+
+.order-section {
+  padding: 1em;
+
+  H2 {
+    font-weight: normal;
+    font-size: $font-size-price;
+    line-height: 1.3333em;
+    padding: rp-cem(.75em, $font-size-price) rp-cem(1em, $font-size-price);
+    border-bottom: rp-cem(.1875em, $font-size-price) solid $color-main;
+    margin: 0 0 rp-cem(.5em, $font-size-price);
+  }
+
+  @media screen and (max-width: $viewport-max-width-s) {
+    padding-top: .5em;
+    padding-bottom: 1.5em;
+
+    H2 {
+      padding-top: 0;
+    }
+  }
+
+  .order-section-padding {
+    padding-top: rp-cem(2.25em, $font-size-price);
+  }
+}
+
+
+
+.cart-overview,
+.order-section-has-sidebar {
+  @media screen and (max-width: $viewport-max-width-m) {
+    padding-left: .5em;
+    padding-right: .5em;
+    margin-right: 0;
+  }
+}
+
+.order-section-has-sidebar {
+  @media screen and (min-width: $viewport-width-l) {
+    margin-right: 24.5em;
+  }
+
+  @media screen and (min-width: $viewport-width-xl) {
+    margin-right: 42%;
+  }
+}
+
+.cart-overview {
+  max-width: $center-max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+@media screen and (max-width: $viewport-max-width-s) {
+  .site-header-order .site-logo {
+    left: -.25em;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

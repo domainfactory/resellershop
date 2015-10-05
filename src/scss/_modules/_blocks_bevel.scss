@@ -1,0 +1,120 @@
+// BEVEL
+
+%bevel {
+  $border-size: rp-cem(.0625em, $font-size);
+  border-top-style: solid;
+  border-top-width: $border-size;
+  margin-top: $border-size;
+  position: relative;
+
+  &:BEFORE {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: (0 - ($border-size * 2));
+    height: 0;
+    border-bottom-style: solid;
+    border-bottom-width: $border-size;
+  }
+}
+
+
+// Rahmenfarben
+
+%block-bevel-invert-dark {
+  border-top-color: $color-neutral-dark-tint;
+  border-bottom-color: $color-neutral-dark-shade;
+}
+
+%block-bevel-invert {
+  border-top-color: $color-neutral-tint;
+  border-bottom-color: $color-neutral-shade;
+}
+
+%block-bevel-invert-light {
+  border-top-color: $color-neutral-light-tint;
+  border-bottom-color: $color-neutral-light-shade;
+}
+
+%block-bevel-neutral { 
+  border-top-color: $color-neutral-bg-tint;
+  border-bottom-color: $color-neutral-bg-shade;
+}
+
+%block-bevel-neutral-light {
+  border-top-color: $color-neutral-bg-light-tint;
+  border-bottom-color: $color-neutral-bg-light-shade;
+}
+
+%block-bevel-brand {
+  border-top-color: $color-main-bg-tint;
+  border-bottom-color: $color-main-bg-shade;
+}
+
+%block-bevel-brand-light {
+  border-top-color: $color-main-bg-light-tint;
+  border-bottom-color: $color-main-bg-light-shade;
+}
+
+%block-bevel-accent {
+  border-top-color: $color-accent-tint;
+  border-bottom-color: $color-accent-shade;
+}
+%bevel-invert-dark {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-invert-dark; }
+}
+
+%bevel-invert {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-invert; }
+}
+
+%bevel-invert-light {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-invert-light; }
+}
+
+%bevel-brand {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-brand; }
+}
+
+%bevel-brand-light {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-brand-light; }
+}
+
+%bevel-accent {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-accent; }
+}
+
+%bevel-neutral {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-neutral; }
+}
+
+%bevel-neutral-light {
+  @extend %bevel;
+  &, &:BEFORE { @extend %block-bevel-neutral-light; }
+}
+
+
+
+
+
+// BEVEL
+
+.page-bevel-invert-dark { @extend %bevel-invert-dark; }
+.page-bevel-invert { @extend %bevel-invert; }
+.page-bevel-invert-light { @extend %bevel-invert-light; }
+.page-bevel-brand { @extend %bevel-brand; }
+.page-bevel-brand-light { @extend %bevel-brand-light; }
+.page-bevel-accent { @extend %bevel-accent; }
+.page-bevel-neutral { @extend %bevel-neutral; }
+.page-bevel-neutral-light { @extend %bevel-neutral-light; }
+
+

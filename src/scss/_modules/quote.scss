@@ -1,0 +1,155 @@
+%quote {
+  font-family: $font-family-fancy;
+  font-style: italic;
+  line-height: 150%;
+}
+
+%quote-marks {
+  text-indent: ($font-size-quotmarks * .75);
+
+  &:BEFORE {
+    content: '»';
+    padding-right: 0;
+    margin-left: -1.125em;
+    margin-bottom: -.25em;
+    padding-bottom: .325em;
+    text-align: right;
+    vertical-align: bottom;
+  }
+  &:AFTER {
+    content: '«';
+    padding-left: 0;
+    margin-top: -.5em;
+    padding-top: .425em;
+    vertical-align: top;
+  }
+
+  &:BEFORE,
+  &:AFTER {
+    display: inline-block;
+
+    width: 1em;
+    text-indent: 0;
+
+    font-size: $font-size-quotmarks;
+    font-weight: $font-weight-bold;
+  }
+}
+
+
+.nice-quote {
+  margin: 0;
+  &-marks {
+    @extend %quote;
+    @extend %quote-marks;
+  }
+
+  CITE {
+    font-style: normal;
+  }
+}
+
+.highlight-quote {
+  text-align: center;
+
+  [property="text"] {
+    margin: 0;
+    padding-bottom: .5em;
+    border-bottom: .0625em solid $color-neutral-bg;
+
+    text-align: center;
+  }
+
+  CITE {
+    position: relative;
+    display: inline-block;
+
+    text-align: left;
+
+    padding: 2.5em 1em 1.5em;
+    margin: 0 auto;
+
+    IMG {
+      position: absolute;
+      margin-top: -1.25em;
+      max-width: 5em;
+    }
+
+    P {
+      margin: 0;
+      padding: 0 0 0 6em;
+    }
+
+    [property="jobTitle"] {
+      font-size: $font-size-s;
+      font-weight: $font-weight-light;
+      padding-left: rp-cem(6em, $font-size-s);
+    }
+
+    // Pfeil "Sprechblase"
+    &:BEFORE,
+    &:AFTER {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      top: -.0625em;
+      left: 50%;
+      transform: skew(50deg) scaleX(.75);
+    }
+
+    &:BEFORE {
+      border: 2em solid transparent;
+      border-top-color: $color-neutral-bg;
+    }
+
+    &:AFTER {
+      border: 1.875em solid transparent;
+      border-top-color: $color-main-bg-light;
+    }
+  }
+
+  @media screen and (max-width: $viewport-width-xs) {
+    CITE {
+      IMG {
+        position: relative;
+        margin: 0 auto;
+      }
+
+      P,
+      [property="jobTitle"] {
+        padding-left: 0;
+      }
+
+      &:BEFORE,
+      &:AFTER {
+        left: 20%;
+      }
+    }
+  }
+}
+
+.statement {
+  CITE {
+    text-align: center;
+    font-style: normal;
+    margin: 0 auto;
+
+    IMG {
+      max-width: 7em;
+      max-height: 7em;
+      display: block;
+      margin: 0 auto .5em;
+    }
+
+    P {
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  [property="text"] {
+    @extend %quote;
+    text-align: center;
+  }
+}

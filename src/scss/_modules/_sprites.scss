@@ -1,0 +1,345 @@
+// Abstand zwischen den einzelnen Symbolen
+$sprite-margin-horizontal: .25em;
+$sprite-margin-vertical: .25em;
+
+
+// HAUPT-SPRITE
+
+// Ursprüngliche Größe der Grafik
+$sprite-default-original-width: 74.25em;
+$sprite-default-original-height: 120.5em;
+
+// Größe eines Symbols innerhalb des Grids
+$sprite-default-original-icon-width: 9em;
+$sprite-default-original-icon-height: 9em;
+
+// Abstand zwischen Symbolen und Hintergrund bei Grafiken mit Hintergrund
+$icon-big-padding: .75em;
+
+// Größe eines Symbols innerhalb des Grids
+$sprite-default-icon-width:  sprite-scaled($sprite-default-original-icon-width);
+$sprite-default-icon-height: sprite-scaled($sprite-default-original-icon-height);
+
+
+// Reihenfolge der Icons in der Sprite-Grafik.
+//
+// BITTE BEACHTEN:
+// Der Name des Icons muss auch unten in den $sprite-dimensions angegeben werden
+//
+// Format dieser list:
+// (
+//   ("spalte" "spalte" "spalte") // <-- zeile
+// )
+$icons-default: (
+  ("cart-text" "cart" "menu-open" "menu-close")
+  ("login" "help-text" "mail-text" "mail" "tel-text" "tel" "fax-text" "fax")
+  ("radio-off" "radio-on" "check-off" "check-on" "add-text" "open" "close")
+  ("plus" "minus" "item-more" "checkbox" "alert")
+  ("plus-small" "minus-small" "item-more-small" "checkbox-small")
+  ("search" "search-main" "scroll-left" "scroll-right")
+  ("facebook" "twitter" "gplus" "linkedin")
+  ("payment-visa" "payment-mastercard" "payment-aexpress" "payment-dinersclub")
+  ("payment-bill-text" "payment-bill" "payment-paypal-text" "payment-paypal" "payment-sepa-text" "payment-sepa" "payment-creditcard-text" "payment-creditcard")
+  ("server" "lock" "money" "clock24" "thumbsup" "wrench")
+  ("pic-headset" "pic-shield" "pic-magic" "pic-mysql" "pic-cli" "pic-calendar" "pic-percent99-9")
+  ("pic-pma" "pic-wordpress" "pic-storage" "pic-gear" "pic-help" "pic-hdd" "pic-speaker")
+  ("pic-time" "pic-secure" "pic-backup" "pic-transfer" "pic-like" "pic-exchange" "pic-suitcase")
+);
+
+
+// Angaben in Reihenfolge: (Breite Höhe)
+$sprite-default-dimensions: (
+  cart-text               : (6.875em 4.375em), // 110x70
+  cart                    : (6.875em 4.375em), // 110x70
+  menu-open               : (7.1875em 5.25em), // 115x84
+  menu-close              : (7.1875em 5.25em), // 115x84
+  radio-off               : (3.125em 3.125em), // 45x45
+  radio-on                : (3.125em 3.125em), // 45x45
+  check-off               : (3.125em 3.125em), // 50x50
+  check-on                : (3.125em 3.125em), // 50x50
+  add-text                : (3em 3em),         // 48x48
+  open                    : (3em 3em),         // 48x48
+  close                   : (3em 3em),         // 48x48
+  search                  : (4.625em 4.5em),   // 74x72
+  search-main             : (4.625em 4.5em),   // 74x72
+  plus                    : (3em 3em),         // 48x48
+  minus                   : (3em 3em),         // 48x48
+  item-more               : (3em 3em),         // 48x48
+  checkbox                : (3em 3em),         // 60x54
+  alert                   : (5.5em 5em),       // 88x80
+  plus-small              : (1.75em 1.75em),   // 28x28
+  minus-small             : (1.75em 1.75em),   // 28x28
+  item-more-small         : (1.75em 1.75em),   // 28x28
+  checkbox-small          : (1.875em 1.75em),  // 30x28
+  scroll-left             : (2.75em 5.875em),  // 44x94
+  scroll-right            : (2.75em 5.875em),  // 44x94
+  login                   : (3.125em 3.125em), // 28x50
+  help-text               : (3.125em 3.125em), // 50x50
+  mail-text               : (3.125em 3.125em), // 50x50
+  mail                    : (3.125em 3.125em), // 50x50
+  tel-text                : (3.125em 3.125em), // 50x50
+  tel                     : (3.125em 3.125em), // 50x50
+  fax-text                : (3.125em 3.125em), // 50x50
+  fax                     : (3.125em 3.125em), // 50x50
+  facebook                : (6.75em 6.75em),   // 116x116
+  twitter                 : (6.75em 6.75em),   // 116x116
+  gplus                   : (6.75em 6.75em),   // 116x116
+  linkedin                : (6.75em 6.75em),   // 116x116
+  payment-bill-text       : (3.625em 5em), // 58x74
+  payment-paypal-text     : (4.125em 5em), // 66x70
+  payment-sepa-text       : (5em 5em),     // 80x74
+  payment-creditcard-text : (6.25em 5em),      // 100x80
+  payment-bill            : (3.625em 5em), // 58x74
+  payment-paypal          : (4.125em 5em), // 66x70
+  payment-sepa            : (5em 5em),     // 80x74
+  payment-creditcard      : (6.25em 5em),      // 100x80
+  payment-visa            : (6em 3.5em),       // 96x56
+  payment-mastercard      : (5.5em 3.5em),     // 88x56
+  payment-aexpress        : (3.5em 3.5em),     // 56x56
+  payment-dinersclub      : (13.5em 3.5em),     // 56x56
+  server                  : (6em 5.25em),      // 96x84
+  lock                    : (6em 5.25em),      // 96x84
+  money                   : (6em 5.25em),      // 96x84
+  clock24                 : (6em 5.25em),      // 96x84
+  thumbsup                : (6em 5.25em),      // 96x84
+  wrench                  : (6em 5.25em),      // 96x84
+  // Größen vereinheitlicht, damit alle Grafiken schön gleich eingebettet werden
+  pic-headset             : (6.25em 6.25em),   // 100x100
+  pic-shield              : (6.25em 6.25em),   // 100x100
+  pic-magic               : (6.25em 6.25em),   // 100x100
+  pic-mysql               : (6.25em 6.25em),   // 100x100
+  pic-cli                 : (6.25em 6.25em),   // 100x100
+  pic-calendar            : (6.25em 6.25em),   // 100x100
+  pic-percent99-9         : (6.25em 6.25em),   // 100x100
+  pic-pma                 : (6.25em 6.25em),   // 100x100
+  pic-wordpress           : (6.25em 6.25em),   // 100x100
+  pic-storage             : (6.25em 6.25em),   // 100x100
+  pic-gear                : (6.25em 6.25em),   // 100x100
+  pic-help                : (6.25em 6.25em),   // 100x100
+  pic-hdd                 : (6.25em 6.25em),   // 100x100
+  pic-time                : (6.25em 6.25em),   // 100x100
+  pic-secure              : (6.25em 6.25em),   // 100x100
+  pic-backup              : (6.25em 6.25em),   // 100x100
+  pic-transfer            : (6.25em 6.25em),   // 100x100
+  pic-like                : (6.25em 6.25em),   // 100x100
+  pic-exchange            : (6.25em 6.25em),   // 100x100
+  /*
+  // Originalgrößen der Grafiken
+  pic-headset             : (6.25em 5.625em),  // 100x90
+  pic-shield              : (4.375em 5.625em), // 70x90
+  pic-magic               : (5.375em 4.25em),  // 86x68
+  pic-mysql               : (8.125em 2.625em), // 130x42
+  pic-cli                 : (5.125em 5.125em), // 82x82
+  pic-calendar            : (4.25em 5.125em),  // 68x82
+  pic-percent99-9         : (5.125em 5.125em), // 82x82
+  pic-pma                 : (6.25em 5.75em),   // 100x92
+  pic-wordpress           : (5.75em 5.75em),   // 92x92
+  pic-storage             : (4.25em 4em),      // 68x64
+  pic-gear                : (5.125em 5.125em), // 82x82
+  pic-help                : (5.375em 5.375em), // 86x86
+  pic-hdd                 : (5em 4.875em),     // 80x78
+  pic-time                : (4.625em 5.375em), // 74x86
+  pic-secure              : (3.625em 4.625em), // 58x74
+  pic-backup              : (5.125em 5.125em), // 82x82
+  pic-transfer            : (4.875em 4em),     // 78x64
+  pic-like                : (4.625em 5.5em),   // 74x88
+  pic-exchange            : (5.25em 5em),      // 84x80
+  */
+  /*
+  chat-text               : (2.375em 2em),     // 38x32
+  chat-main               : (2.375em 2em),     // 38x32
+  chat                    : (2.375em 2em),     // 38x32
+  writing-text            : (2.5em 1.875em),   // 40x30
+  writing-main            : (2.5em 1.875em),   // 40x30
+  */
+);
+
+
+// Eigenschaften von Elementen, in denen die Grafik eingebettet wird
+%sprite-element {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .25em;
+}
+
+// Standardgröße eines Sprite-Elements
+%sprite-default-size {
+  width: $sprite-default-icon-width;
+  height: $sprite-default-icon-height;
+}
+
+
+%sprite-default {
+  @extend %sprite-default-size;
+  background-image: $img-shop-sprite;
+  background-repeat: no-repeat;
+  background-size: sprite-scaled($sprite-default-original-width) sprite-scaled($sprite-default-original-height);
+}
+
+.icon-only,
+.icon:BEFORE {
+  @extend %sprite-element;
+  @extend %sprite-default;
+}
+
+.icon-big:BEFORE,
+.icon-big-top:BEFORE {
+  background-color: $color-neutral-light;
+  border-radius: 50%;
+  border: $icon-big-padding solid $color-neutral-light;
+}
+
+.icon-big-top:BEFORE {
+  left: 50%;
+}
+
+.icon-bg-brand:BEFORE {
+  background-color: $color-main;
+  outline: .0625em solid $color-main;
+}
+
+.icon-bg-accent:BEFORE {
+  background-color: $color-accent;
+  outline: .0625em solid $color-accent;
+}
+
+.icon-bg-neutral:BEFORE {
+  background-color: $color-neutral;
+  outline: .0625em solid $color-neutral;
+}
+
+.icon-big.icon-bg-brand:BEFORE,
+.icon-big-top.icon-bg-brand:BEFORE {
+  outline: none;
+  border-color: $color-main;
+}
+
+.icon-big.icon-bg-accent:BEFORE,
+.icon-big-top.icon-bg-accent:BEFORE {
+  outline: none;
+  border-color: $color-accent;
+}
+
+.icon.icon-only:BEFORE {
+  display: none;
+}
+
+.icon-absolute:BEFORE {
+  position: absolute;
+}
+
+.icon.icon-only,
+.button.icon-only {
+  box-sizing: content-box;
+  margin-right: auto;
+  padding: 0;
+}
+
+.icon-only,
+.icon-only-with-hover {
+  position: relative;
+  &:BEFORE {
+    $border-width: .125em;
+    position: absolute;
+    left: (0 - ($border-width / 2));
+    top: (0 - ($border-width / 2));
+    border-width: $border-width;
+  }
+}
+
+.button.icon-only-with-hover {
+  &:BEFORE {
+    left: .0625em;
+    top: .0625em;
+  }
+}
+
+$icon-search-position: (($sprite-default-original-icon-height + $sprite-margin-vertical) * 2 + $sprite-margin-vertical) 0;
+
+$icon-row-count: length($icons-default);
+@for $row-nr from 1 through $icon-row-count {
+  $icon-row: nth($icons-default, $row-nr);
+  $icon-col-count: length($icon-row);
+
+  @for $col-nr from 1 through $icon-col-count {
+    $icon-name: nth($icon-row, $col-nr);
+
+    $bg-offset-horizontal: (($sprite-default-original-icon-width + $sprite-margin-horizontal) * ($col-nr - 1) + $sprite-margin-horizontal);
+    $bg-offset-vertical:   (($sprite-default-original-icon-height + $sprite-margin-vertical) * ($row-nr - 1) + $sprite-margin-vertical);
+
+    // Größe der einzelnen Icons
+    @if ( map-has-key($sprite-default-dimensions, $icon-name) ) {
+      $icon-size: map-get($sprite-default-dimensions, $icon-name);
+      $icon-width: nth($icon-size, 1);
+      $icon-height: nth($icon-size, 2);
+      $bg-offset-horizontal: ($bg-offset-horizontal + (($sprite-default-original-icon-width  - $icon-width ) / 2));
+      $bg-offset-vertical:   ($bg-offset-vertical   + (($sprite-default-original-icon-height - $icon-height) / 2));
+
+      %icon-#{$icon-name}-align,
+      .icon-align.icon-#{$icon-name},
+      .button.icon-#{$icon-name} {
+        padding-left: (0 - sprite-scaled($icon-width) - .75em);
+
+        &:BEFORE {
+          margin-left: (0 - sprite-scaled($icon-width) - .25em);
+          margin-top: (0 - ((sprite-scaled($icon-height) - $font-size) / 3));
+        }
+      }
+
+      .icon-top.icon-#{$icon-name} {
+        padding-top: (0 + sprite-scaled($icon-height) + .75em);
+
+        &:BEFORE {
+          margin-top: (0 - sprite-scaled($icon-height) - .75em);
+        }
+      }
+
+      .icon-big.icon-#{$icon-name} {
+        padding-left: (0 + sprite-scaled($icon-width) + 1.25em + $icon-big-padding);
+
+        &:BEFORE {
+          margin-left: (0 - sprite-scaled($icon-width) - 1.25em - $icon-big-padding);
+        }
+
+        &.icon-align {
+          padding-left: 0;
+        }
+      }
+
+      .icon-big-top.icon-#{$icon-name} {
+        padding-top: (0 + sprite-scaled($icon-height) + 1.25em + $icon-big-padding);
+
+        &:BEFORE {
+          margin-top: (0 - sprite-scaled($icon-height) - 1.25em - $icon-big-padding);
+          margin-left: (0 - (sprite-scaled($icon-width) / 2));
+        }
+      }
+
+
+      %icon-#{$icon-name}-size,
+      .icon-#{$icon-name}:BEFORE,
+      .icon-big.icon-#{$icon-name}:AFTER,
+      .icon-only.icon-#{$icon-name} {
+        width: sprite-scaled($icon-width);
+        height: sprite-scaled($icon-height);
+      }
+    }
+
+    %icon-#{$icon-name},
+    .icon-#{$icon-name}:BEFORE,
+    .icon-only.icon-#{$icon-name} {
+      background-position: (0 - sprite-scaled($bg-offset-horizontal)) (0 - sprite-scaled($bg-offset-vertical));
+    }
+  }
+}
+
+%icon-payment-dinersclub,
+.icon-payment-dinersclub:BEFORE,
+.icon-only.icon-payment-dinersclub {
+  background-position: -15.875em -33.875em;
+}
+
+.button.icon-close:BEFORE {
+  margin-top: -.125em;
+}

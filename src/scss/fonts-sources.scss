@@ -1,0 +1,10 @@
+@import '_global';
+@import '_modules/mixins';
+@import '_modules/fonts';
+
+// Pfade zu den Schriften müssen relativ vom CSS-Verzeichnis sein!
+@include rp-define-font-sources("Open Sans", "Open Sans", "../fonts/Regular/OpenSans-Regular");
+@include rp-define-font-sources("Open Sans", "Open Sans Light", "../fonts/Light/OpenSans-Light", $font-weight-light);
+@include rp-define-font-sources("Open Sans", "Open Sans Semibold", "../fonts/Semibold/OpenSans-Semibold", $font-weight-semibold);
+// Fett deaktiviert, um Geschwindigkeit zu erhöhen
+//@include rp-define-font-sources("Open Sans", "Open Sans Bold", "../fonts/Bold/OpenSans-Bold", $font-weight-bold);

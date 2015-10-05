@@ -1,0 +1,93 @@
+// Überschrift von Unterseiten 
+.page-header {
+  @extend %block-brand-text;
+  position: relative;
+
+  background-image: $img-header-bg;
+  background-repeat: repeat-y;
+  background-position: left top;
+  background-size: 40em auto;
+
+  margin: 0;
+  padding: 0 0 0 32em;
+  min-height: 18.875em;
+
+  ARTICLE {
+    padding: 1em;
+    max-width: $center-text-max-width;
+  }
+
+  H1 {
+    margin: rp-cem(.5em, $font-size-h1) 0;
+    font-weight: $font-weight-normal;
+    line-height: 1.3em;
+  }
+
+  &:BEFORE,
+  &:AFTER {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  &:BEFORE {
+    background-image: $img-header-bg;
+    background-repeat: repeat-y;
+    background-position: left top;
+    background-size: 100% auto;
+    display: none;
+  }
+
+  &:AFTER {
+    width: 49%;
+    background-repeat: no-repeat;
+    background-position: 6.25% center;
+    background-color: transparent;
+    background-size: 28em 18.875em;
+  }
+
+
+  @media screen and (max-width: $viewport-max-width-m) {
+    padding-left: 25%;
+    background-size: 50% auto;
+    &:AFTER {
+      width: 23%;
+      background-size: 200% auto;
+      background-position: 40% center;
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    $img-height: 10em;
+    background-size: 0;
+    padding: $img-height 0 0;
+
+    ARTICLE {
+      text-align: center;
+    }
+
+    &:BEFORE {
+      display: block;
+      height: $img-height;
+    }
+
+    &:AFTER {
+      bottom: auto;
+      right: 0;
+      width: auto;
+      height: $img-height;
+      background-size: cover;
+    }
+  }
+}
+
+
+.tariff-header:AFTER {
+  background-image: $img-header-tariff;
+}
+.addon-header:AFTER {
+  background-image: $img-header-addons;
+}

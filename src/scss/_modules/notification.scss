@@ -1,0 +1,272 @@
+@keyframes notification {
+  0% {
+    opacity: 0;
+    transform: translateY(1em);
+    display: none;
+    max-height: 0;
+  }
+  5% {
+    display: block;
+    max-height: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 5em;
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 5em;
+  }
+  95% {
+    opacity: 0;
+    transform: translateY(1em);
+    max-height: 0;
+  }
+  100% {
+    display: none;
+    max-height: 0;
+  }
+}
+
+@keyframes openModal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.notifications {
+  position: fixed;
+  display: block;
+  bottom: 0;
+  padding-left: 15%;
+  padding-right: 15%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+
+  &:HOVER .notification {
+    animation-play-state: paused;
+  }
+
+  @media screen and (max-width: $viewport-max-width-xs) {
+    padding-left: .25em;
+    padding-right: .25em;
+  }
+
+  .notification {
+    display: block;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(1em);
+    animation: notification 10s;
+    text-align: left;
+    max-height: 0;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+
+.notification {
+  padding: .25em .5em .5em;
+  margin: .125em auto;
+  word-wrap: break-word;
+  display: block;
+
+  P {
+    margin: 0;
+    padding: 0;
+  }
+
+  P + P {
+    padding-top: .25em;
+  }
+
+  &:BEFORE {
+    display: inline-block;
+    margin-right: .75em;
+    font-weight: $font-weight-bold;
+  }
+
+  &-field-link.notification-type-error,
+  &-type-error {
+    @extend %block-accent;
+    &:BEFORE {
+      content: 'Fehler';
+    }
+  }
+  &-field-link.notification-type-error:HOVER {
+    @extend %block-accent-dark;
+  }
+
+
+  &-field-link.notification-type-warning,
+  &-type-warning {
+    @extend %block-invert-dark;
+  }
+  &-field-link.notification-type-warning:HOVER {
+    @extend %block-accent;
+  }
+
+  &-field-link.notification.notification-type-notice,
+  &-type-notice {
+    @extend %block-brand-invert;
+  }
+
+  &-field-link.notification.notification-type-success,
+  &-type-success {
+    @extend %block-brand;
+  }
+}
+
+
+.modal-notification-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 200;
+
+  background: rgba($color-neutral-dark, .4);
+
+  .modal-notification {
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+
+    padding: 1em 5%;
+    max-width: $center-text-max-width;
+
+    box-shadow: 0 .125em .25em rgba($color-neutral-dark, .5);
+
+    animation: openModal $fx-duration;
+  }
+}
+
+.modal-notification {
+  margin: 1em auto;
+  padding: 1em;
+  opacity: 1;
+
+  overflow: auto;
+  hyphens: auto;
+  word-wrap: break-word;
+
+  border-top: .5em solid $color-accent;
+
+  .form-line {
+    text-align: center;
+  }
+
+  H1 {
+    line-height: 1.25em;
+  }
+
+  &.icon {
+    &:BEFORE {
+      position: absolute;
+      margin: 2em auto .75em;
+      right: 94%;
+      left: 2%;
+    }
+    &.icon-alert:BEFORE {
+      margin: 1.5em auto .75em;
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-xl) {
+    &.icon {
+      padding-left: 10%;
+      &:BEFORE {
+        right: 91%;
+      }
+    }
+  }
+
+  BUTTON
+  .button {
+    word-wrap: break-word;
+  }
+
+  @media screen and (max-width: $viewport-max-width-s),
+         screen and (max-height: $viewport-max-width-xs) {
+    top: 8%;
+    bottom: 8%;
+    left: .5em;
+    right: .5em;
+    padding: .5em 1em;
+
+    &.icon {
+      padding-left: 1em;
+      &:BEFORE {
+        display: none;
+      }
+    }
+  }
+
+
+  &.page-accent {
+    border-top-color: $color-neutral-dark;
+
+    BUTTON,
+    .button {
+      &.button-action {
+        background-color: $color-neutral-bg-light;
+        color: $color-accent-dark;
+      }
+      &.button-action:FOCUS {
+        outline: .1875em solid $color-text;
+        background-color: $color-accent-dark;
+        color: $color-text-invert;
+      }
+    }
+  }
+
+  &.page-brand-invert {
+    BUTTON,
+    .button {
+      & {
+        background-color: $color-neutral-bg-light;
+        color: $color-main-dark;
+      }
+      &:FOCUS {
+        outline: .1875em solid $color-text-invert;
+        background-color: $color-main-dark;
+        color: $color-text-invert;
+      }
+      &.button-action {
+        @extend %block-accent;
+      }
+      &.button-action:FOCUS {
+        @extend %block-accent-dark;
+      }
+    }
+  }
+
+  &.page-invert-dark,
+  &.page-invert {
+    BUTTON,
+    .button {
+      &:FOCUS {
+        outline: .1875em solid $color-text-invert;
+        background-color: $color-main-dark;
+      }
+
+      &.button-action:FOCUS {
+        outline: .1875em solid $color-text-invert;
+        background-color: $color-accent-dark;
+      }
+    }
+  }
+}
+
+.page-messages {
+  max-width: $center-text-max-width;
+  margin: .5em auto;
+}

@@ -1,0 +1,81 @@
+.faq {
+  padding: 3em .5em 1.5em;
+
+  H1 {
+    text-align: center;
+    color: $color-text;
+    margin: 0 auto;
+    line-height: 1.4em;
+  }
+}
+
+.faq-section {
+  $padding-leftright: 1em;
+  $padding-topbottom: .5em;
+  $border-width: .0625em;
+  $border-color: $color-neutral-bg-shade;
+
+  margin: 0 auto;
+  padding: 1.5em 0;
+  max-width: $center-text-max-width;
+
+  H2 {
+    font-size: $font-size-h2;
+  }
+
+  .accordion {
+    border-bottom: $border-width solid $border-color;
+  }
+
+  .contact-opening {
+    max-width: $viewport-width-xxs;
+  }
+
+
+  .accordion-title,
+  .accordion-content {
+    @extend %block-brand-bright;
+
+    margin: 0;
+    border: 0 solid $border-color;
+    padding: $padding-topbottom $padding-leftright $padding-topbottom 2.25em;
+    outline: .1875em solid transparent;
+
+    &:nth-of-type(2n) {
+      @extend %block-neutral-light;
+      &:FOCUS {
+        @extend %block-brand-invert;
+      }
+    }
+
+    &:FOCUS {
+      outline-color: $color-neutral-dark;
+    }
+  }
+
+/*
+  .accordion-title[aria-expanded="true"] {
+    &,
+    & + .accordion-content {
+      @extend %block-brand-bright;
+    }
+  }
+*/
+
+  .accordion-title {
+    font-weight: $font-weight-semibold;
+    border-top-width: $border-width;
+    cursor: pointer;
+
+    [aria-expanded="true"] {
+      @extend %block-brand-bright;
+    }
+  }
+
+  .accordion-content {
+    @extend %block-brand-bright;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: none;
+  }
+}

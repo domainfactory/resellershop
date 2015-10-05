@@ -1,0 +1,95 @@
+// Generiert eine Zielschriftgroesse
+@function rp-cem($target, $context: 1em) {
+  $base-in-px: 16;
+  // Beispiel: $target = .25em, $base = 1.5em, @return
+  @return (($target * $base-in-px) / ($context * $base-in-px)) * 1em;
+}
+
+// Skalierte Größe zurückgeben
+// Berechnet die übergebene Größe des gewünschten Skalierungsfaktors
+@function sprite-scaled($size) {
+  @return ($size / $sprite-default-background-scale);
+}
+
+
+@mixin rp-define-font-sources($sFontName, $sLocalFontName, $sFileName, $sWeight: '') {
+  @font-face {
+    font-family: $sFontName;
+    @if $sWeight != '' {
+      font-weight: $sWeight;
+    }
+    src: local($sLocalFontName),
+          url('#{$sFileName}.eot?#iefix') format('embedded-opentype'),
+          url('#{$sFileName}.woff') format('woff'),
+          url('#{$sFileName}.ttf') format('truetype'),
+          url('#{$sFileName}.svg##{$sFontName}') format('svg');
+  }
+}
+
+
+@mixin rp-center($max-width: $center-max-width) {
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+@mixin rp-choose-color($colors, $use-link: false) {
+  $prefix: "";
+  @if ( $use-link ) {
+    $prefix: "link-";
+  }
+
+  $lightness-bg: lightness( map-get($colors, 'bg') );
+
+  @if ( $color-darkmode ) {
+    @if ( $lightness-bg < $lightness-invert ) {
+      color: map-get($colors, "#{$prefix}color");
+    } @elseif ( $lightness-bg > $lightness-light ) {
+      @if ( map-has-key($colors, "#{$prefix}dark") ) {
+        color: map-get($colors, "#{$prefix}dark");
+      } @else {
+        color: map-get($colors, "#{$prefix}invert");
+      }
+    } @else {
+      color: map-get($colors, "#{$prefix}invert");
+    }
+  } @else {
+    @if ( $lightness-bg > $lightness-invert ) {
+      color: map-get($colors, '#{$prefix}color');
+    } @elseif ( $lightness-bg < $lightness-light ) {
+      @if ( map-has-key($colors, "#{$prefix}dark") ) {
+        color: map-get($colors, "#{$prefix}dark");
+      } @else {
+        color: map-get($colors, "#{$prefix}invert");
+      }
+    } @else {
+      color: map-get($colors, '#{$prefix}invert');
+    }
+  }
+}
+
+@mixin rp-block($colors) {
+  @include rp-choose-color($colors);
+  background-color: map-get($colors, 'bg');
+
+  A {
+    @include rp-choose-color($colors, map-has-key($colors, 'link-color'));
+  }
+}
+
+
+@mixin rp-button-icon($border, $padding-topbottom, $padding-leftright, $border-icon: $padding-topbottom) {
+  border-width: $border;
+  padding: ($padding-topbottom - ($padding-topbottom/4)) $padding-leftright ($padding-topbottom + ($padding-topbottom/4));
+
+  &.icon {
+    padding-top: (($padding-topbottom - ($padding-topbottom/4)) / 2);
+    //padding-bottom: 0;
+    padding-left: ($padding-leftright + 1.25em);
+
+    &:BEFORE {
+      margin-right: $padding-leftright;
+    }
+  }
+}

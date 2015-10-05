@@ -1,0 +1,58 @@
+//////////////////// LOGOS //////////////////////
+
+// Abstand zwischen den einzelnen Symbolen
+$sprite-logo-margin-horizontal: .25em;
+$sprite-logo-margin-vertical: .25em;
+
+
+// Gesamtgröße der Grafik
+$sprite-logo-width: 29.25em;   // 468px
+$sprite-logo-height: 30.125em; // 482px
+
+// Größe Symbol + Wortmarke
+$sprite-logo-complete-width: 29em;     // 460px
+$sprite-logo-complete-height: 13.75em; // 220px
+
+// Größe nur Wortmarke
+$sprite-logo-wordmark-width: 25em; // 400px
+$sprite-logo-wordmark-height: 8em; // 128px
+
+// Größe nur Symbol
+$sprite-logo-only-width: 7em;      // 112px
+$sprite-logo-only-height: 7.625em; // 122px
+
+
+%sprite-logo {
+  background-image: $img-logo-sprite;
+  background-repeat: no-repeat;
+  background-size: sprite-scaled($sprite-logo-width) sprite-scaled($sprite-logo-height);
+}
+
+
+%icon-logo-complete,
+.icon-logo-complete:BEFORE {
+  @extend %sprite-logo;
+  width: sprite-scaled($sprite-logo-complete-width);
+  height: sprite-scaled($sprite-logo-complete-height);
+  background-position: 0 .25em;
+}
+
+@mixin logo-wordmark {
+  width: sprite-scaled($sprite-logo-wordmark-width);
+  height: sprite-scaled($sprite-logo-wordmark-height);
+  background-position: center (sprite-scaled(-.75em - $sprite-logo-complete-height + $sprite-logo-margin-vertical));
+}
+
+%icon-logo-wordmark,
+.icon-logo-wordmark:BEFORE {
+  @include logo-wordmark;
+  @extend %sprite-logo;
+}
+
+%icon-logo-only,
+.icon-logo-only:BEFORE {
+  @extend %sprite-logo;
+  background-position: (0 - sprite-scaled(($sprite-logo-width - $sprite-logo-only-width) / 2) ) (-.125em - sprite-scaled($sprite-logo-complete-height + $sprite-logo-wordmark-height + ($sprite-logo-margin-vertical * 2)));
+}
+
+

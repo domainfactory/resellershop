@@ -1,0 +1,118 @@
+$reference-width: (12.5em);    // 280px
+$reference-height: (5em);      // 80px
+
+%reference-icon {
+  display: inline-block;
+  color: transparent;
+  word-wrap: break-word;
+  width: $reference-width;
+  height: $reference-height;
+  box-sizing: border-box;
+
+  background: transparent url('../images/references/sprite.svg') no-repeat center;
+  background-size: cover;
+}
+
+@for $i from 1 to 8 {
+  .reference-logo-#{$i} {
+    @extend %reference-icon;
+    background-position: 0 (.25em - (($i - 1) * ($reference-height + .25em)) );
+
+    &:LINK,
+    &:VISITED,
+    &:HOVER,
+    &:FOCUS,
+    &:ACTIVE {
+      color: transparent;
+    }
+  }
+}
+
+
+.references-carousel {
+  > UL {
+    padding: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+
+    .js & {
+      overflow: hidden;
+    }
+  }
+
+  IMG {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  A {
+    display: inline-block;
+    margin: .125em .5em;
+    padding: .125em;
+    vertical-align: middle;
+
+    &:FOCUS {
+      margin-top: -.125em;
+      margin-bottom: -.125em;
+      padding-top: 0;
+      padding-bottom: 0;
+      outline: .125em solid $color-neutral-light;
+    }
+  }
+
+  .list-scroll {
+    // So scrollen, dass immer der gesamte Inhalt sichtbar ist
+    scroll-snap-points-x: repeat($reference-width);
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+  }
+}
+
+
+.page-scroll-buttons {
+  position: relative;
+  text-align: center;
+
+  .js & {
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+
+  BUTTON {
+    @extend %block-reset;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    width: 3em;
+    text-align: center;
+
+    border: 0;
+
+    &:BEFORE {
+      content: '';
+      display: inline-block;
+      background-color: transparent;
+      border-color: transparent;
+    }
+
+    &.scroll-back {
+      left: 0;
+    }
+
+    &.scroll-forward {
+      right: 0;
+    }
+
+    SPAN {
+      position: absolute;
+      color: transparent;
+    }
+  }
+
+  &.page-brand-light BUTTON {
+    @extend %block-brand-light;
+  }
+}

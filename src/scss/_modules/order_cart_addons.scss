@@ -1,0 +1,25 @@
+.cart-addons {
+  @include rp-center();
+  position: relative;
+
+  .product {
+    border-top: .0625em solid rgba($color-neutral, .2);
+    margin-top: .5em;
+
+    display: block;
+    width: auto;
+    margin-left: .25em;
+    margin-right: .25em;
+  }
+
+  .product-group-unorderable,
+  .product-unorderable {
+    display: none;
+  }
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    .site-cart-wrapper {
+      display: none;
+    }
+  }
+}

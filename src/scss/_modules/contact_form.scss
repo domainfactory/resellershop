@@ -1,0 +1,40 @@
+.contact-form {
+  padding: 0 0 1em;
+
+  .form-button-line {
+    text-align: right;
+
+    .button {
+      width: 8em;
+      text-align: center;
+    }
+  }
+
+  .form-line-big {
+    display: none;
+
+    .has-form-line-big & {
+      display: block;
+    }
+  }
+
+  .form-line-optional {
+    LABEL::AFTER {
+      content: '(optional)';
+      font-style: italic;
+    }
+  }
+
+
+  .page-invert & {
+    INPUT,
+    TEXTAREA {
+      @extend %block-invert-light;
+      border-color: $color-neutral-bg;
+
+      &:FOCUS {
+        outline-color: $color-neutral-bg;
+      }
+    }
+  }
+}

@@ -1,0 +1,349 @@
+HTML {
+  @include rp-block((
+    bg: $color-main-bg-bright,
+    color: $color-text,
+    dark: $color-text,
+  ));
+}
+
+A {
+  color: $color-main;
+}
+
+
+// BLOECKE
+
+%block-invert-dark {
+  @include rp-block((
+    bg: $color-neutral-dark,
+    color: $color-text-light,
+    invert: $color-text-invert-light,
+    link-color: $color-text-invert-light,
+    link-invert: $color-text-invert-light
+  ));
+}
+
+%block-invert {
+  @include rp-block((
+    bg: $color-neutral,
+    color: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-text-invert,
+    link-invert: $color-text-invert
+  ));
+}
+
+%block-invert-light {
+  @include rp-block((
+    bg: $color-neutral-light,
+    color: $color-text-light,
+    invert: $color-text-invert-light,
+    link-color: $color-text-invert,
+    link-invert: $color-text-invert
+  ));
+}
+
+%block-neutral {
+  @include rp-block((
+    bg: $color-neutral-bg,
+    color: $color-text,
+    dark: $color-text,
+    invert: $color-text-invert-light,
+    link-color: $color-main,
+    link-dark: $color-main-dark,
+    link-invert: $color-text-invert
+  ));
+}
+
+%block-neutral-light {
+  @include rp-block((
+    bg: $color-neutral-bg-light,
+    color: $color-text,
+    dark: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-dark: $color-main-dark,
+    link-invert: $color-text-invert
+  ));
+}
+
+%block-brand {
+  @include rp-block((
+    bg: $color-main-bg,
+    color: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main-text,
+    link-invert: $color-main,
+  ));
+}
+
+
+%block-brand-bright {
+  @include rp-block((
+    bg: $color-main-bg-bright,
+    color: $color-text-light,
+    invert: $color-text-invert
+  ));
+}
+
+
+%block-brand-light {
+  @include rp-block((
+    bg: $color-main-bg-light,
+    color: $color-text-light,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-invert: $color-main-text
+  ));
+}
+
+%block-brand-invert {
+  @include rp-block((
+    bg: $color-main,
+    color: $color-main-bg,
+    invert: $color-main-bg
+  ));
+}
+
+%block-brand-invert-dark {
+  @include rp-block((
+    bg: $color-main-dark,
+    color: $color-main-light,
+    invert: $color-main-light
+  ));
+}
+
+%block-brand-invert-light {
+  @include rp-block((
+    bg: $color-main-light,
+    color: $color-main-bg,
+    invert: $color-main-bg
+  ));
+}
+
+
+%block-neutral-light-brand-text {
+  @include rp-block((
+    bg: $color-neutral-bg-light,
+    color: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-invert: $color-text-invert
+  ));
+
+  H1,
+  H2,
+  H3,
+  H4,
+  .subheadline {
+    @include rp-choose-color((
+      bg: $color-neutral-bg-light,
+      color: $color-main,
+      invert: $color-text-invert
+    ));
+  }
+}
+
+%block-neutral-brand-text {
+  @include rp-block((
+    bg: $color-neutral-bg,
+    color: $color-text,
+    dark: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-dark: $color-main-dark,
+    link-invert: $color-text-invert
+  ));
+
+  H1,
+  H2,
+  H3,
+  H4,
+  .subheadline {
+    @include rp-choose-color((
+      bg: $color-neutral-bg,
+      color: $color-main,
+      dark: $color-main-dark,
+      invert: $color-text-invert
+    ));
+  }
+}
+
+
+%block-brand-text {
+  @include rp-block((
+    bg: $color-main-bg,
+    color: $color-text,
+    dark: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-dark: $color-main-dark,
+    link-invert: $color-text-invert
+  ));
+
+  H1,
+  H2,
+  H3,
+  H4,
+  .subheadline {
+    @include rp-choose-color((
+      bg: $color-main-bg,
+      color: $color-main,
+      dark: $color-main-dark,
+      invert: $color-text-invert
+    ));
+  }
+}
+
+%block-brand-text-light {
+  @include rp-block((
+    bg: $color-main-bg-light,
+    color: $color-text,
+    dark: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-dark: $color-main-dark,
+    link-invert: $color-text-invert
+  ));
+
+  H1,
+  H2,
+  H3,
+  H4,
+  .subheadline {
+    @include rp-choose-color((
+      bg: $color-main-bg-light,
+      color: $color-main,
+      dark: $color-main-dark,
+      invert: $color-text-invert
+    ));
+  }
+}
+
+%block-brand-text-bright {
+  @include rp-block((
+    bg: $color-main-bg-bright,
+    color: $color-text,
+    dark: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-main,
+    link-dark: $color-main-dark,
+    link-invert: $color-text-invert
+  ));
+
+  H1,
+  H2,
+  H3,
+  H4,
+  .subheadline {
+    @include rp-choose-color((
+      bg: $color-main-bg-light,
+      color: $color-main,
+      dark: $color-main-dark,
+      invert: $color-text-invert
+    ));
+  }
+}
+
+
+%block-accent {
+  @include rp-block((
+    bg: $color-accent,
+    color: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-text-invert,
+    link-invert: $color-text-invert
+  ));
+}
+
+%block-accent-dark {
+  @include rp-block((
+    bg: $color-accent-dark,
+    color: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-text-invert,
+    link-invert: $color-text-invert
+  ));
+}
+
+%block-input {
+  @if ( $color-darkmode ) {
+    background-color: $color-black;
+    color: $color-white;
+
+    &::placeholder {
+      color: $color-text-placeholder;
+    }
+  } @else {
+    background-color: $color-white;
+    color: $color-black;
+
+    &::placeholder {
+      color: $color-text-placeholder;
+    }
+  }
+}
+
+
+%block-reset {
+  background-color: transparent;
+  color: $color-text;
+
+  A {
+    color: $color-text;
+  }
+}
+
+
+// CSS-Klassen für die einzelnen Blöcke
+
+.page-invert-dark { @extend %block-invert-dark; }
+.page-invert-light { @extend %block-invert-light; }
+.page-invert { @extend %block-invert; }
+.page-neutral { @extend %block-neutral; }
+.page-neutral-light { @extend %block-neutral-light; }
+.page-neutral-brand-text { @extend %block-neutral-brand-text; }
+.page-neutral-light-brand-text { @extend %block-neutral-light-brand-text; }
+.page-brand { @extend %block-brand; }
+.page-brand-invert { @extend %block-brand-invert; }
+.page-brand-invert-light { @extend %block-brand-invert-light; }
+.page-brand-invert-dark { @extend %block-brand-invert-dark; }
+.page-brand-light { @extend %block-brand-light; }
+.page-brand-text { @extend %block-brand-text; }
+.page-brand-text-light { @extend %block-brand-text-light; }
+.page-brand-bright { @extend %block-brand-bright; }
+.page-brand-text-bright { @extend %block-brand-text-bright; }
+.page-accent { @extend %block-accent; }
+.page-accent-dark { @extend %block-accent-dark; }
+
+
+// Bereiche zur manuellen Zentrierung
+
+.text-only,
+.center-only {
+  margin: 0 auto;
+  padding: .25em .5em;
+}
+
+.text-only {
+  max-width: $center-text-max-width;
+
+  H1 {
+    font-size: $font-size-textonly;
+    font-weight: $font-weight-light;
+    line-height: 1.2em;
+  }
+}
+
+.center-only {
+  max-width: $center-max-width;
+}
+
+
+// Versteckte Überschrift für Screenreader
+.a11y-header {
+  position: absolute;
+  user-select: none;
+  visibility: hidden;
+  z-index: 0;
+}

@@ -1,0 +1,279 @@
+.domain-prices-price {
+  @extend %domain-price;
+}
+
+.domain-prices-list {
+  $border-color: $color-neutral-bg;
+  $padding-topbottom: .25em;
+  $padding-leftright: 1em;
+  $tld-width: 28%;
+  $desc-width: 45%;
+  $extra-width: 30%;
+  
+
+  margin: 0 auto;
+  padding: 1em .5em;
+  text-align: left;
+  max-width: $viewport-width-xl;
+  display: none;
+
+  &.section-active {
+    display: block;
+  }
+
+  HEADER {
+    position: relative;
+    margin-top: .5em;
+    padding: $padding-topbottom 0;
+    color: $color-text-light;
+
+    P {
+      box-sizing: border-box;
+      padding: $padding-topbottom $padding-leftright;
+    }
+  }
+
+  FOOTER {
+    padding: $padding-topbottom $padding-leftright;
+  }
+
+  UL {
+    padding-left: 0;
+  }
+
+  LI {
+    list-style: none;
+  }
+
+  P {
+    margin: 0;
+  }
+
+  H4 {
+    font-size: $font-size-h3;
+    line-height: 1.3em;
+    //padding: rp-cem(1.5em, $font-size-h2) rp-cem(1em, $font-size-h2) rp-cem(.5em, $font-size-h2);
+    margin: 0;
+    padding-left: rp-cem(.875em, $font-size-h3);
+    font-weight: $font-weight-light;
+  }
+
+  .accordion-title {
+    display: block;
+
+    &:FOCUS H4 {
+      color: $color-text-invert;
+    }
+  }
+
+  .domain-prices-domains {
+    margin: 0;
+    padding: .25em 0 1em;
+    color: $color-text;
+
+    LI {
+      position: relative;
+      border-top: .0625em solid $border-color;
+
+      &:HOVER {
+        @extend %block-neutral-light;
+      }
+    }
+
+    P {
+      vertical-align: top;
+      padding: $padding-topbottom $padding-leftright;
+      word-wrap: break-word;
+      box-sizing: border-box;
+    }
+  }
+
+  [property="name"] {
+    font-weight: $font-weight-semibold;
+  }
+
+  [property="description"] {
+    color: $color-text-light;
+  }
+
+  .domain-prices-extra {
+    font-size: $font-size-s;
+    color: $color-text-light;
+    text-align: center;
+  }
+
+
+  @media screen and (min-width: $viewport-width-l) {
+    $desc-width: 38%;
+    $extra-width: 12%;
+    $price-width: 28%;
+
+    [property="name"] {
+      width: 22%;
+      margin-right: $desc-width;
+    }
+    [property="description"] {
+      width: $desc-width;
+      margin-left: (0 - $desc-width);
+    }
+    .domain-prices-price {
+      margin-left: $extra-width;
+      width: $price-width;
+    }
+    .domain-prices-extra {
+      position: absolute;
+      right: $price-width;
+      width: $extra-width;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-s) {
+    HEADER P,
+    .domain-prices-domains P {
+      display: inline-block;
+    }
+
+    .domain-prices-price {
+      text-align: left;
+    }
+
+    .domain-prices-extra-label {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-s) and (max-width: $viewport-max-width-m) {
+    $price-width: 40%;
+    $extra-width: 16%;
+
+    HEADER [property="description"],
+    .domain-prices-domains [property="description"] {
+      display: block;
+    }
+
+    [property="name"],
+    [property="description"] {
+      width: (99% - $price-width - $extra-width);
+    }
+
+    .domain-prices-price,
+    .domain-prices-extra {
+      position: absolute;
+      top: 0;
+    }
+
+    .domain-prices-price {
+      right: 0;
+      width: $price-width;
+    }
+
+    .domain-prices-extra {
+      right: $price-width;
+      width: $extra-width;
+      text-align: center;
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-xs) {
+    padding-top: 0;
+
+    HEADER,
+    .domain-prices-extra-empty {
+      display: none;
+    }
+
+    .domain-prices-domains {
+      padding-top: 1em;
+
+      LI {
+        padding-top: ($padding-topbottom * 2);
+        padding-bottom: ($padding-topbottom * 2);
+      }
+      P {
+        text-align: center;
+      }
+    }
+  }
+}
+
+
+.domain-prices-top-list {
+  $top-extension: .5em;
+
+  margin: $font-size-h1 auto;
+  padding-top: $top-extension;
+  border-collapse: separate;
+  border-spacing: rp-cem(.0625em, $font-size-s);
+  font-size: $font-size-s;
+
+  TH,
+  TD {
+    padding: .375em .75em;
+  }
+
+  .tld {
+    @extend %block-brand-invert-light;
+    text-align: left;
+  }
+
+  .price {
+    @extend %block-brand-invert;
+
+    B {
+      color: $color-text-invert;
+    }
+  }
+
+  .domain-prices-price {
+    S:AFTER {
+      border-bottom-width: rp-cem(.125em, $font-size-s);
+    }
+  }
+
+  TH {
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+  }
+
+  TH.price {
+    position: relative;
+
+    &:BEFORE {
+      @extend %block-brand-invert;
+
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: (0 - $top-extension);
+      height: ($top-extension);
+    }
+  }
+
+  &-separator {
+    @extend %block-accent;
+  }
+
+  &-footer {
+
+    .price {
+      position: relative;
+
+      &:BEFORE {
+        @extend %block-brand-invert;
+
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: (0 - $top-extension);
+        height: ($top-extension);
+      }
+    }
+
+  }
+}

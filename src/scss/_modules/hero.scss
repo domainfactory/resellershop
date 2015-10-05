@@ -1,0 +1,234 @@
+$hero-slide-height: 20em;
+
+.hero {
+  $slide-padding-topbottom: 1em;
+  $slide-padding-leftright: 2em;
+
+  min-height: $hero-slide-height;
+  overflow: hidden;
+
+  &-slide {
+    position: relative;
+    box-sizing: border-box;
+
+    min-height: $hero-slide-height;
+    padding: $slide-padding-topbottom $slide-padding-leftright;
+
+    overflow: auto;
+
+    $fx-easing: ease-out;
+    $fx-direction: both;
+
+    H2,
+    .subheadline {
+      animation: $fx-duration-slow $fx-easing $fx-direction;
+    }
+
+    H2 {
+      margin: .5em 0 0;
+      font-size: $font-size-xxxl;
+      font-weight: $font-weight-light;
+      line-height: 120%;
+    }
+
+    .subheadline {
+      margin: .5em 0 1em;
+      font-size: $font-size-xxl;
+      font-weight: $font-weight-bold;
+      color: $color-main;
+      animation-delay: $fx-duration-fast;
+    }
+
+    .hero-actions {
+      animation: fadeFromTop $fx-duration $fx-duration-slower $fx-easing $fx-direction;
+      text-align: right;
+    }
+
+    LI {
+      animation: $fx-duration-fast $fx-easing $fx-direction $fx-duration-slow;
+      &:nth-of-type(2n) {
+        animation-delay: $fx-duration-slow + $fx-duration-inc;
+      }
+      &:nth-of-type(3n) {
+        animation-delay: $fx-duration-slow + ($fx-duration-inc / 2);
+      }
+      &:nth-of-type(4n) {
+        animation-delay: $fx-duration-slow + ($fx-duration-inc * 2);
+      }
+    }
+  }
+
+  &-content {
+    font-weight: $font-weight-light;
+
+    .button {
+      font-weight: normal;
+      margin: .5em;
+    }
+  }
+
+
+  &-image {
+    &-left,
+    &-right {
+      IMG {
+        margin: auto 0;
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        top: 0;
+        user-select: none;
+      }
+
+      .hero-image {
+        position: absolute;
+        top: $slide-padding-topbottom;
+        bottom: ($slide-padding-topbottom);
+        vertical-align: middle;
+
+        opacity: 1;
+      }
+    }
+
+    &-left {
+      IMG {
+        left: 0;
+      }
+
+      H2,
+      .subheadline {
+        text-align: right;
+      }
+
+      H2,
+      .subheadline,
+      .hero-content {
+        padding-left: 52.5%;
+      }
+
+      .hero-image {
+        left: $slide-padding-leftright;
+        right: 50%;
+        text-align: left;
+      }
+
+      H2,
+      .subheadline,
+      LI {
+        animation-name: fadeFromLeft;
+      }
+    }
+
+
+    &-right {
+      IMG {
+        right: 0;
+      }
+
+      H2,
+      .subheadline,
+      .hero-content {
+        padding-right: 50%;
+      }
+
+      .hero-image {
+        right: $slide-padding-leftright;
+        left: 52.5%;
+        text-align: right;
+      }
+
+      H2,
+      .subheadline,
+      LI {
+        animation-name: fadeFromRight;
+      }
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-hd) {
+    &-slide {
+      padding-left: 10%;
+      padding-right: 10%;
+    }
+
+    &-image {
+      &-left,
+      &-right {
+        .hero-content {
+          width: 40em;
+        }
+      }
+
+      &-left .hero-image {
+        left: 10%;
+      }
+
+      &-right .hero-image {
+        right: 10%;
+      }
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-m) {
+    &-image-left {
+      H2,
+      .subheadline {
+        padding-left: 0;
+      }
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-xs) {
+    &-image {
+      &-left,
+      &-right {
+        .hero-image {
+          left: ($slide-padding-leftright / 2);
+          right: ($slide-padding-leftright / 2);
+          opacity: .1;
+        }
+      }
+
+      &-left {
+        .hero-content {
+          padding-left: 0;
+        }
+      }
+
+      &-right {
+        H2,
+        .subheadline,
+        .hero-content {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    &-content .button {
+      margin: .25em;
+    }
+
+    &-slide {
+      padding-left: 1em;
+      padding-right: 1em;
+      font-size: $font-size-s;
+
+      min-height: rp-cem($hero-slide-height, $font-size-s);
+
+      H2 {
+        margin-top: 0;
+        font-size: $font-size-xxl;
+      }
+
+      .subheadline {
+        font-size: $font-size-xl;
+      }
+
+      UL {
+        padding-left: 1em;
+      }
+    }
+  }
+}

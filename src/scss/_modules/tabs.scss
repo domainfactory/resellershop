@@ -1,0 +1,120 @@
+.list-tabs {
+  position: relative;
+  counter-reset: tabs;
+
+  margin: 0;
+  padding: 0;
+
+  LI {
+    list-style: none;
+    display: block;
+    padding: 0;
+  }
+
+  [role="tab"] {
+    @extend %block-brand-invert;
+    display: block;
+    padding: .5em 1em;
+    margin: .0625em 0 0;
+    position: relative;
+
+    text-decoration: none;
+
+    border-left: .25em solid $color-main;
+
+    font-weight: $font-weight-bold;
+
+    .js &:HOVER {
+      border-color: $color-main-bg;
+    }
+
+    &:FOCUS {
+      @extend %block-invert;
+      outline: .125em solid $color-neutral-dark;
+    }
+
+    &[aria-selected="true"] {
+      @extend %block-brand;
+      border-color: $color-main-bg;
+      margin-bottom: 0;
+    }
+  }
+
+  // Tabs mit Zahlen
+  &-numbers {
+    [role="tab"] {
+      padding-left: 2.5em;
+
+      &:BEFORE {
+        @extend %block-brand;
+        counter-increment: tabs;
+        content: counter(tabs);
+
+        position: absolute;
+        display: inline-block;
+
+        width: 1.5em;
+        height: 1.5em;
+        left: .5em;
+        text-indent: 0;
+
+        border-radius: 50%;
+        text-align: center;
+      }
+
+      &[aria-selected="true"] {
+        &:BEFORE {
+          @extend %block-brand-invert;
+        }
+      }
+    }
+  }
+
+  &-desktoprow {
+    display: none;
+
+    [role="tab"] {
+      margin-right: .125em;
+      padding-bottom: .25em;
+      border-left-width: 0;
+      border-bottom: .25em solid $color-main;
+    }
+  }
+
+
+  @media screen and (min-width: $viewport-width-xs) {
+    &-desktoprow {
+      display: block;
+    }
+
+    &-hasdesktop {
+      [role="tab"] {
+        display: none;
+      }
+
+      .list-tabs-desktoprow [role="tab"] {
+        display: inline-block;
+      }
+    }
+  }
+
+}
+
+.list-tab-content {
+  @extend %block-brand;
+
+  padding: .5em 1em;
+
+  overflow: hidden;
+  max-height: 40em;
+  transition: max-height $fx-duration-slower ease-in $fx-duration-fast, padding $fx-duration-slow ease-in $fx-duration-fast;
+
+  .js &[aria-hidden="true"] {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition-duration: $fx-duration, $fx-duration;
+    transition-timing-function: ease-in, ease-in;
+    transition-delay: 0s, 0s;
+  }
+}

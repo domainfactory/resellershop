@@ -1,0 +1,135 @@
+.order-register {
+
+  .accordion-content {
+    padding-left: .1875em;
+    padding-right: .1875em;
+  }
+
+  .list-tabs > LI,
+  .js & .list-tabs {
+    & > LABEL INPUT {
+      position: absolute;
+      opacity: 0;
+    }
+  }
+
+  .form-line-checkbox [type="checkbox"] {
+    min-width: 1em;
+    min-height: 1em;
+  }
+
+  .register-type {
+    &-headline {
+      display: none;
+    }
+
+    &-invoice:BEFORE {
+      @extend %icon-payment-bill;
+      @extend %icon-payment-bill-size;
+      &[aria-selected="true"]:BEFORE {
+        @extend %icon-payment-bill-text;
+        @extend %icon-payment-bill-text-size;
+      }
+    }
+    &-bank:BEFORE,
+    &-sepa_sl:BEFORE,
+    &-sepa:BEFORE {
+      @extend %icon-payment-sepa;
+      @extend %icon-payment-sepa-size;
+    }
+    &-bank,
+    &-sepa_sl,
+    &-sepa {
+      &[aria-selected="true"]:BEFORE {
+        @extend %icon-payment-sepa-text;
+        @extend %icon-payment-sepa-text-size;
+      }
+    }
+    &-cc:BEFORE {
+      @extend %icon-payment-creditcard;
+      @extend %icon-payment-creditcard-size;
+      &[aria-selected="true"]:BEFORE {
+        @extend %icon-payment-creditcard-text;
+        @extend %icon-payment-creditcard-text-size;
+      }
+    }
+    &-paypal:BEFORE {
+      @extend %icon-payment-paypal;
+      @extend %icon-payment-paypal-size;
+      &[aria-selected="true"]:BEFORE {
+        @extend %icon-payment-paypal-text;
+        @extend %icon-payment-paypal-text-size;
+      }
+    }
+  }
+
+
+  @media screen and (min-width: $viewport-width-m) {
+    &:BEFORE {
+      display: none;
+    }
+
+    .order-register-userdata {
+      width: 40%;
+      max-width: $viewport-width-s;
+    }
+
+    .order-register-payment {
+      width: 59%;
+      max-width: $viewport-width-s;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-xxs) and (max-width: $viewport-max-width-xxs) {
+    .register-type {
+      padding-left: 3.5em;
+      &:BEFORE,
+      &[aria-selected="true"]:BEFORE {
+        margin-left: -3em;
+        width: 3.5em;
+      }
+    }
+  }
+
+
+  @media screen and (max-width: $viewport-max-width-min),
+         screen and (min-width: $viewport-width-xs) {
+    .register-type {
+      width: 3em;
+      min-height: 2.5em;
+      text-indent: -9999px;
+      position: relative;
+      word-wrap: break-word;
+
+      &:BEFORE {
+        position: absolute;
+        left: 1em;
+        right: 1em;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      &-headline {
+        display: block;
+      }
+    }
+  }
+  @media screen and (max-width: $viewport-max-width-min) {
+    .register-type {
+      width: auto;
+      min-width: 3em;
+    }
+  }
+
+  // Telefonnummern auf schmalen Displays über volle Breite strecken
+  @media screen and (min-width: $viewport-width-m) and (max-width: $viewport-max-width-m),
+         screen and (max-width: $viewport-max-width-min) {
+    .order-register-userdata {
+      .form-phone {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}
+

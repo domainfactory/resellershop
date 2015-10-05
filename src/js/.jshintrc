@@ -1,0 +1,21 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": false,
+  "es3": true,
+  "forin": true,
+  "freeze": true,
+  "funcscope": false,
+  "futurehostile": true,
+  "nonbsp": true,
+  "nonew": true,
+  "notypeof": false,
+  "shadow": true,
+  "singleGroups": false,
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "browser": true,
+  "esnext": true,
+  "jquery": true
+}

@@ -1,0 +1,501 @@
+%tariff-limit-shown {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+     -moz-transform: translateY(0);
+      -ms-transform: translateY(0);
+       -o-transform: translateY(0);
+          transform: translateY(0);
+  max-height: 25em;
+}
+
+.tariffcompare {
+  text-align: center;
+
+  $tariff-height-highlight: 1.5em;
+  $tariff-padding-topbottom: 1em;
+  $tariff-padding-leftright: .75em;
+
+  .tariff {
+    @extend %block-brand-light;
+
+    margin: $tariff-height-highlight .0625em;
+    padding: $tariff-padding-topbottom $tariff-padding-leftright;
+    box-sizing: border-box;
+    vertical-align: top;
+
+    $ease: ease-out;
+    -webkit-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+       -moz-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+        -ms-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+         -o-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+            transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+
+    white-space: normal;
+
+    max-width: 12.5em;
+
+    &list {
+      position: relative;
+      margin: 0 auto;
+      padding: 2em 0;
+    }
+
+    H3 {
+      color: $color-neutral-dark;
+      font-size: $font-size-xl;
+      margin: 0;
+      padding: 0;
+      display: block;
+      line-height: 1.33333em;
+    }
+
+    .subheadline {
+      margin: .25em 0;
+      min-height: 1.5em;
+      max-height: 4.5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    HEADER {
+      height: 7em;
+      max-height: 7em;
+      overflow: hidden;
+    }
+
+    .price {
+      @extend %block-brand-invert;
+
+      $price-size: rp-cem(8.5em, $font-size-xxxl);
+      width: $price-size;
+      height: $price-size;
+      margin: .5em auto;
+      padding: ($price-size / 2 - ($font-size-xxxl/4)) 0 0;
+
+      font-size: $font-size-xxxl;
+
+      display: block;
+      box-sizing: border-box;
+      border-radius: 50%;
+
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    &-limit-details {
+      display: block;
+      padding: 0 ($tariff-padding-leftright);
+      margin: 0 (0 - $tariff-padding-leftright);
+
+      text-decoration: none;
+
+      &:HOVER {
+        DT {
+          color: $color-text;
+        }
+
+        .tariff-limit-toggle {
+          color: $color-text-dark;
+          text-decoration: underline;
+        }
+      }
+
+      &:FOCUS,
+      &:FOCUS:HOVER {
+        outline: none;
+
+        .tariff-limit-toggle {
+          @extend %block-invert;
+        }
+      }
+    }
+
+    &-limits {
+      $limit-width: 4.25em;
+      margin: 0 auto .0625em;
+      position: relative;
+
+      .tariff-limit-hidden {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      DT {
+        color: $color-text-light;
+        font-weight: $font-weight-light;
+        text-align: left;
+
+        padding: .25em ($limit-width + .5em) .25em 0;
+        margin: 0;
+
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        border-bottom: rp-cem(.0625em, $font-size-s) solid $color-neutral-bg;
+        hyphens: auto;
+
+        -webkit-transition: color $fx-duration-fast;
+           -moz-transition: color $fx-duration-fast;
+            -ms-transition: color $fx-duration-fast;
+             -o-transition: color $fx-duration-fast;
+                transition: color $fx-duration-fast;
+      }
+
+      DD {
+        position: absolute;
+        right: 0;
+        width: $limit-width;
+        padding: 0;
+        margin: -1.75em 0 0;
+        color: $color-text-dark;
+        display: block;
+        text-align: center;
+        box-sizing: border-box;
+      }
+    }
+
+    &-limit-toggle {
+      display: block;
+      text-align: left;
+
+      font-weight: $font-weight-bold;
+      padding: .25em $tariff-padding-leftright .5em (.0625em + $tariff-padding-leftright);
+      margin: 0 (0 - ($tariff-padding-leftright));
+
+      &:BEFORE {
+        margin-top: -.125em;
+        margin-right: .375em;
+      }
+    }
+
+    &-limit-hidden {
+      opacity: 0;
+      -webkit-transform: translateY(-1em);
+         -moz-transform: translateY(-1em);
+          -ms-transform: translateY(-1em);
+           -o-transform: translateY(-1em);
+              transform: translateY(-1em);
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    &-limit-hidden,
+    &-limits {
+      $ease: ease-in-out;
+      $duration: $fx-duration-fast;
+      -webkit-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+         -moz-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+          -ms-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+           -o-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+              transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+    }
+
+    .button {
+      display: block;
+      margin: 1em auto 0;
+      width: 100%;
+    }
+
+    &:HOVER {
+      @extend %block-brand;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+
+    &-highlight.tariff {
+      @extend %block-brand-invert;
+
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: ($tariff-height-highlight + $tariff-padding-topbottom);
+      padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom);
+
+      H3 {
+        @if ( lightness($color-main) < $lightness-invert ) { 
+          color: $color-main-bg;
+        } @else {
+          color: $color-text;
+        }
+      }
+
+      .subheadline {
+        @if ( lightness($color-main) < $lightness-invert ) { 
+          color: $color-text-invert-light;
+        } @else {
+          color: $color-text-light;
+        }
+      }
+
+      .tariff-limits {
+        DT {
+          @if ( lightness($color-main) < $lightness-invert ) { 
+            color: $color-text-invert-light;
+          } @else {
+            color: $color-text-light;
+          }
+          border-bottom-color: $color-text-invert-light;
+        }
+      }
+
+      .tariff-limit-toggle:BEFORE {
+        background-color: $color-text-light;
+      }
+
+      .tariff-limits DD,
+      .tariff-limit-toggle,
+      .tariff-limit-details:HOVER DT {
+        @if ( lightness($color-main) < $lightness-invert ) { 
+          color: $color-text-invert;
+        } @else {
+          color: $color-text;
+        }
+      }
+
+      .tariff-limit-details:FOCUS .tariff-limit-toggle {
+        @extend %block-brand;
+      }
+
+      .price {
+        color: $color-main;
+        @if ( lightness($color-main) < $lightness-invert ) { 
+          background-color: $color-main-bg;
+        } @else {
+          background-color: $color-text-light;
+        }
+      }
+    }
+
+  }
+
+  & &-labels.tariff,
+  .tariff:HOVER {
+    padding-top: ($tariff-height-highlight + $tariff-padding-topbottom);
+    padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom);
+  }
+
+
+  .tariff-limit-shown .tariff-limits,
+  &.tariff-limits-shown .tariff-limit-hidden {
+    @extend %tariff-limit-shown;
+  }
+
+  & &-labels {
+    display: none;
+
+    &.tariff {
+      position: absolute;
+      margin-top: 2em;
+      margin-bottom: 0;
+      padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom + 3.75em);
+      margin-left: 0;
+      left: 0;
+      z-index: 10;
+      text-align: left;
+
+      .tariff-limit-details {
+        & DT,
+        &:HOVER DT {
+          color: $color-neutral-dark;
+          border-bottom-color: $color-accent-bg;
+        }
+
+        DT {
+          padding-right: 0;
+        }
+        DD {
+          display: none;
+        }
+      }
+
+      &,
+      &:HOVER {
+        background-color: transparent;
+        background-image: -webkit-linear-gradient(to right, $color-neutral-bg 80%, rgba($color-neutral-bg, .8) 100%);
+        background-image:    -moz-linear-gradient(to right, $color-neutral-bg 80%, rgba($color-neutral-bg, .8) 100%);
+        background-image:     -ms-linear-gradient(to right, $color-neutral-bg 80%, rgba($color-neutral-bg, .8) 100%);
+        background-image:      -o-linear-gradient(to right, $color-neutral-bg 80%, rgba($color-neutral-bg, .8) 100%);
+        background-image:         linear-gradient(to right, $color-neutral-bg 80%, rgba($color-neutral-bg, .8) 100%);
+      }
+    }
+
+    [role="presentation"] {
+      visibility: hidden;
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-xl) {
+    .tariff {
+      max-width: 14em;
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-l) {
+    .tariff {
+      &-limit-details {
+        font-size: $font-size-s;
+      }
+
+      &-limits DD {
+        margin-top: (0 - rp-cem(1.675em, $font-size-s));
+      }
+
+    }
+  }
+
+  @media screen and (min-width: $viewport-width-xs) and (max-width: $viewport-max-width-m) {
+    & &-labels {
+      display: inline-block;
+    }
+
+    .tariff {
+      max-width: 9em;
+
+      &list {
+        padding-left: 9em;
+        padding-right: 0;
+      }
+
+      H3 {
+        font-size: $font-size;
+        height: 4.75em;
+        vertical-align: middle;
+        word-wrap: break-word;
+      }
+
+      .subheadline {
+        display: none;
+      }
+
+      .price {
+        $price-size: rp-cem(5.25em, $font-size-xl);
+        width: $price-size;
+        height: $price-size;
+        margin: 1em auto;
+        padding: ($price-size / 2 - ($font-size-xl/2)) 0 0;
+
+        font-size: $font-size-xl;
+      }
+
+      &-highlight.tariff .tariff-limit-details,
+      .tariff-limit-details {
+        & DT,
+        &:HOVER DT {
+          color: transparent;
+        }
+
+        DT {
+          padding-right: 0;
+        }
+
+        DD {
+          left: 0;
+          right: 0;
+          width: auto;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-xxs) {
+    & &-labels.tariff {
+      display: none;
+    }
+
+    .tariff {
+      width: 80%;
+      max-width: none;
+      min-width: 12em;
+
+      &list {
+        white-space: normal;
+      }
+
+      &-limit-details {
+        display: block;
+      }
+
+      &,
+      &:HOVER,
+      &-highlight.tariff,
+      &-highlight.tariff:HOVER {
+        margin: .5em auto;
+        padding-top: 1em;
+        padding-bottom: 1em;
+      }
+
+      .price {
+        padding: .5em .25em;
+        border-radius: 0;
+        width: auto;
+        height: auto;
+        margin: .5em auto -1.5em;
+        text-align: right;
+      }
+
+      &-limit-details:FOCUS .price,
+      &-highlight .tariff-limit-details.tariff-limit-shown .price,
+      &-highlight.tariff .price {
+        background-color: transparent;
+        color: $color-text-invert;
+      }
+
+      &-limit-shown .price {
+        margin-bottom: 0;
+      }
+
+      .price,
+      &-limit-details.tariff-limit-shown .price {
+        background-color: transparent;
+        color: $color-main;
+      } 
+
+      &-limits {
+        opacity: 0;
+        -webkit-transform: translateY(-1em);
+           -moz-transform: translateY(-1em);
+            -ms-transform: translateY(-1em);
+             -o-transform: translateY(-1em);
+                transform: translateY(-1em);
+        max-height: 0;
+        overflow: hidden;
+      }
+
+      .button {
+        width: 72%;
+      }
+
+    }
+
+    & .tariff-limit-hidden {
+      // @extend %tariff-limit-shown;
+      opacity: 1;
+      -webkit-transform: translateY(0);
+         -moz-transform: translateY(0);
+          -ms-transform: translateY(0);
+           -o-transform: translateY(0);
+              transform: translateY(0);
+      max-height: 25em;
+    }
+  }
+
+  @media screen and (max-width: $viewport-max-width-min) {
+    .tariff {
+      width: 92%;
+
+      .button {
+        width: 85%;
+      }
+    }
+  }
+}
+
+.no-js .tariff {
+  &compare .tariff-limit-hidden {
+    @extend %tariff-limit-shown;
+  }
+
+  &-limit-toggle {
+    display: none;
+  }
+}

@@ -1,0 +1,12 @@
+dist/bb.rpc.cookie
+dist/compiled
+dist/css/*
+dist/js/*
+dist/images
+dist/fonts
+dist/settings
+node_modules
+src/scss/_ci.scss
+.sass-cache
+*.swp
+*.swo

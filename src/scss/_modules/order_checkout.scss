@@ -1,0 +1,137 @@
+%order-box {
+  $box-padding-topbottom: .5em;
+  $box-padding-leftright: 1em;
+  $box-border: .0625em solid $color-neutral-bg;
+  text-align: left;
+
+  padding: $box-padding-topbottom $box-padding-leftright;
+
+  border: $box-border;
+
+  H2,
+  H3,
+  THEAD {
+    @extend %block-neutral-light;
+    border-bottom: $box-border;
+    margin: 0;
+    font-size: $font-size;
+  }
+
+  H2,
+  H3,
+  THEAD > TH {
+    padding: $box-padding-topbottom $box-padding-leftright;
+    margin: (0 - $box-padding-topbottom) (0 - $box-padding-leftright) ($box-padding-topbottom);
+  }
+
+  &-row {
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+.order-box {
+  @extend %order-box;
+}
+
+
+.order-checkout {
+  @include rp-center();
+
+  padding: 1em;
+
+  H2 {
+    line-height: 1.4em;
+  }
+
+  &-data {
+    display: inline-block;
+    vertical-align: top;
+    width: 32.5%;
+    box-sizing: border-box;
+    margin: 0 1.25% 1em 0;
+    min-height: 16em;
+
+    &:FIRST-OF-TYPE {
+      margin-left: 0;
+    }
+    &:LAST-OF-TYPE {
+      margin-right: 0;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    P,
+    DL {
+      margin: 0;
+      line-height: 1.5em;
+    }
+
+    DT {
+      color: $color-text-light;
+      font-weight: $font-weight-light;
+    }
+
+    DD {
+      margin: 0 0 .5em;
+    }
+
+
+    @media screen and (min-width: $viewport-width-s) {
+      DT,
+      DD {
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      DT {
+        width: 30%;
+        margin: 0 0 .5em;
+      }
+
+      DD {
+        box-sizing: border-box;
+        width: 69%;
+        padding-left: .25em;
+      }
+    }
+
+    .check-state {
+      font-weight: $font-weight-semibold;
+      margin-top: .5em;
+      /*
+      &:BEFORE {
+        margin-left: -1.75em;
+        margin-right: .5em;
+      }
+      */
+    }
+
+    @media screen and (max-width: $viewport-max-width-s) {
+      width: 49%;
+    }
+
+    @media screen and (max-width: $viewport-max-width-xxs) {
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &-cart {
+    margin: 1em 0;
+    padding: 0;
+  }
+
+  #cart-tech-tax-reference,
+  &-agb {
+    @include rp-center($center-text-max-width);
+  }
+
+  .cart-wrapper {
+    @extend %order-box;
+    padding: 0;
+  }
+}
