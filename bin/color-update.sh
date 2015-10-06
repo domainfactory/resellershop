@@ -19,4 +19,4 @@ else
 fi
 
 echo ""
-bin/scss-compile
+/bin/bash bin/scss-compile.sh
