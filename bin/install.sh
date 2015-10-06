@@ -145,7 +145,7 @@ CONFIG_ERROR_OCCURED=0
 $PHP_BINARY -q bin/init-global.php || CONFIG_ERROR_OCCURED=$?
 
 if [ !$CONFIG_ERROR_OCCURED ]; then
-  $PHP_BINARY -q bin/color-update.php && /bin/sh bin/scss-compile
+  $PHP_BINARY -q bin/color-update.php && /bin/sh bin/scss-compile.sh
 
 
   echo "---------------------------"
