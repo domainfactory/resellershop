@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.reseller-shop.eu"
+    "url": "https://github.com/domainfactory/resellershop"
   },
   "devDependencies": {
     "autoprefixer": "~6.0",
