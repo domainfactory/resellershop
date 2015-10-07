@@ -20,6 +20,8 @@ if ( checkCorrectFileRights() ) {
 
 
 function askGlobalQuestions() {
+  $sRandomToken = createRandomToken();
+
   return array(
     'hauptfarbe' => askColor(array(
       "Damit der Shop in Ihrer CI erstrahlt benoetigen wir Ihre Hauptfarbe. ",
@@ -50,7 +52,8 @@ function askGlobalQuestions() {
       "authentifizierter Benutzer oder Gast mit Auth-Token erlaubt. ",
       "Der Shop verwendet zur Anmeldung den Gast-Benutzer mit dem Auth-Token, das ",
       "Sie in den RP-Systemeinstellungen unter System > API angeben koennen. ",
-      "Bitte geben Sie Ihr Gast-Token fuer API-Aufrufe an: (Beispiel: abcdef1234) ",
+      "Bitte geben Sie Ihr Gast-Token fuer API-Aufrufe an: ",
+      "(Beispiel: ".$sRandomToken.") ",
     )),
   );
 }
@@ -189,4 +192,31 @@ function checkCorrectFileRights() {
   }
 
   return true;
+}
+
+
+function createRandomToken() {
+  mt_srand(microtime(true));
+  $sTokenLength = mt_rand(12,20);
+
+  $sRandomToken = '';
+
+  for ( $i = 0; $i < $sTokenLength; $i++ ) {
+    $iPos = mt_rand(1,3);
+    switch ($iPos) {
+      case 1:
+        $iAscii = mt_rand(48,57);
+        break;
+      case 2:
+        $iAscii = mt_rand(65,90);
+        break;
+      case 3:
+      default:
+        $iAscii = mt_rand(97,122);
+        break;
+    }
+    $sRandomToken .= chr($iAscii);
+  }
+
+  return $sRandomToken;
 }
