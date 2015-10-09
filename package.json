@@ -4,6 +4,7 @@
   "version": "1.0.0beta",
   "homepage": "https://www.reseller-shop.eu",
   "private": true,
+  "license": "BSD-3-Clause",
   "author": {
     "name": "domainfactory GmbH",
     "url": "https://www.df.eu"
