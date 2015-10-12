@@ -3,7 +3,7 @@
   <thead>
     <tr>
       <th class="tld">Domain&shy;endung</th>
-      <th class="price">Preis {{ interval[tlds.interval_piid] }}</th>
+      <th class="price">Preis pro Jahr</th>
     </tr>
   </thead>
   <tbody class="domain-prices-top-list-separator" role="presentation">

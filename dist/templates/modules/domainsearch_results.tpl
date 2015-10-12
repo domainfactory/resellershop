@@ -20,10 +20,10 @@
       <li class="domainsearch-result domainsearch-result-free{% if domain.status == "cart" %} product-in-cart{% endif %}" {{ domaindata }}>
         <label class="domainsearch-price" tabindex="0">
           <h3 property="name">{{ domain.name|e }}</h3>
-          {% if domain.price_long == null %}
+          {% if domain.price_long is null %}
             <p title="Je nach Tarif bieten wir verschiedene Domainpreise an. Bitte legen Sie einen Tarif in den Warenkorb, um den f&uuml;r diese Domain g&uuml;ltigen Preis zu erfahren.">Preis tarifabh&auml;ngig</p>
           {% else %}
-            {% if domain.piid == 0 or (not domain.int) or (domain.int.price_long == domain.price_long) %}
+            {% if domain.piid == 0 or (domain.int.price_long == 0) or (domain.int.price_long == domain.price_long) %}
               <p>
                 {% if domain.price_default %}ab {% endif %}
                 {{ price(domain.price_long) }}
@@ -51,10 +51,10 @@
       <li class="domainsearch-result domainsearch-result-in-cart product-in-cart" {{ domaindata }}>
         <label class="domainsearch-price" tabindex="0">
           <h3 property="name">{{ domain.name|e }}</h3>
-          {% if domain.price_long == null %}
+          {% if domain.price_long is null %}
             <p title="Je nach Tarif bieten wir verschiedene Domainpreise an. Bitte legen Sie einen Tarif in den Warenkorb, um den f&uuml;r diese Domain g&uuml;ltigen Preis zu erfahren.">Preis tarifabh&auml;ngig</p>
           {% else %}
-            {% if domain.piid == 0 or (not domain.int) or (domain.int.price_long == domain.price_long) %}
+            {% if domain.piid == 0 or (domain.int.price_long == 0) or (domain.int.price_long == domain.price_long) %}
               <p>
                 {% if domain.price_default %}ab {% endif %}
                 {{ price(domain.price_long) }}
@@ -82,10 +82,10 @@
       <li class="domainsearch-result domainsearch-result-transfer{% if domain.status == "cart" %} product-in-cart{% endif %}" {{ domaindata }}>
         <label class="domainsearch-price" tabindex="0">
           <h3 property="name">{{ domain.name|e }}</h3>
-          {% if domain.price_long == null %}
+          {% if domain.price_long is null %}
             <p title="Je nach Tarif bieten wir verschiedene Domainpreise an. Bitte legen Sie einen Tarif in den Warenkorb, um den f&uuml;r diese Domain g&uuml;ltigen Preis zu erfahren.">Preis tarifabh&auml;ngig</p>
           {% else %}
-            {% if domain.piid == 0 or (not domain.int) or (domain.int.price_long == domain.price_long) %}
+            {% if domain.piid == 0 or (domain.int.price_long == 0) or (domain.int.price_long == domain.price_long) %}
               <p>
                 {% if domain.price_default %}ab {% endif %}
                 {{ price(domain.price_long) }}
