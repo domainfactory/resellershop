@@ -6,6 +6,14 @@ class modIndex {
   private static $actions = array('index','tarife','addons','cart','login','register','checkout','order_successful','contract');
 
 
+  // TLD-Gruppen-ID bei Whois-Abfragen, in der die beim Whois zusätzlich
+  // abgefragten Domains enthalten sind
+  const WHOIS_DEFAULT_GROUP_ID = 2;
+
+  // Anzahl der günstigsten TLDs, die dargestellt werden sollen
+  const TLD_CHEAPEST_COUNT = 5;
+
+
   //////////////////// ACTIONS //////////////////////
 
   // An dieser Stelle existiert pro Seite, die eigene Daten
@@ -13,23 +21,36 @@ class modIndex {
 
 
   public static function indexAction() {
+    // Daten aus der products.ini auslesen
     $hProductSettings = Settings::get('products');
     Renderer::assign('product_settings', $hProductSettings);
 
+    // Produkte für Tarifvergleich auslesen
     $ahTariffCompare = shopProduct::readEntry(array(
       'return_shopformat' => 1,
     ));
     Renderer::assign('tariffcompare',$ahTariffCompare);
 
-    $hGroupTlds = shopProduct::getDefaultGroupTLDs();
-    $ahHighlightTlds = shopProduct::getCheapestTLDs(array(
-      'return_limit' => 5,
+    // TLDs, die bei Abfrage ohne TLD gesucht werden sollen
+    $hDefaultTlds = shopProduct::getTLDNamesFromTLDGroup();
+
+    // Weitere Domains abfragen -> Domains der erster Standard-Domaingruppe
+    $hGroupTlds = shopProduct::getTLDNamesFromTLDGroup(array(
+      'ptgid' => static::WHOIS_DEFAULT_GROUP_ID,
     ));
+
+    // Günstigste TLDs des Shops abfragen
+    $ahHighlightTlds = shopProduct::getCheapestTLDs(array(
+      'return_limit' => static::TLD_CHEAPEST_COUNT,
+    ));
+
     Renderer::assign('tlds', array(
       'additional' => $hGroupTlds,
+      'default'    => $hDefaultTlds,
       'highlights' => $ahHighlightTlds,
     ));
 
+    // Intervall für Preisanzeige bereitstellen
     Renderer::assign('interval',shopProduct::readInterval(array(
       'return_shopformat' => 1,
     )));
@@ -58,25 +79,39 @@ class modIndex {
   }
 
   public static function addonsAction() {
+    // Gruppierte Auflistung der Addons
     $ahAddons = shopShopping::getAddons();
     Renderer::assign('addon_groups', $ahAddons);
+
+    // Intervall für Preisanzeige bereitstellen
     Renderer::assign('interval',shopProduct::readInterval(array(
       'return_shopformat' => 1,
     )));
   }
 
   public static function domainsAction() {
+    // Detaillierte Daten für Produktvergleiche
     $hTLD = shopProduct::getTLDHash(array(
       'return_interval' => 1,
     ));
-    $hTLD['additional'] = shopProduct::getDefaultGroupTLDs();
+
+    // TLDs, die bei Abfrage ohne TLD gesucht werden sollen
+    $hTLD['default'] = shopProduct::getTLDNamesFromTLDGroup();
+
+    // Weitere Domains abfragen -> Domains der erster Standard-Domaingruppe
+    $hTLD['additional'] = shopProduct::getTLDNamesFromTLDGroup(array(
+      'ptgid' => static::WHOIS_DEFAULT_GROUP_ID,
+    ));
+
     Renderer::assign('tlds', $hTLD);
 
+    // Preis des günstigsten Tarifs auslesen
     $fCheapestTariff = shopProduct::getCheapestStorePrice(array(
       'norm' => 'tariff',
     ));
     Renderer::assign('cheapest_tariff', $fCheapestTariff);
 
+    // Intervall für Preisanzeige bereitstellen
     Renderer::assign('interval',shopProduct::readInterval(array(
       'return_shopformat' => 1,
     )));

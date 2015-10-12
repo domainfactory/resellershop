@@ -29,6 +29,7 @@
     cartLoading       : 'cart-loading',
     unavailableResult : cssPrefix+'-result-unavailable',
     topTlds           : cssPrefix+'-results-additional',
+    topTldWrapper     : cssPrefix+'-results-additional-wrapper',
     transferResult    : cssPrefix+'-result-transfer',
     transferActive    : cssPrefix+'-transfer-active',
     transferAbort     : cssPrefix+'-transfer-abort',
@@ -47,7 +48,11 @@
       event.preventDefault();
       var $formWrapper = $(this).closest('.' + css.wrapper);
       var requestedDomains = $formWrapper.find('.' + css.input).val();
-      shop.whois.request(requestedDomains, $formWrapper);
+      if ( requestedDomains.indexOf('.') === -1 ) {
+        shop.whois.searchForAdditional($formWrapper, $formWrapper.find('.' + css.form).data('tlds'));
+      } else {
+        shop.whois.request(requestedDomains, $formWrapper);
+      }
     });
 
     // Klick auf einzelne Domain
@@ -359,7 +364,7 @@
 
       return result;
     };
-    
+
     var renderWhoisError = function renderWhoisError(){
       resetSearchButton();
       $resultWrapper.
@@ -519,7 +524,10 @@
     var currentQueryCount = currentWhoisQueries.length;
 
     var iTld = 0;
-    var iTldCount = tlds.length;
+    var iTldCount = 0;
+    if ( tlds instanceof Array ) {
+      iTldCount = tlds.length;
+    }
 
     // Keine TLDs vorhanden oder Domains eingegeben? Dann abbrechen.
     if ( !currentQueryCount || !iTldCount ) {

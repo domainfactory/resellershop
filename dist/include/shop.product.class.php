@@ -204,12 +204,19 @@ class shopProduct extends rpProduct {
   }
 
 
-  public static function getDefaultGroupTLDs($hParams=array()) {
-    $group = parent::readTldGroup(array(
-      'preset' => 1,
-    ));
+  public static function getTLDNamesFromTLDGroup($hParams=array()) {
+    // Angegebene TLD-Gruppen-ID verwenden?
+    if ( array_key_exists('ptgid', $hParams) ) {
+      $iGroupId = $hParams['ptgid'];
+    } else {
+      $group = parent::readTldGroup(array(
+        'preset' => 1,
+      ));
+      $iGroupId = $group['ptgid'];
+    }
+
     $ahDefaultTLDs = parent::readTldMap(array(
-      'ptgid' => $group['ptgid'],
+      'ptgid' => $iGroupId,
     ));
 
     // IDs zusammenfassen
