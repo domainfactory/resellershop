@@ -5,14 +5,10 @@ echo "Generiere CSS-Dateien. Dies kann einen Moment dauern, bitte haben Sie Gedu
 # Aufruf aus Hauptverzeichnis und in bin/ ermöglichen
 SOURCE="src/scss"
 DIST="dist/css"
-if [ -d $SOURCE ]; then
-  SOURCE=$SOURCE
-else
+if [ -d "../$SOURCE" ]; then
   SOURCE="../$SOURCE"
 fi
-if [ -d $DIST ]; then
-  DIST=$DIST
-else
+if [ -d "../$DIST" ]; then
   DIST="../$DIST"
 fi
 
