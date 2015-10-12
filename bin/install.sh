@@ -1,9 +1,16 @@
 #!/bin/bash
+
+# Bei Fehlern des Systems sofort die weitere Ausfuehrung des Skripts unterbinden
+# Quelle und Dank an: http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -euo pipefail
 IFS=$'\n\t'
 
 
-QUIET=${q:-""}
+# Basis-URL der Dokumentation
+DOCS_URL="https://doku.premium-admin.eu/doku.php/handbuch/shop_2.0"
+
+
+#################### ORDNER / USAGE ######################
 
 
 # Kleiner Header
@@ -16,12 +23,15 @@ CHECKOUT_TARGET=${1:-"shop"}
 
 # Existiert der Ordner bereits?
 if [ -d "$CHECKOUT_TARGET" ]; then
-  echo "Der Ordner $CHECKOUT_TARGET existiert bereits!"
-  echo "Bitte geben Sie als weiteren Parameter mit dem Zielpfad an. "
+  echo "Der Ordner $CHECKOUT_TARGET existiert bereits! "
+  echo "Bitte geben Sie als weiteren Parameter den Namen des neuen Ordners an. "
   echo "Beispiel: "
-  echo "  $0 shop_dir"
+  echo "  $0 neues_shop_verzeichnis"
   exit 1
 fi
+
+
+#################### BINARIES ######################
 
 
 # Sind alle Binaries erreichbar?
@@ -56,7 +66,6 @@ if [ -z "$PHP_BINARY" ]; then
   fi
 fi
 
-
 # Pfad zum SCSS-Compiler auslesen
 SASS_BINARY=${SASS_BINARY:-}
 if [ -z "$SASS_BINARY" ]; then
@@ -76,7 +85,6 @@ if [ -z "$SASS_BINARY" ]; then
   fi
 fi
 
-
 # Pfad zu GIT auslesen
 GIT_BINARY=${GIT_BINARY:-}
 if [ -z "$GIT_BINARY" ]; then
@@ -93,9 +101,11 @@ if [ -z "$GIT_BINARY" ]; then
   fi
 fi
 
-
 echo "Alle benoetigten Programme sind vorhanden."
 echo "---------------------------"
+
+
+#################### CHECKOUT / DOWNLOAD ######################
 
 
 # Shop-Quelltext via git herunterladen
@@ -114,7 +124,7 @@ else
   echo $GIT_LOG_PATH
   echo ""
   echo "Weitere Informationen und Tipps erhalten Sie in unserem Wiki:"
-  echo "https://doku.premium-admin.eu/doku.php/handbuch/shop_2.0/installation"
+  echo "$DOCS_URL/installation"
   echo ""
   echo "Die Installation wurde abgebrochen. "
   exit 1
@@ -131,28 +141,56 @@ GIT_BRANCH="local"
 $GIT_BINARY branch $GIT_BRANCH && $GIT_BINARY checkout $GIT_BRANCH -q
 
 
+#################### PERMISSIONS ######################
+
+
+# Bereits jetzt die Ordner erstellen, da Sie u.U. auf Webservern
+# mit Sticky-Bit erstellt werden und daher nicht ohne Aufruf von
+# chmod -t+r dist/compiled
+# geloescht werden koennen.
+
+COMPILED_DIR="dist/compiled"
+if [ -d $COMPILED_DIR ]; then
+  cd .
+else
+  mkdir dist/compiled
+fi
+
+CSS_DIR="dist/css"
+if [ -d $CSS_DIR ]; then
+  cd .
+else
+  mkdir dist/css
+fi
+
+
+#################### KONFIGURATIONS-ASSISTENT ######################
+
+
 # Erste Schritte
 echo "---------------------------"
 echo "Wir stellen Ihnen nun ein paar Fragen zur Konfiguration Ihres Shops. "
 echo ""
 echo "Fuer eine detaillierte Erklaerung der Fragen, oeffnen Sie parallel "
 echo "den Wiki-Eintrag zur Schritt-fuer-Schritt-Installation: "
-echo "https://doku.premium-admin.eu/doku.php/handbuch/shop_2.0/installation/schritt_fuer_schritt "
+echo "$DOCS_URL/installation/schritt_fuer_schritt "
 echo ""
 
 # Konfigurationsassistenten aufrufen
 CONFIG_ERROR_OCCURED=0
 $PHP_BINARY -q bin/init-global.php || CONFIG_ERROR_OCCURED=$?
 
+# Fehler bei Konfigurationsassistent aufgetreten?
 if [ !$CONFIG_ERROR_OCCURED ]; then
-  $PHP_BINARY -q bin/color-update.php && /bin/sh bin/scss-compile.sh
 
+  # Farben generieren
+  $PHP_BINARY -q bin/color-update.php && /bin/sh bin/scss-compile.sh
 
   echo "---------------------------"
   echo "Die Installation wurde erfolgreich abgeschlossen."
   echo ""
   echo "Weitere Informationen und Tipps erhalten Sie in unserem Wiki:"
-  echo "https://doku.premium-admin.eu/doku.php/handbuch/shop_2.0/installation/naechste_schritte "
+  echo "$DOCS_URL/installation/naechste_schritte "
   echo ""
   echo "NAECHSTE SCHRITTE: "
   echo "- Installationsroutine entfernen"
@@ -178,3 +216,4 @@ if [ !$CONFIG_ERROR_OCCURED ]; then
   echo ""
   echo "Wir wuenschen Ihnen viel Erfolg mit Ihrem neuen Shop!"
 fi
+
