@@ -121,11 +121,13 @@ BODY {
     height: auto;
     background-clip: content-box;
 
-    -webkit-transition: left $fx-duration, right $fx-duration;
-       -moz-transition: left $fx-duration, right $fx-duration;
-        -ms-transition: left $fx-duration, right $fx-duration;
-         -o-transition: left $fx-duration, right $fx-duration;
-            transition: left $fx-duration, right $fx-duration;
+    @if ( $use-fx ) {
+      -webkit-transition: left $fx-duration, right $fx-duration;
+         -moz-transition: left $fx-duration, right $fx-duration;
+          -ms-transition: left $fx-duration, right $fx-duration;
+           -o-transition: left $fx-duration, right $fx-duration;
+              transition: left $fx-duration, right $fx-duration;
+    }
 
     H1 {
       opacity: 0;
@@ -412,7 +414,7 @@ BODY {
           margin: 0;
           padding: ($header-nav-height / 12) .5em ($header-nav-height / 4) 1.25em;
 
-          color: $color-accent;
+          color: $color-accent-text;
           $cart-dimensions: map-get($sprite-default-dimensions, "cart-text");
           width: sprite-scaled(nth($cart-dimensions, 1));
           height: sprite-scaled(nth($cart-dimensions, 2));

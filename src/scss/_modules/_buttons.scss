@@ -1,46 +1,83 @@
+//////////////////// BUTTONS //////////////////////
+
+// Sie können Buttons nicht nur durch das <button>-Element erstellen,
+// sondern auf Wunsch auch Links wie Buttons aussehen lassen.
+// Dies lässt sich durch die Klasse .button steuern.
+
+// Ein Button kann durch weitere Klassen zusätzlich gestaltet werden:
+// .button-big -> Höhere Schriftgröße
+// .button-action -> Akzentfarbe
+// .button-disabled -> Button "deaktiviert"
+
+// Durch Verwendung der Klasse "icon" können Sie vor den Text ein
+// Symbol, das Sie in der _sprites.scss generieren, voransetzen.
+// Geben Sie die Klasse "icon-only" an, so wird der Text versteckt.
+
+
+//////////////////// HOVER //////////////////////
+
+
+// Hauptfarbe
 %button-hover {
-  background-color: $color-main-dark;
+  @extend %block-brand-invert-dark;
   border-color: $color-main-dark;
 }
 
+// Akzentfarbe
 %button-accent-hover {
-  background-color: $color-accent-dark;
+  @extend %block-accent-dark;
   border-color: $color-accent-dark;
 }
 
+// deaktivierter Button
 %button-disabled-hover {
   background-color: $color-neutral-bg-tint;
   border-color: $color-neutral-bg-shade;
 }
 
+
+//////////////////// BUTTON //////////////////////
+
+// Rahmenbreite
+$button-border-width: .0625em;
+
 %button {
+  // Hauptfarbe als Standard-Hintergrundfarbe verwenden
   @extend %block-brand-invert;
+
+  // Breiten für Symbole reservieren
   @include rp-button-icon(
-    $border: .0625em,
+    $border: $button-border-width,
     $padding-topbottom: .25em,
     $padding-leftright: .5em
   );
 
   display: inline-block;
   box-sizing: border-box;
+
+  // Absolute Positionsangaben von Pseudoelementen auf Button beziehen
   position: relative;
 
-  border-radius: 0;
+  // Rahmen gestalten
   border-style: solid;
   border-color: $color-main;
   
-  // Spezialgestaltung von iOS zerstÃÂ¶ren
+  // Spezialgestaltung von iOS deaktivieren
   -webkit-appearance: none;
   appearance: none;
+  // Keine abgerundeten Ecken
+  border-radius: 0;
 
+  // Unterschrich von Links deaktiveren
   text-decoration: none;
 
-  transition: background-color .25s, color .25s, border-color .25s;
-
-  &.icon {
-    padding-bottom: 0;
+  // Hover-Farben weich ineinander überfließen lassen
+  @if ( $use-fx ) {
+    transition: background-color $fx-duration, color $fx-duration, border-color $fx-duration;
   }
 
+
+  // Akzentfarbe
   &.button-action {
     @extend %block-accent;
     border-color: $color-accent;
@@ -50,31 +87,52 @@
     }
   }
 
+  // deaktiverter Button
   &.button-disabled {
     @extend %button-disabled-hover;
-    color: $color-neutral;
+    color: $color-text-light;
 
     &:HOVER {
       @extend %button-disabled-hover;
     }
   }
 
-  &.icon:BEFORE {
+
+  &:HOVER {
     @extend %button-hover;
-    border-style: solid;
   }
 
-  &.icon.button-action:BEFORE {
-    @extend %button-accent-hover;
-    border-style: solid;
+  &:FOCUS {
+    outline: .1875em solid $color-neutral-dark;
   }
 
-  &.icon.button-disabled:BEFORE {
-    @extend %button-disabled-hover;
-    background-color: $color-neutral-bg-shade;
-    border-style: solid;
+
+  // Symbol
+  &.icon {
+    padding-bottom: 0;
+
+    // Dunkle Hauptfarbe als Symbolhintergrund
+    &:BEFORE {
+      @extend %button-hover;
+      border-style: solid;
+    }
+
+    // Dunkle Akzentfarbe als Symbolhintergrund
+    &.button-action:BEFORE {
+      @extend %button-accent-hover;
+      border-style: solid;
+    }
+
+    // Rahmenfarbe des deaktivierten Buttons als Hintergrund
+    &.button-disabled:BEFORE {
+      @extend %button-disabled-hover;
+      background-color: $color-neutral-bg-shade;
+      border-style: solid;
+    }
   }
 
+
+  // nur Symbol
   &.icon-only {
     &,
     &-with-hover:not(:hover) {
@@ -87,7 +145,6 @@
     text-indent: -1000em;
     text-indent: -200vw;
   }
-
 
   &.icon-only,
   &.icon-only-with-hover {
@@ -112,19 +169,15 @@
       text-indent: 0;
     }
   }
-
-  &:HOVER {
-    @extend %button-hover;
-  }
-
-  &:FOCUS {
-    outline: .1875em solid $color-neutral-dark;
-  }
 }
+
+
+//////////////////// GROßE BUTTONS //////////////////////
+
 
 %button-big {
   @include rp-button-icon(
-    $border: rp-cem(.0625em, $font-size-l),
+    $border: rp-cem($button-border-width, $font-size-l),
     $padding-topbottom: rp-cem(.5em, $font-size-l),
     $padding-leftright: rp-cem(.5em, $font-size-l),
     $border-icon: .333333em
@@ -135,6 +188,10 @@
     padding-bottom: 0;
   }
 }
+
+
+//////////////////// KLASSEN / ELEMENTE //////////////////////
+
 
 .button,
 A.button,

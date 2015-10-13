@@ -59,8 +59,11 @@ $form-line-padding: 0 0 .5em;
   .hidden-label {
     opacity: 0;
     max-height: 0;
-    transition: max-height $fx-duration-fast ease-out;
     pointer-events: none;
+
+    @if ( $use-fx ) {
+      transition: max-height $fx-duration-fast ease-out;
+    }
   }
 
   INPUT,
@@ -228,7 +231,9 @@ $form-line-padding: 0 0 .5em;
     text-indent: -9999px;
 
     max-height: 0;
-    transition: max-height $fx-duration-fast, padding $fx-duration-faster;
+    @if ( $use-fx ) {
+      transition: max-height $fx-duration-fast, padding $fx-duration-faster;
+    }
 
     &:BEFORE {
       @extend %sprite-default;

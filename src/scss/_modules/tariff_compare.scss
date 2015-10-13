@@ -23,12 +23,14 @@
     box-sizing: border-box;
     vertical-align: top;
 
-    $ease: ease-out;
-    -webkit-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-       -moz-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-        -ms-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-         -o-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-            transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+    @if ( $use-fx ) {
+      $ease: ease-out;
+      -webkit-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+         -moz-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+          -ms-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+           -o-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+              transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+    }
 
     white-space: normal;
 
@@ -41,7 +43,7 @@
     }
 
     H3 {
-      color: $color-neutral-dark;
+      color: $color-text-dark;
       font-size: $font-size-xl;
       margin: 0;
       padding: 0;
@@ -134,11 +136,13 @@
         border-bottom: rp-cem(.0625em, $font-size-s) solid $color-neutral-bg;
         hyphens: auto;
 
-        -webkit-transition: color $fx-duration-fast;
-           -moz-transition: color $fx-duration-fast;
-            -ms-transition: color $fx-duration-fast;
-             -o-transition: color $fx-duration-fast;
-                transition: color $fx-duration-fast;
+        @if ( $use-fx ) {
+          -webkit-transition: color $fx-duration-fast;
+             -moz-transition: color $fx-duration-fast;
+              -ms-transition: color $fx-duration-fast;
+               -o-transition: color $fx-duration-fast;
+                  transition: color $fx-duration-fast;
+        }
       }
 
       DD {
@@ -179,15 +183,17 @@
       overflow: hidden;
     }
 
-    &-limit-hidden,
-    &-limits {
-      $ease: ease-in-out;
-      $duration: $fx-duration-fast;
-      -webkit-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-         -moz-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-          -ms-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-           -o-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-              transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+    @if ( $use-fx ) {
+      &-limit-hidden,
+      &-limits {
+        $ease: ease-in-out;
+        $duration: $fx-duration-fast;
+        -webkit-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+           -moz-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+            -ms-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+             -o-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+                transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+      }
     }
 
     .button {
@@ -212,28 +218,28 @@
       padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom);
 
       H3 {
-        @if ( lightness($color-main) < $lightness-invert ) { 
-          color: $color-main-bg;
-        } @else {
-          color: $color-text;
-        }
+        @include rp-choose-color((
+          bg: $color-main,
+          color: $color-text,
+          invert: $color-text-invert
+        ));
       }
 
       .subheadline {
-        @if ( lightness($color-main) < $lightness-invert ) { 
-          color: $color-text-invert-light;
-        } @else {
-          color: $color-text-light;
-        }
+        @include rp-choose-color((
+          bg: $color-main,
+          color: $color-text-light,
+          invert: $color-text-invert-light
+        ));
       }
 
       .tariff-limits {
         DT {
-          @if ( lightness($color-main) < $lightness-invert ) { 
-            color: $color-text-invert-light;
-          } @else {
-            color: $color-text-light;
-          }
+          @include rp-choose-color((
+            bg: $color-main,
+            color: $color-text-light,
+            invert: $color-text-invert-light
+          ));
           border-bottom-color: $color-text-invert-light;
         }
       }
@@ -245,11 +251,11 @@
       .tariff-limits DD,
       .tariff-limit-toggle,
       .tariff-limit-details:HOVER DT {
-        @if ( lightness($color-main) < $lightness-invert ) { 
-          color: $color-text-invert;
-        } @else {
-          color: $color-text;
-        }
+        @include rp-choose-color((
+          bg: $color-main,
+          color: $color-text,
+          invert: $color-text-invert
+        ));
       }
 
       .tariff-limit-details:FOCUS .tariff-limit-toggle {
@@ -257,12 +263,11 @@
       }
 
       .price {
-        color: $color-main;
-        @if ( lightness($color-main) < $lightness-invert ) { 
-          background-color: $color-main-bg;
-        } @else {
-          background-color: $color-text-light;
-        }
+        @include rp-block((
+          bg: $color-main-bg-bright,
+          color: $color-main-text,
+          invert: $color-text-invert
+        ));
       }
     }
 
@@ -447,7 +452,7 @@
       .price,
       &-limit-details.tariff-limit-shown .price {
         background-color: transparent;
-        color: $color-main;
+        color: $color-main-text;
       } 
 
       &-limits {

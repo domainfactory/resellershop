@@ -107,14 +107,20 @@
 
   overflow: hidden;
   max-height: 40em;
-  transition: max-height $fx-duration-slower ease-in $fx-duration-fast, padding $fx-duration-slow ease-in $fx-duration-fast;
+
+  @if ( $use-fx ) {
+    transition: max-height $fx-duration-slower ease-in $fx-duration-fast, padding $fx-duration-slow ease-in $fx-duration-fast;
+  }
 
   .js &[aria-hidden="true"] {
     max-height: 0;
     padding-top: 0;
     padding-bottom: 0;
-    transition-duration: $fx-duration, $fx-duration;
-    transition-timing-function: ease-in, ease-in;
-    transition-delay: 0s, 0s;
+
+    @if ( $use-fx ) {
+      transition-duration: $fx-duration, $fx-duration;
+      transition-timing-function: ease-in, ease-in;
+      transition-delay: 0s, 0s;
+    }
   }
 }

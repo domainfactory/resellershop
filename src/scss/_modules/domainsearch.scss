@@ -55,18 +55,6 @@ $width-button: 6.5em;
     }
   }
 
-  /*
-  .resize-helper {
-    display: inline-block;
-    box-sizing: border-box;
-    vertical-align: top;
-    margin: 0;
-    padding: 0 ($width-button + $width-tld-chooser + .125em) 0 0;
-    width: 100%;
-    transition: padding $fx-duration;
-  }
-  */
-
   &-center {
     padding-left: 2em;
 
@@ -96,7 +84,9 @@ $width-button: 6.5em;
     display: block;
     width: 100%;
 
-    transition: padding $fx-duration-faster;
+    @if ( $use-fx ) {
+      transition: padding $fx-duration-faster;
+    }
 
     // Spezialgestaltung von iOS zerstoeren
     -webkit-appearance: none;
@@ -118,18 +108,6 @@ $width-button: 6.5em;
     padding-bottom: .75em;
   }
 
-
-  /*
-  &-tld {
-    position: absolute;
-    top: 1em;
-    right: ($width-button + 1em);
-    width: $width-tld-chooser;
-    padding: .5em .75em;
-    transition: width $fx-duration, right $fx-duration;
-  }
-  */
-
   &-submit {
     position: absolute;
     top: 1em;
@@ -138,7 +116,10 @@ $width-button: 6.5em;
     padding-left: .5em;
     padding-right: .5em;
     width: $width-button - .125em;
-    transition: width $fx-duration;
+
+    @if ( $use-fx ) {
+      transition: width $fx-duration, background-color $fx-duration, color $fx-duration;
+    }
 
     &:BEFORE {
       @extend %sprite-default;
@@ -154,8 +135,10 @@ $width-button: 6.5em;
       bottom: 0;
       margin: .125em auto;
       opacity: 0;
-      transition: opacity $fx-duration, translation $fx-duration;
       transform-origin: center;
+      @if ( $use-fx ) {
+        transition: opacity $fx-duration, translation $fx-duration;
+      }
     }
 
     &:FOCUS {
@@ -167,7 +150,9 @@ $width-button: 6.5em;
     color: transparent;
     &:BEFORE {
       opacity: 1;
-      animation: animateSearch 1.5s infinite ease-in-out;
+      @if ( $use-fx ) {
+        animation: animateSearch 1.5s infinite ease-in-out;
+      }
     }
   }
 
@@ -270,7 +255,7 @@ $width-button: 6.5em;
 
     LI {
       &:nth-of-type(2n) {
-        @extend %block-invert-light;
+        @extend %block-invert-dark;
       }
     }
 
@@ -313,7 +298,9 @@ $width-button: 6.5em;
     text-align: right;
 
     width: 0;
-    transition: width $fx-duration;
+    @if ( $use-fx ) {
+      transition: width $fx-duration;
+    }
 
     @media screen and (min-width: $viewport-width-l) {
       width: $link-width * 2;
@@ -397,7 +384,9 @@ $width-button: 6.5em;
 
     .button.icon {
       border-radius: 0;
-      transition: border-radius $fx-duration-fast;
+      @if ( $use-fx ) {
+        transition: border-radius $fx-duration-fast;
+      }
     }
 
     .domainsearch-loading {
@@ -408,10 +397,13 @@ $width-button: 6.5em;
         &.icon {
           border-radius: 50%;
           transform-origin: center;
-          -webkit-animation: rotateClockwise $fx-duration-slower infinite;
-             -moz-animation: rotateClockwise $fx-duration-slower infinite;
-              -ms-animation: rotateClockwise $fx-duration-slower infinite;
-                  animation: rotateClockwise $fx-duration-slower infinite;
+
+          @if ( $use-fx ) {
+            -webkit-animation: rotateClockwise $fx-duration-slower infinite;
+               -moz-animation: rotateClockwise $fx-duration-slower infinite;
+                -ms-animation: rotateClockwise $fx-duration-slower infinite;
+                    animation: rotateClockwise $fx-duration-slower infinite;
+          }
 
           &:BEFORE {
             @extend %icon-close;
@@ -427,7 +419,9 @@ $width-button: 6.5em;
       display: block;
       position: relative;
       overflow: hidden;
-      transition: max-height $fx-duration-fast, padding $fx-duration-fast, background-color $fx-duration-fast, color $fx-duration-fast;
+      @if ( $use-fx ) {
+        transition: max-height $fx-duration-fast, padding $fx-duration-fast, background-color $fx-duration-fast, color $fx-duration-fast;
+      }
     }
 
     .domainsearch-price,
@@ -451,7 +445,9 @@ $width-button: 6.5em;
     .domainsearch-price {
       padding-right: ($price-width + $buttons-icon-width + ($result-wrapper-padding-leftright * 2));
 
-      transition-delay: $fx-duration, $fx-duration, 0s, 0s;
+      @if ( $use-fx ) {
+        transition-delay: $fx-duration, $fx-duration, 0s, 0s;
+      }
 
       P {
         @extend %domain-price;
@@ -520,7 +516,9 @@ $width-button: 6.5em;
       padding-left: ($result-padding-leftright);
       padding-right: ($result-padding-leftright);
 
-      transition-delay: $fx-duration-faster, $fx-duration-faster, 0s, 0s;
+      @if ( $use-fx ) {
+        transition-delay: $fx-duration-faster, $fx-duration-faster, 0s, 0s;
+      }
 
       P {
         margin: .25em 0;
@@ -539,20 +537,23 @@ $width-button: 6.5em;
 
     }
 
-    .domainsearch-transfer-active .domainsearch-transfer {
-      padding-right: ($buttons-width + ($result-padding-leftright * 2));
-
-      .button {
-        display: inline-block;
-      }
-    }
-
     .domainsearch-transfer-active {
-      .domainsearch-transfer {
-        transition-delay: $fx-duration, $fx-duration, 0s, 0s;
+      @if ( $use-fx ) {
+        .domainsearch-price {
+          transition-delay: $fx-duration-faster, $fx-duration-faster, 0s, 0s;
+        }
       }
-      .domainsearch-price {
-        transition-delay: $fx-duration-faster, $fx-duration-faster, 0s, 0s;
+
+      .domainsearch-transfer {
+        padding-right: ($buttons-width + ($result-padding-leftright * 2));
+
+        @if ( $use-fx ) {
+          transition-delay: $fx-duration, $fx-duration, 0s, 0s;
+        }
+
+        .button {
+          display: inline-block;
+        }
       }
     }
 

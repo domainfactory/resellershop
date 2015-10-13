@@ -1,112 +1,159 @@
-// BEVEL
+//////////////////// BLÖCKE MIT KANTE //////////////////////
+
+// Sie können Blöcke zusätzlich noch mit einer Oberkante versehen.
+// An dieser Stelle werden die Rahmenfarben für die Kanten definiert.
+
+// Um einem Block eine zusätzliche Oberkante zuzuweisen, geben Sie die
+// entsprechende CSS-Klasse, die Sie am unteren Dateiende finden, an.
+
 
 %bevel {
+  // Höhe der Linie einer einzelnen Farbe
+  // Die gesamte Kantenhöhe beläuft sich auf den doppelten Wert
   $border-size: rp-cem(.0625em, $font-size);
+
+  // Rahmengestaltung
   border-top-style: solid;
   border-top-width: $border-size;
+
+  // Höhe des Pseudoelements für Rahmen "reservieren",
+  // damit es nicht das vorherige Element überlappt
   margin-top: $border-size;
+  
+  // Hauptelement als "Container" markieren,
+  // damit das Pseudoelement die Breitenangaben übernehmen kann
   position: relative;
 
+  // Dunkle Farbe als Pseudoelement
+  // direkt über aktuellem Element platzieren
   &:BEFORE {
     content: '';
-    display: block;
+
+    height: 0;
+
+    // Breitenangaben von Hauptelement übernehmen
     position: absolute;
     left: 0;
     right: 0;
     top: (0 - ($border-size * 2));
-    height: 0;
+    display: block;
+
+    // Rahmengestaltung
     border-bottom-style: solid;
     border-bottom-width: $border-size;
   }
 }
 
 
-// Rahmenfarben
+//////////////////// FARBEN DER KANTEN //////////////////////
 
+// Dunklere, invertierte Hintergrundfarbe
 %block-bevel-invert-dark {
   border-top-color: $color-neutral-dark-tint;
   border-bottom-color: $color-neutral-dark-shade;
 }
 
+// Invertierte Hintergrundfarbe
 %block-bevel-invert {
   border-top-color: $color-neutral-tint;
   border-bottom-color: $color-neutral-shade;
 }
 
+// Hellere, invertierte Hintergrundfarbe
 %block-bevel-invert-light {
   border-top-color: $color-neutral-light-tint;
   border-bottom-color: $color-neutral-light-shade;
 }
 
-%block-bevel-neutral { 
-  border-top-color: $color-neutral-bg-tint;
-  border-bottom-color: $color-neutral-bg-shade;
-}
-
-%block-bevel-neutral-light {
-  border-top-color: $color-neutral-bg-light-tint;
-  border-bottom-color: $color-neutral-bg-light-shade;
-}
-
+// Hauptfarbe
 %block-bevel-brand {
   border-top-color: $color-main-bg-tint;
   border-bottom-color: $color-main-bg-shade;
 }
 
+// Hellere Hintergrundfarbe
 %block-bevel-brand-light {
   border-top-color: $color-main-bg-light-tint;
   border-bottom-color: $color-main-bg-light-shade;
 }
 
+// Akzentfarbe
 %block-bevel-accent {
   border-top-color: $color-accent-tint;
   border-bottom-color: $color-accent-shade;
 }
+
+// Neutrale Farbe
+%block-bevel-neutral { 
+  border-top-color: $color-neutral-bg-tint;
+  border-bottom-color: $color-neutral-bg-shade;
+}
+
+// Hellere, neutrale Farbe
+%block-bevel-neutral-light {
+  border-top-color: $color-neutral-bg-light-tint;
+  border-bottom-color: $color-neutral-bg-light-shade;
+}
+
+
+//////////////////// BLÖCKE //////////////////////
+
+
+// Dunklere, invertierte Hintergrundfarbe
 %bevel-invert-dark {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-invert-dark; }
 }
 
+// Invertierte Hintergrundfarbe
 %bevel-invert {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-invert; }
 }
 
+// Hellere, invertierte Hintergrundfarbe
 %bevel-invert-light {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-invert-light; }
 }
 
+// Hintergrundfarbe
 %bevel-brand {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-brand; }
 }
 
+// Hellere Hintergrundfarbe
 %bevel-brand-light {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-brand-light; }
 }
 
+// Akzentfarbe
 %bevel-accent {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-accent; }
 }
 
+// Neutrale Farbe
 %bevel-neutral {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-neutral; }
 }
 
+// Hellere, neutrale Farbe
 %bevel-neutral-light {
   @extend %bevel;
   &, &:BEFORE { @extend %block-bevel-neutral-light; }
 }
 
 
+//////////////////// KLASSEN //////////////////////
 
+// Damit Sie einzelne Blöcke individuell gestalten in Ihren Vorlagen können, 
+// geben Sie einem übergeordneten Element die entsprechende Klasse mit dem
+// Präfix "page".
 
-
-// BEVEL
 
 .page-bevel-invert-dark { @extend %bevel-invert-dark; }
 .page-bevel-invert { @extend %bevel-invert; }
@@ -116,5 +163,4 @@
 .page-bevel-accent { @extend %bevel-accent; }
 .page-bevel-neutral { @extend %bevel-neutral; }
 .page-bevel-neutral-light { @extend %bevel-neutral-light; }
-
 

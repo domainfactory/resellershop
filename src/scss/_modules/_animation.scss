@@ -1,115 +1,228 @@
-@keyframes fadeFromRight {
-  0% {
-    opacity: 0;
-    transform: translateX(1em);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+//////////////////// ANIMATIONEN //////////////////////
 
-@keyframes fadeFromLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-1em);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeFromTop {
-  0% {
-    opacity: 0;
-    transform: translateY(-1em);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeFromBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(1em);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+// An dieser Stelle werden die Effekte definiert, die Sie in anderen
+// Dateien wiederverwenden können.
 
 
-@keyframes slideInFromRight {
-  0% {
-    transform: translateX(100%);
+// Klassen nur setzen, wenn in der _global.scss Effekte erlaubt sind
+@if ( $use-fx ) {
+
+  // Klasse zum Deaktivieren von Animationen
+  .removeAnimation {
+    animation-name: '' !important;
   }
-  100% {
-    transform: translateX(0);
+
+  // Ein- und Ausblenden einer Statusmeldung
+  @keyframes notification {
+    // Standardzustand: ausblenden
+    0% {
+      max-height: 0;
+      opacity: 0;
+
+      // Keine Größe auf der Seite beanspruchen
+      display: none;
+
+      // Unter den Bildschirmrand verschieben
+      transform: translateY(1em);
+    }
+
+    5% {
+      // Größe beanspruchen...
+      display: block;
+
+      // ...aber Höhe auf 0 setzen, damit Sie animiert werden kann
+      max-height: 0;
+    }
+
+    // Eingeblendet
+    10% {
+      // Nach oben schieben
+      transform: translateY(0);
+
+      // Element wächst in der Höhe
+      max-height: 5em;
+
+      // Transparenz deaktivieren
+      opacity: 1;
+    }
+
+    // Attribute von 10% komplett übernehmen, da sonst der nächste Übergang
+    // bereits nach der Einblendungen starten würde
+    90% {
+      transform: translateY(0);
+      max-height: 5em;
+      opacity: 1;
+    }
+
+    // Ausblenden
+    95% {
+      // Wieder nach unten schieben
+      transform: translateY(1em);
+
+      // Element schrumpft in der Höhe
+      max-height: 0;
+
+      // Transparenz aktivieren
+      opacity: 0;
+    }
+
+    // Standardzustand am Ende: Komplett ausgeblendet
+    100% {
+      // Keine Größe beanspruchen
+      display: none;
+      max-height: 0;
+    }
   }
+
+
+  //////////////////// FADE //////////////////////
+
+
+  // Wie weit sollen die Elemente bei fade-Animationen fahren?
+  $fade-distance: 1em;
+
+  // Nur Transparenz deaktivieren
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  // Element von rechts einfahren
+  @keyframes fadeFromRight {
+    0% {
+      opacity: 0;
+      transform: translateX($fade-distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  // Element von links einfahren
+  @keyframes fadeFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX((0 - $fade-distance));
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  // Element von oben einfahren
+  @keyframes fadeFromTop {
+    0% {
+      opacity: 0;
+      transform: translateY((0 - $fade-distance));
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Element von unten einfahren
+  @keyframes fadeFromBottom {
+    0% {
+      opacity: 0;
+      transform: translateY($fade-distance);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
+  //////////////////// SLIDE //////////////////////
+
+
+  // Element von rechts einfahren
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  // Element nach rechts rausfahren
+  @keyframes slideOutFromRight {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+
+  //////////////////// ROTATE //////////////////////
+
+
+  // Element im Uhrzeigersinn komplett drehen
+  @keyframes rotateClockwise {
+    0% {
+      transform: rotate(0deg);
+    }
+    12.5% {
+      transform: rotate(45deg);
+    }
+    25% {
+      transform: rotate(90deg);
+    }
+    37.5% {
+      transform: rotate(135deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    62.5% {
+      transform: rotate(225deg);
+    }
+    75% {
+      transform: rotate(270deg);
+    }
+    87.5% {
+      transform: rotate(315deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  //////////////////// MOVE //////////////////////
+
+
+  // Wie weit soll sich das Symbol bewegen?
+  $rotation-width: .25em;
+
+  // Bewegung einer Lupe gegen den Uhrzeigersinn
+  @keyframes animateSearch {
+    0% {
+      transform: translate(0, 0 - $rotation-width);
+    }
+    25% {
+      transform: translate($rotation-width, 0);
+    }
+    50% {
+      transform: translate(0, $rotation-width);
+    }
+    75% {
+      transform: translate(0 - $rotation-width, 0);
+    }
+    100% {
+      transform: translate(0, 0 -$rotation-width);
+    }
+  }
+
 }
 
-@keyframes slideOutFromRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes rotateClockwise {
-  0% {
-    transform: rotate(0deg);
-  }
-  12.5% {
-    transform: rotate(45deg);
-  }
-  25% {
-    transform: rotate(90deg);
-  }
-  37.5% {
-    transform: rotate(135deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  62.5% {
-    transform: rotate(225deg);
-  }
-  75% {
-    transform: rotate(270deg);
-  }
-  87.5% {
-    transform: rotate(315deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-$rotation-width: .25em;
-@keyframes animateSearch {
-  0% {
-    transform: translate(0, 0 - $rotation-width);
-  }
-  25% {
-    transform: translate($rotation-width, 0);
-  }
-  50% {
-    transform: translate(0, $rotation-width);
-  }
-  75% {
-    transform: translate(0 - $rotation-width, 0);
-  }
-  100% {
-    transform: translate(0, 0 -$rotation-width);
-  }
-}
-
-.removeAnimation {
-  animation-name: '' !important;
-}

@@ -1,3 +1,17 @@
+//////////////////// BLÖCKE //////////////////////
+
+// Hier werden in Platzhalter-Elementen die Gestaltung von Farb-Blöcken
+// definiert. In einem Farbblock werden Hintergrund- und Schriftfarbe
+// gesetzt. Dadurch können Sie durch die Änderung der Blockgestaltung
+// Elemente gleichmäßig gestalten.
+// Sie können jedoch einzelne Ausnahmen weiterhin in den jeweiligen
+// Implementationen der Blöcke angeben.
+
+// Um ein Element die Gestaltung eines Blocks zuzuweisen, verwenden Sie
+// die entsprechende CSS-Klasse, die Sie am unteren Dateiende finden.
+
+
+// Seitenhintergrund
 HTML {
   @include rp-block((
     bg: $color-main-bg-bright,
@@ -6,78 +20,99 @@ HTML {
   ));
 }
 
+// Standardfarbe für Links
 A {
-  color: $color-main;
+  color: $color-main-text;
 }
 
 
-// BLOECKE
+//////////////////// INVERTIERTE FARBEN //////////////////////
 
+
+// Dunklerer Ton der invertierten Hintergrundfarbe, mit invertierter Textfarbe
 %block-invert-dark {
   @include rp-block((
     bg: $color-neutral-dark,
-    color: $color-text-light,
-    invert: $color-text-invert-light,
-    link-color: $color-text-invert-light,
-    link-invert: $color-text-invert-light
+    color: $color-text,
+    invert: $color-text-invert,
+    link-color: $color-text,
+    link-invert: $color-text-invert
   ));
 }
 
+
+// Intervierter Hintergrund mit invertierter Textfarbe
 %block-invert {
   @include rp-block((
     bg: $color-neutral,
     color: $color-text,
     invert: $color-text-invert,
-    link-color: $color-text-invert,
+    link-color: $color-text,
     link-invert: $color-text-invert
   ));
 }
 
+
+// Hellerer Ton der intervierten Hintergrundfarbe, mit invertierter Textfarbe
 %block-invert-light {
   @include rp-block((
     bg: $color-neutral-light,
     color: $color-text-light,
     invert: $color-text-invert-light,
-    link-color: $color-text-invert,
-    link-invert: $color-text-invert
+    link-color: $color-text-light,
+    link-invert: $color-text-invert-light
   ));
 }
 
+
+//////////////////// NEUTRALE FARBEN //////////////////////
+
+// Im Kontext des Shops werden sättigungslose Farben als "neutral" bezeichnet,
+// da sich einige Graustufen auch von der Hauptfarbe ableiten.
+
+
+// Neutraler Hintergrund mit normaler Schriftfarbe
 %block-neutral {
   @include rp-block((
     bg: $color-neutral-bg,
     color: $color-text,
     dark: $color-text,
     invert: $color-text-invert-light,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-dark: $color-main-dark,
     link-invert: $color-text-invert
   ));
 }
 
+// Hellerer, neutraler Hintergrund mit normaler Schriftfarbe
 %block-neutral-light {
   @include rp-block((
     bg: $color-neutral-bg-light,
     color: $color-text,
     dark: $color-text,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-dark: $color-main-dark,
     link-invert: $color-text-invert
   ));
 }
 
+
+//////////////////// HELLE HAUPTFARBE //////////////////////
+
+
+// Heller Hintergrund mit normaler Schriftfarbe
 %block-brand {
   @include rp-block((
     bg: $color-main-bg,
     color: $color-text,
     invert: $color-text-invert,
     link-color: $color-main-text,
-    link-invert: $color-main,
+    link-invert: $color-main-text,
   ));
 }
 
-
+// Komplett weißer (schwarzer) Hintergrund mit hellerer Schriftfarbe
 %block-brand-bright {
   @include rp-block((
     bg: $color-main-bg-bright,
@@ -86,48 +121,59 @@ A {
   ));
 }
 
-
+// Hellere Hintergrundfarbe mit hellerer Schriftfarbe
 %block-brand-light {
   @include rp-block((
     bg: $color-main-bg-light,
     color: $color-text-light,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-invert: $color-main-text
   ));
 }
 
+
+//////////////////// HAUPTFARBE //////////////////////
+
+
+// Hauptfarbe als Hintergrundfarbe, Seitenhintergrund als Textfarbe
 %block-brand-invert {
   @include rp-block((
     bg: $color-main,
-    color: $color-main-bg,
-    invert: $color-main-bg
+    color: $color-text,
+    invert: $color-text-invert
   ));
 }
 
+// Dunklere Hauptfarbe als Hintergrundfarbe, hellere Schriftfarbe als Textfarbe
 %block-brand-invert-dark {
   @include rp-block((
     bg: $color-main-dark,
-    color: $color-main-light,
-    invert: $color-main-light
+    color: $color-text,
+    invert: $color-text-invert
   ));
 }
 
+// Hellere Hauptfarbe als Hintergrundfarbe, Seitenhintergrund als Textfarbe
 %block-brand-invert-light {
   @include rp-block((
     bg: $color-main-light,
-    color: $color-main-bg,
-    invert: $color-main-bg
+    color: $color-text,
+    invert: $color-text-invert
   ));
 }
 
 
+//////////////////// HINTERGRUND NEUTRAL, TEXT HAUPTFARBE //////////////////////
+
+
+// Hellere, neutrale Hintergrundfarbe, Schriftfarbe mit Hauptfarben-Anteil
 %block-neutral-light-brand-text {
   @include rp-block((
     bg: $color-neutral-bg-light,
     color: $color-text,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-invert: $color-text-invert
   ));
 
@@ -138,19 +184,21 @@ A {
   .subheadline {
     @include rp-choose-color((
       bg: $color-neutral-bg-light,
-      color: $color-main,
+      color: $color-main-text,
       invert: $color-text-invert
     ));
   }
 }
 
+
+// Neutrale Hintergrundfarbe, Schriftfarbe mit Hauptfarben-Anteil
 %block-neutral-brand-text {
   @include rp-block((
     bg: $color-neutral-bg,
     color: $color-text,
     dark: $color-text,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-dark: $color-main-dark,
     link-invert: $color-text-invert
   ));
@@ -162,7 +210,7 @@ A {
   .subheadline {
     @include rp-choose-color((
       bg: $color-neutral-bg,
-      color: $color-main,
+      color: $color-main-text,
       dark: $color-main-dark,
       invert: $color-text-invert
     ));
@@ -170,13 +218,14 @@ A {
 }
 
 
+// Hintergrundfarbe mit Hauptfarbe, Schriftfarbe mit Hauptfarben-Anteil
 %block-brand-text {
   @include rp-block((
     bg: $color-main-bg,
     color: $color-text,
     dark: $color-text,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-dark: $color-main-dark,
     link-invert: $color-text-invert
   ));
@@ -188,20 +237,21 @@ A {
   .subheadline {
     @include rp-choose-color((
       bg: $color-main-bg,
-      color: $color-main,
+      color: $color-main-text,
       dark: $color-main-dark,
       invert: $color-text-invert
     ));
   }
 }
 
+// Hellere Hintergrundfarbe mit Hauptfarbe, Schriftfarbe mit Hauptfarben-Anteil
 %block-brand-text-light {
   @include rp-block((
     bg: $color-main-bg-light,
     color: $color-text,
     dark: $color-text,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-dark: $color-main-dark,
     link-invert: $color-text-invert
   ));
@@ -213,20 +263,21 @@ A {
   .subheadline {
     @include rp-choose-color((
       bg: $color-main-bg-light,
-      color: $color-main,
+      color: $color-main-text,
       dark: $color-main-dark,
       invert: $color-text-invert
     ));
   }
 }
 
+// Weiße (schwarze) Hintergrundfarbe, Schriftfarbe mit Hauptfarben-Anteil
 %block-brand-text-bright {
   @include rp-block((
     bg: $color-main-bg-bright,
     color: $color-text,
     dark: $color-text,
     invert: $color-text-invert,
-    link-color: $color-main,
+    link-color: $color-main-text,
     link-dark: $color-main-dark,
     link-invert: $color-text-invert
   ));
@@ -238,7 +289,7 @@ A {
   .subheadline {
     @include rp-choose-color((
       bg: $color-main-bg-light,
-      color: $color-main,
+      color: $color-main-text,
       dark: $color-main-dark,
       invert: $color-text-invert
     ));
@@ -246,25 +297,34 @@ A {
 }
 
 
+//////////////////// AKZENTFARBE //////////////////////
+
+
+// Akzentfarbe als Hintergrundfarbe, Seitenhintergrund als Textfarbe
 %block-accent {
   @include rp-block((
     bg: $color-accent,
     color: $color-text,
     invert: $color-text-invert,
-    link-color: $color-text-invert,
+    link-color: $color-text,
     link-invert: $color-text-invert
   ));
 }
 
+// Dunklere Akzentfarbe als Hintergrund, Seitenhintergrund als Textfarbe
 %block-accent-dark {
   @include rp-block((
     bg: $color-accent-dark,
     color: $color-text,
     invert: $color-text-invert,
-    link-color: $color-text-invert,
+    link-color: $color-text,
     link-invert: $color-text-invert
   ));
 }
+
+
+//////////////////// EINGABEFELD //////////////////////
+
 
 %block-input {
   @if ( $color-darkmode ) {
@@ -285,6 +345,10 @@ A {
 }
 
 
+//////////////////// RESET //////////////////////
+
+
+// Hintergrundfarben zurücksetzen
 %block-reset {
   background-color: transparent;
   color: $color-text;
@@ -295,7 +359,12 @@ A {
 }
 
 
-// CSS-Klassen für die einzelnen Blöcke
+//////////////////// KLASSEN //////////////////////
+
+// Damit Sie einzelne Blöcke individuell gestalten in Ihren Vorlagen können, 
+// geben Sie einem übergeordneten Element die entsprechende Klasse mit dem
+// Präfix "page".
+
 
 .page-invert-dark { @extend %block-invert-dark; }
 .page-invert-light { @extend %block-invert-light; }
@@ -317,14 +386,17 @@ A {
 .page-accent-dark { @extend %block-accent-dark; }
 
 
-// Bereiche zur manuellen Zentrierung
+//////////////////// INHALT / LAYOUT //////////////////////
 
+
+// Bereiche zur manuellen Zentrierung
 .text-only,
 .center-only {
   margin: 0 auto;
   padding: .25em .5em;
 }
 
+// Inhalt des Elements darf maximal die Breite für Fließtext erhalten
 .text-only {
   max-width: $center-text-max-width;
 
@@ -335,12 +407,17 @@ A {
   }
 }
 
+// Inhalt des Elements darf maximal die Breite des Inhalts annehmen
+// Diese Angabe ist bereits in vielen bestehenden Klassen gesetzt
 .center-only {
   max-width: $center-max-width;
 }
 
 
-// Versteckte Überschrift für Screenreader
+//////////////////// BARRIEREFREIHEIT //////////////////////
+
+
+// Versteckte Überschriften für Screenreader
 .a11y-header {
   position: absolute;
   user-select: none;

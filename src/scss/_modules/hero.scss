@@ -18,10 +18,13 @@ $hero-slide-height: 20em;
 
     $fx-easing: ease-out;
     $fx-direction: both;
-
-    H2,
-    .subheadline {
-      animation: $fx-duration-slow $fx-easing $fx-direction;
+    
+    // Einblenden der Überschriften
+    @if ( $use-fx ) {
+      H2,
+      .subheadline {
+        animation: $fx-duration-slow $fx-easing $fx-direction;
+      }
     }
 
     H2 {
@@ -35,25 +38,32 @@ $hero-slide-height: 20em;
       margin: .5em 0 1em;
       font-size: $font-size-xxl;
       font-weight: $font-weight-bold;
-      color: $color-main;
-      animation-delay: $fx-duration-fast;
+      color: $color-main-text;
+      @if ( $use-fx ) {
+        animation-delay: $fx-duration-fast;
+      }
     }
 
     .hero-actions {
-      animation: fadeFromTop $fx-duration $fx-duration-slower $fx-easing $fx-direction;
+      @if ( $use-fx ) {
+        animation: fadeFromTop $fx-duration $fx-duration-slower $fx-easing $fx-direction;
+      }
       text-align: right;
     }
 
-    LI {
-      animation: $fx-duration-fast $fx-easing $fx-direction $fx-duration-slow;
-      &:nth-of-type(2n) {
-        animation-delay: $fx-duration-slow + $fx-duration-inc;
-      }
-      &:nth-of-type(3n) {
-        animation-delay: $fx-duration-slow + ($fx-duration-inc / 2);
-      }
-      &:nth-of-type(4n) {
-        animation-delay: $fx-duration-slow + ($fx-duration-inc * 2);
+    // Unterschiedliche Animationsdauer der einzelnen Listenpunkte
+    @if ( $use-fx ) {
+      LI {
+        animation: $fx-duration-fast $fx-easing $fx-direction $fx-duration-slow;
+        &:nth-of-type(2n) {
+          animation-delay: $fx-duration-slow + $fx-duration-inc;
+        }
+        &:nth-of-type(3n) {
+          animation-delay: $fx-duration-slow + ($fx-duration-inc / 2);
+        }
+        &:nth-of-type(4n) {
+          animation-delay: $fx-duration-slow + ($fx-duration-inc * 2);
+        }
       }
     }
   }
@@ -112,10 +122,12 @@ $hero-slide-height: 20em;
         text-align: left;
       }
 
-      H2,
-      .subheadline,
-      LI {
-        animation-name: fadeFromLeft;
+      @if ( $use-fx ) {
+        H2,
+        .subheadline,
+        LI {
+          animation-name: fadeFromLeft;
+        }
       }
     }
 
@@ -137,10 +149,12 @@ $hero-slide-height: 20em;
         text-align: right;
       }
 
-      H2,
-      .subheadline,
-      LI {
-        animation-name: fadeFromRight;
+      @if ( $use-fx ) {
+        H2,
+        .subheadline,
+        LI {
+          animation-name: fadeFromRight;
+        }
       }
     }
   }

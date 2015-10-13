@@ -1,166 +1,321 @@
+//////////////////// FARBEN //////////////////////
+
+// Farbwerte der CI importieren
 @import '../_ci';
+
+// Helligkeit
+$lightness-invert: 50%;
+$lightness-light: 80%;
+@if ( $color-darkmode ) {
+  $lightness-light: 20%;
+}
+
 
 // Basisfarben
 $color-white: #fff;
 $color-black: #000;
 
-/* Beispielfarben
-$color-red: #910500;
-$color-yellow: #f0c911;
-$color-orange: #f59000;
-$color-green: #1f9300;
-$color-torquise: #38a1ad;
-$color-blue: #0084b5;
-$color-pink: #d400a0;
-*/
+// Beispielfarben
+// $color-red: #910500;
+// $color-yellow: #f0c911;
+// $color-orange: #f59000;
+// $color-green: #1f9300;
+// $color-torquise: #38a1ad;
+// $color-blue: #0084b5;
+// $color-pink: #d400a0;
 
-$color-price-action: change-color(adjust-color($color-main, $lightness: +25%), $hue: 2%, $saturation: 100%);
+// Farben sozialer Netzwerke
 $color-social-facebook: #4867aa;
 $color-social-googleplus: #cd3c28;
 $color-social-linkedin: #0075b2;
 $color-social-twitter: #55acee;
 
-$lightness-invert: 50%;
-$lightness-light: 70%;
-@if ( $color-darkmode ) {
-  $lightness-light: 30%;
-}
+// Preisaktion
+$color-price-action: change-color(adjust-color($color-main, $lightness: +25%), $hue: 2%, $saturation: 100%);
 
 
-// Hauptfarbe
-//$color-main: $color-blue; // hsl(196.243, 100%, 35.49%)
-$color-main-dark: adjust-color($color-main, $lightness: -5%); // #0071a5
+//////////////////// HAUPTFARBE //////////////////////
+
+
+// Variationen der Hauptfarbe
+$color-main-dark: adjust-color($color-main, $lightness: -5%);
 $color-main-light: adjust-color($color-main, $lightness: +10%);
 @if ( lightness($color-main) > $lightness-light ) {
-  $color-main-dark: adjust-color($color-main-dark, $lightness: -10%); // #0071a5
+  $color-main-dark: adjust-color($color-main-dark, $lightness: -10%);
   $color-main-light: adjust-color($color-main-light, $lightness: -5%);
-}
-$color-main-icons: adjust-color($color-main, $saturation: -30%, $lightness: +30%);
-$color-main-bg: change-color($color-main, $saturation: 48%, $lightness: 92%); // #d5e7f1
-@if ( saturation($color-main) < 1% ) {
-  $color-main-bg: change-color($color-main-bg, $saturation: 0%);
-}
-$color-main-bg-light: adjust-color($color-main-bg, $lightness: +6%);
-@if ( lightness($color-main) > $lightness-light ) {
-  $color-main-bg: change-color($color-main-bg, $lightness: 95%);
-}
-$color-main-bg-bright: change-color($color-main-bg, $lightness: 100%);
-$color-main-text: $color-main;
-
-@if ( $color-darkmode ) {
-  $color-main-dark: adjust-color($color-main, $lightness: +10%); // #0071a5
-  $color-main-light: adjust-color($color-main, $lightness: -5%);
-  @if ( lightness($color-main) < $lightness-light ) {
-    $color-main-dark: adjust-color($color-main-dark, $lightness: +10%); // #0071a5
-    $color-main-light: adjust-color($color-main-light, $lightness: +5%);
-  }
-  $color-main-bg: change-color($color-main, $saturation: 48%, $lightness: 8%); // #d5e7f1
-  @if ( saturation($color-main) < 1% ) {
-    $color-main-bg: change-color($color-main-bg, $saturation: 0%);
-  }
-  $color-main-bg-light: adjust-color($color-main-bg, $lightness: -6%);
-  @if ( lightness($color-main) < $lightness-light ) {
-    $color-main-bg: change-color($color-main-bg, $lightness: 5%);
-  }
-  $color-main-bg-bright: change-color($color-main-bg, $lightness: 0%);
-  $color-main-text: $color-main;
-}
-
-// Akzentfarbe
-//$color-accent: $color-orange; //hsl(35.265, 100%, 48.04%)
-$color-accent-dark: adjust-color($color-accent, $lightness: -5%);
-$color-accent-light: adjust-color($color-accent, $lightness: +10%);
-$color-accent-bg: change-color($color-accent, $saturation: 48%, $lightness: 92%);
-$color-accent-bg-light: adjust-color($color-accent-bg, $lightness: +6%);
-$color-accent-bg-bright: change-color($color-accent-bg, $lightness: 0%);
-$color-accent-text: $color-accent;
-
-@if ( $color-darkmode ) {
-  $color-accent-dark: adjust-color($color-accent, $lightness: +10%);
-  $color-accent-light: adjust-color($color-accent, $lightness: -5%);
-  $color-accent-bg: change-color($color-accent, $saturation: 48%, $lightness: 8%);
-  $color-accent-bg-light: adjust-color($color-accent-bg, $lightness: -6%);
-  $color-accent-bg-bright: change-color($color-accent-bg, $lightness: 0%);
-  $color-accent-text: $color-accent;
-}
-
-
-// "Neutrale Farben"
-// ORIGINAL:
-// $color-neutral: adjust-color($color-main, $saturation: -85%, $lightness: +5%); // #586c7a
-// MEHR KONTRAST:
-$color-neutral: adjust-color($color-main, $saturation: -85%, $lightness: -5%); // #586c7a
-$color-neutral-dark: adjust-color($color-neutral, $lightness: -12%);  // #3e4c56
-$color-neutral-light: adjust-color($color-neutral, $lightness: +10%);  // #6a7c88
-$color-neutral-bg: change-color($color-neutral, $saturation: 6%, $lightness: 85%); // #d3d8da
-@if ( saturation($color-neutral) < 1% ) {
-  $color-neutral-bg: change-color($color-neutral-bg, $saturation: 0%);
-}
-$color-neutral-bg-light: adjust-color($color-neutral-bg, $lightness: +10%);
-
-@if ( $color-darkmode ) {
-  $color-neutral: adjust-color($color-main, $saturation: -85%, $lightness: +5%); // #586c7a
-  $color-neutral-dark: adjust-color($color-neutral, $lightness: +12%);
-  $color-neutral-light: adjust-color($color-neutral, $lightness: -10%);
-  $color-neutral-bg: change-color($color-neutral, $saturation: 6%, $lightness: 15%);
-  $color-neutral-bg-light: adjust-color($color-neutral-bg, $lightness: -10%);
-}
-
-// Schriftfarben
-$color-text: change-color(adjust-color($color-neutral, $saturation: -100%), $lightness: 12%); // #1f1f1f
-$color-text-dark: adjust-color($color-text, $lightness: -10%); // #050505
-$color-text-light: adjust-color($color-text, $lightness: +15%); // #7a7a7a
-$color-text-placeholder: change-color($color-text, $lightness: 40%);
-$color-text-invert: change-color($color-text, $lightness: 98%); // #f0f0f0
-$color-text-invert-light: adjust-color($color-text-invert, $lightness: -10%); // #e4e4e4
-
-@if ( $color-darkmode ) {
-  $color-text-invert: $color-text;
-  $color-text: change-color($color-text, $lightness: 88%);
-  $color-text-dark: adjust-color($color-text, $lightness: +10%);
-  $color-text-light: adjust-color($color-text, $lightness: -15%);
-  $color-text-invert-light: adjust-color($color-text-invert, $lightness: +10%);
-  $color-text-placeholder: change-color($color-text, $lightness: 60%);
 }
 
 // Hintergrundfarben
+$color-main-bg: change-color($color-main, $saturation: 48%, $lightness: 92%);
+
+// Keine Sättigung in der Hauptfarbe -> ebenfalls im Hintergrund berücksichtigen
+@if ( saturation($color-main) < 1% ) {
+  $color-main-bg: change-color($color-main-bg, $saturation: 0%);
+}
+
+// Hellere Hintergrundfarbe
+$color-main-bg-light: adjust-color($color-main-bg, $lightness: +6%);
+@if ( lightness($color-main) > $lightness-light ) {
+  $color-main-bg: change-color($color-main-bg, $lightness: 94%);
+}
+
+// komplett helle Hintergrundfarbe
+$color-main-bg-bright: change-color($color-main-bg, $lightness: 100%);
+
+// Schriftfarbe
+$color-main-text: $color-main;
+
+// Ist die Schrift zu hell für den Hintergrund, dann verdunkeln
+@if ( lightness($color-main-text) > $lightness-light ) {
+  $color-main-text: adjust-color($color-main, $lightness: -60%);
+}
+
+
+// Invertierte Farben?
+@if ( $color-darkmode ) {
+  // Variationen der Hauptfarbe
+  $color-main-dark: adjust-color($color-main, $lightness: +10%);
+  $color-main-light: adjust-color($color-main, $lightness: -5%);
+  @if ( lightness($color-main) < $lightness-light ) {
+    $color-main-dark: adjust-color($color-main-dark, $lightness: +10%);
+    $color-main-light: adjust-color($color-main-light, $lightness: +5%);
+  }
+
+  // Hintergrundfarben
+  $color-main-bg: change-color($color-main, $saturation: 48%, $lightness: 8%);
+
+  // Keine Sättigung bei Hauptfarbe -> ebenfalls im Hintergrund berücksichtigen
+  @if ( saturation($color-main) < 1% ) {
+    $color-main-bg: change-color($color-main-bg, $saturation: 0%);
+  }
+
+  // Helle Hintergrundfarbe
+  $color-main-bg-light: adjust-color($color-main-bg, $lightness: -6%);
+  @if ( lightness($color-main) < $lightness-light ) {
+    $color-main-bg: change-color($color-main-bg, $lightness: 6%);
+  }
+
+  // komplett helle Hintergrundfarbe
+  $color-main-bg-bright: change-color($color-main-bg, $lightness: 0%);
+
+  // Schriftfarbe
+  $color-main-text: $color-main;
+
+  // Ist die Schrift zu dunkel für den Hintergrund, dann erhellen
+  @if ( lightness($color-main) < $lightness-light ) {
+    $color-main-text: adjust-color($color-main, $lightness: +40%);
+  }
+}
+
+
+//////////////////// AKZENTFARBE //////////////////////
+
+
+// Variationen der Akzentfarbe
+$color-accent-dark: adjust-color($color-accent, $lightness: -5%);
+$color-accent-light: adjust-color($color-accent, $lightness: +10%);
+@if ( lightness($color-accent) > $lightness-light ) {
+  $color-accent-dark: adjust-color($color-accent-dark, $lightness: -10%);
+  $color-accent-light: adjust-color($color-accent-light, $lightness: -5%);
+}
+
+// Hintergrundfarben
+$color-accent-bg: change-color($color-accent, $saturation: 48%, $lightness: 92%);
+
+// Keine Sättigung bei Akzentfarbe -> ebenfalls im Hintergrund berücksichtigen
+@if ( saturation($color-accent) < 1% ) {
+  $color-accent-bg: change-color($color-accent-bg, $saturation: 0%);
+}
+
+// Helle Hintergrundfarbe
+$color-accent-bg-light: adjust-color($color-accent-bg, $lightness: +6%);
+@if ( lightness($color-accent) > $lightness-light ) {
+  $color-accent-bg: change-color($color-accent-bg, $lightness: 94%);
+}
+
+// komplett helle Hintergrundfarbe
+$color-accent-bg-bright: change-color($color-accent-bg, $lightness: 0%);
+
+// Schriftfarbe
+$color-accent-text: $color-accent;
+
+// Ist die Schrift zu hell für den Hintergrund, dann erhellen
+@if ( lightness($color-accent) > $lightness-light ) {
+  $color-accent-text: adjust-color($color-accent, $lightness: -60%);
+}
+
+
+// Invertierte Farben?
+@if ( $color-darkmode ) {
+  // Variationen der Akzentfarbe
+  $color-accent-dark: adjust-color($color-accent, $lightness: +10%);
+  $color-accent-light: adjust-color($color-accent, $lightness: -5%);
+  @if ( lightness($color-accent) < $lightness-light ) {
+    $color-accent-dark: adjust-color($color-accent-dark, $lightness: +5%);
+    $color-accent-light: adjust-color($color-accent-light, $lightness: +10%);
+  }
+
+  // Hintergrundfarben
+  $color-accent-bg: change-color($color-accent, $saturation: 48%, $lightness: 8%);
+
+  // Keine Sättigung bei Akzentfarbe -> ebenfalls im Hintergrund berücksichtigen
+  @if ( saturation($color-accent) < 1% ) {
+    $color-accent-bg: change-color($color-accent-bg, $saturation: 0%);
+  }
+
+  // dunklere Hintergrundfarbe
+  $color-accent-bg-light: adjust-color($color-accent-bg, $lightness: -6%);
+  @if ( lightness($color-accent) < $lightness-light ) {
+    $color-accent-bg: change-color($color-accent-bg, $lightness: 6%);
+  }
+
+  // komplett dunkle Hintergrundfarbe
+  $color-accent-bg-bright: change-color($color-accent-bg, $lightness: 0%);
+
+  // Schriftfarbe
+  $color-accent-text: $color-accent;
+
+  // Ist die Schrift zu hell für den Hintergrund, dann verdunkeln
+  @if ( lightness($color-accent) < $lightness-light ) {
+    $color-accent-text: adjust-color($color-accent, $lightness: +60%);
+  }
+}
+
+
+//////////////////// NEUTRALE FARBEN //////////////////////
+
+
+// ORIGINAL:
+// $color-neutral: adjust-color($color-main, $saturation: -85%, $lightness: +5%);
+// MEHR KONTRAST:
+$color-neutral: adjust-color($color-main, $saturation: -85%, $lightness: -5%);
+
+// Variationen der neutralen Farbe
+$color-neutral-dark: adjust-color($color-neutral, $lightness: -12%);
+$color-neutral-light: adjust-color($color-neutral, $lightness: +10%);
+@if ( lightness($color-neutral) > $lightness-light ) {
+  $color-neutral-dark: adjust-color($color-neutral-dark, $lightness: -10%);
+  $color-neutral-light: adjust-color($color-neutral-light, $lightness: -5%);
+}
+
+// Hintergrundfarben
+$color-neutral-bg: change-color($color-neutral, $saturation: 6%, $lightness: 85%);
+
+// Keine Sättigung bei der neutralen Farbe -> ebenfalls im Hintergrund berücksichtigen
+@if ( saturation($color-neutral) < 1% ) {
+  $color-neutral-bg: change-color($color-neutral-bg, $saturation: 0%);
+}
+
+// Hellere Hintergrundfarbe
+$color-neutral-bg-light: adjust-color($color-neutral-bg, $lightness: +10%);
+
+// Invertierte Farben?
+@if ( $color-darkmode ) {
+  $color-neutral: adjust-color($color-main, $saturation: -85%, $lightness: +5%);
+
+  // Variationen der neutralen Farbe
+  $color-neutral-dark: adjust-color($color-neutral, $lightness: +12%);
+  $color-neutral-light: adjust-color($color-neutral, $lightness: -10%);
+  @if ( lightness($color-neutral) < $lightness-light ) {
+    $color-neutral-dark: adjust-color($color-neutral-dark, $lightness: +10%);
+    $color-neutral-light: adjust-color($color-neutral-light, $lightness: +5%);
+  }
+
+  // Hintergrundfarben
+  $color-neutral-bg: change-color($color-neutral, $saturation: 6%, $lightness: 15%);
+
+  // Keine Sättigung bei der neutralen Farbe -> ebenfalls im Hintergrund berücksichtigen
+  @if ( saturation($color-neutral) < 1% ) {
+    $color-neutral-bg: change-color($color-neutral-bg, $saturation: 0%);
+  }
+
+  // Hellere Hintergrundfarbe
+  $color-neutral-bg-light: adjust-color($color-neutral-bg, $lightness: -10%);
+}
+
+
+//////////////////// SCHRIFTFARBEN //////////////////////
+
+
+// Normale Schriftfarbe
+$color-text: change-color(adjust-color($color-neutral, $saturation: -100%), $lightness: 12%);
+
+// Variationen der Schriftfarbe
+$color-text-dark: adjust-color($color-text, $lightness: -10%);
+$color-text-light: adjust-color($color-text, $lightness: +15%);
+
+// Platzhaltertext für Eingabefelder
+$color-text-placeholder: change-color($color-text, $lightness: 40%);
+
+// Invertierter Text
+$color-text-invert: change-color($color-text, $lightness: 98%);
+$color-text-invert-light: adjust-color($color-text-invert, $lightness: -10%);
+
+// Invertierte Farben?
+@if ( $color-darkmode ) {
+  // Invertierter Text ist im Darkmode der normale Text
+  $color-text-invert: $color-text;
+  $color-text-invert-light: adjust-color($color-text-invert, $lightness: +10%);
+
+  // Normale Schriftfarbe
+  $color-text: change-color($color-text, $lightness: 88%);
+
+  // Variationen der Schriftfarbe
+  $color-text-dark: adjust-color($color-text, $lightness: +10%);
+  $color-text-light: adjust-color($color-text, $lightness: -15%);
+
+  // Platzhaltertext für Eingabefelder
+  $color-text-placeholder: change-color($color-text, $lightness: 60%);
+}
+
+
+//////////////////// HINTERGRÜNDE //////////////////////
+
+
 $color-bg: $color-main-bg-bright;
 $color-bg-invert: $color-neutral;
 
 
+//////////////////// RAHMENFARBEN //////////////////////
+
+
+// Abweichung der Rahmenfarben zur Hauptfarbe
+$color-shade-tint-distance: 4%;
+$color-shade-distance: (0 - $color-shade-tint-distance);
+$color-tint-distance:  (0 + $color-shade-tint-distance);
 
 // Rahmen in Hauptfarben
-$color-main-shade: adjust-color($color-main, $lightness: -4%);
-$color-main-tint: adjust-color($color-main, $lightness: +4%);
-$color-main-dark-shade: adjust-color($color-main-dark, $lightness: -4%);
-$color-main-dark-tint: adjust-color($color-main-dark, $lightness: +4%);
-$color-main-light-shade: adjust-color($color-main-light, $lightness: -4%);
-$color-main-light-tint: adjust-color($color-main-light, $lightness: +4%);
-$color-main-bg-shade: adjust-color($color-main-bg, $lightness: -4%);
-$color-main-bg-tint: adjust-color($color-main-bg, $lightness: +4%);
-$color-main-bg-light-shade: adjust-color($color-main-bg-light, $lightness: -4%);
-$color-main-bg-light-tint: adjust-color($color-main-bg-light, $lightness: +4%);
+$color-main-shade: adjust-color($color-main, $lightness: $color-shade-distance);
+$color-main-tint: adjust-color($color-main, $lightness: $color-tint-distance);
+$color-main-dark-shade: adjust-color($color-main-dark, $lightness: $color-shade-distance);
+$color-main-dark-tint: adjust-color($color-main-dark, $lightness: $color-tint-distance);
+$color-main-light-shade: adjust-color($color-main-light, $lightness: $color-shade-distance);
+$color-main-light-tint: adjust-color($color-main-light, $lightness: $color-tint-distance);
+$color-main-bg-shade: adjust-color($color-main-bg, $lightness: $color-shade-distance);
+$color-main-bg-tint: adjust-color($color-main-bg, $lightness: $color-tint-distance);
+$color-main-bg-light-shade: adjust-color($color-main-bg-light, $lightness: $color-shade-distance);
+$color-main-bg-light-tint: adjust-color($color-main-bg-light, $lightness: $color-tint-distance);
 
 // Rahmen in Akzentfarben
-$color-accent-shade: adjust-color($color-accent, $lightness: -4%);
-$color-accent-tint: adjust-color($color-accent, $lightness: +4%);
-$color-accent-dark-shade: adjust-color($color-accent-dark, $lightness: -4%);
-$color-accent-dark-tint: adjust-color($color-accent-dark, $lightness: +4%);
-$color-accent-light-shade: adjust-color($color-accent-light, $lightness: -4%);
-$color-accent-light-tint: adjust-color($color-accent-light, $lightness: +4%);
-$color-accent-bg-shade: adjust-color($color-accent-bg, $lightness: -4%);
-$color-accent-bg-tint: adjust-color($color-accent-bg, $lightness: +4%);
-$color-accent-bg-light-shade: adjust-color($color-accent-bg-light, $lightness: -4%);
-$color-accent-bg-light-tint: adjust-color($color-accent-bg-light, $lightness: +4%);
+$color-accent-shade: adjust-color($color-accent, $lightness: $color-shade-distance);
+$color-accent-tint: adjust-color($color-accent, $lightness: $color-tint-distance);
+$color-accent-dark-shade: adjust-color($color-accent-dark, $lightness: $color-shade-distance);
+$color-accent-dark-tint: adjust-color($color-accent-dark, $lightness: $color-tint-distance);
+$color-accent-light-shade: adjust-color($color-accent-light, $lightness: $color-shade-distance);
+$color-accent-light-tint: adjust-color($color-accent-light, $lightness: $color-tint-distance);
+$color-accent-bg-shade: adjust-color($color-accent-bg, $lightness: $color-shade-distance);
+$color-accent-bg-tint: adjust-color($color-accent-bg, $lightness: $color-tint-distance);
+$color-accent-bg-light-shade: adjust-color($color-accent-bg-light, $lightness: $color-shade-distance);
+$color-accent-bg-light-tint: adjust-color($color-accent-bg-light, $lightness: $color-tint-distance);
 
 // "Neutrale" Rahmenfarben
-$color-neutral-shade: adjust-color($color-neutral, $lightness: -4%);
-$color-neutral-tint: adjust-color($color-neutral, $lightness: +4%);
-$color-neutral-dark-shade: adjust-color($color-neutral-dark, $lightness: -4%);
-$color-neutral-dark-tint: adjust-color($color-neutral-dark, $lightness: +4%);
-$color-neutral-light-shade: adjust-color($color-neutral-light, $lightness: -4%);
-$color-neutral-light-tint: adjust-color($color-neutral-light, $lightness: +4%);
-$color-neutral-bg-shade: adjust-color($color-neutral-bg, $lightness: -4%);
-$color-neutral-bg-tint: adjust-color($color-neutral-bg, $lightness: +4%);
-$color-neutral-bg-light-shade: adjust-color($color-neutral-bg-light, $lightness: -4%);
-$color-neutral-bg-light-tint: adjust-color($color-neutral-bg-light, $lightness: +4%);
+$color-neutral-shade: adjust-color($color-neutral, $lightness: $color-shade-distance);
+$color-neutral-tint: adjust-color($color-neutral, $lightness: $color-tint-distance);
+$color-neutral-dark-shade: adjust-color($color-neutral-dark, $lightness: $color-shade-distance);
+$color-neutral-dark-tint: adjust-color($color-neutral-dark, $lightness: $color-tint-distance);
+$color-neutral-light-shade: adjust-color($color-neutral-light, $lightness: $color-shade-distance);
+$color-neutral-light-tint: adjust-color($color-neutral-light, $lightness: $color-tint-distance);
+$color-neutral-bg-shade: adjust-color($color-neutral-bg, $lightness: $color-shade-distance);
+$color-neutral-bg-tint: adjust-color($color-neutral-bg, $lightness: $color-tint-distance);
+$color-neutral-bg-light-shade: adjust-color($color-neutral-bg-light, $lightness: $color-shade-distance);
+$color-neutral-bg-light-tint: adjust-color($color-neutral-bg-light, $lightness: $color-tint-distance);

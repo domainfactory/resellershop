@@ -34,14 +34,17 @@
 }
 
 
+// Schriftfarbe auf Basis der angegeben Helligkeit auswählen
 @mixin rp-choose-color($colors, $use-link: false) {
   $prefix: "";
   @if ( $use-link ) {
     $prefix: "link-";
   }
 
+  // Helligkeit der Hintergrundfarbe
   $lightness-bg: lightness( map-get($colors, 'bg') );
 
+  // Invertierte Farben
   @if ( $color-darkmode ) {
     @if ( $lightness-bg < $lightness-invert ) {
       color: map-get($colors, "#{$prefix}color");
@@ -54,6 +57,8 @@
     } @else {
       color: map-get($colors, "#{$prefix}invert");
     }
+
+  // Normale Farben
   } @else {
     @if ( $lightness-bg > $lightness-invert ) {
       color: map-get($colors, '#{$prefix}color');

@@ -1,17 +1,29 @@
-$cart-width: 25em;
+//////////////////// WARENKORB //////////////////////
+
+// Schriftgröße des Warenkorbs
+$cart-font-size: $font-size-s;
+
+// Maximale Breite des Vorschaufensters
+$cart-width: rp-cem(25em, $cart-font-size);
+
 
 .site-cart {
 
+  //////////////////// VORSCHAU //////////////////////
+
+
   &-preview {
     position: absolute;
-    top: rp-cem($header-height, $font-size-s);
+    top: rp-cem($header-height, $cart-font-size);
     right: 0;
     z-index: 109;
-
     max-height: 90%;
     max-height: 100vh;
 
+    opacity: 0;
+    box-shadow: 0 .25em .5em -.0625em rgba($color-neutral-dark, .5);
 
+    // Zusammenstauchen für Animation
     -webkit-transform: translateZ(1px) scaleX(0) scaleY(0.5);
        -moz-transform: translateZ(1px) scaleX(0) scaleY(0.5);
         -ms-transform: translateZ(1px) scaleX(0) scaleY(0.5);
@@ -21,36 +33,45 @@ $cart-width: 25em;
         -ms-transform-origin: right top;
             transform-origin: right top;
 
-    opacity: 0;
-    box-shadow: 0 .25em .5em -.0625em rgba($color-neutral-dark, .5);
-
+    // Aufklappen animieren
     $cart-fx-duration: $fx-duration-fast;
-    -webkit-transition: transform $cart-fx-duration ease-out;
-       -moz-transition: transform $cart-fx-duration ease-out;
-            transition: transform $cart-fx-duration ease-out;
-
-    @media screen and (max-width: $viewport-max-width-s) {
-      top: ($header-mobile-height + $header-bar-height);
+    @if ( $use-fx ) {
+      -webkit-transition: transform $cart-fx-duration ease-out;
+         -moz-transition: transform $cart-fx-duration ease-out;
+              transition: transform $cart-fx-duration ease-out;
     }
 
-    .login-opened & {
-      top: rp-cem($login-height + $header-height, $font-size-s);
-    }
+    // Warenkorb geöffnet -> normal darstellen
+   &.site-cart-preview-active {
+      opacity: 1;
+      right: 0;
 
-    &.site-cart-preview-active {
       -webkit-transform: translateZ(1px) scaleX(1) scaleY(1);
          -moz-transform: translateZ(1px) scaleX(1) scaleY(1);
           -ms-transform: translateZ(1px) scaleX(1) scaleY(1);
               transform: translateZ(1px) scaleX(1) scaleY(1);
-      opacity: 1;
-      right: 0;
     }
 
+    // Weiter unten ankleben, wenn die Loginmaske geöffnet ist
+    .login-opened & {
+      top: rp-cem($login-height + $header-height, $cart-font-size);
+    }
+
+    // Bei klebender Menüleiste ebenfalls den Warenkorb ankleben
     .site-header-fixed & {
       position: fixed;
-      top: rp-cem($header-nav-height - .0625em, $font-size-s);
+      top: rp-cem($header-nav-height - .0625em, $cart-font-size);
     }
   }
+
+  // Vorschau anzeigen
+  &-preview-active {
+    display: block;
+  }
+
+
+  //////////////////// SEITENLEISTE //////////////////////
+
 
   &-sidebar {
     position: absolute;
@@ -64,30 +85,41 @@ $cart-width: 25em;
       display: none;
     }
 
+    // Bei Scrollen am oberen Seitenkopf ankleben lassen
     &.is-sticky {
       position: fixed;
       margin-top: 0;
-    }
 
-    @media screen and (max-width: $viewport-max-width-s) {
-      &.is-sticky {
+      // Bei schmalen Bildschirmen trotzdem immer am Seitenende positionieren
+      @media screen and (max-width: $viewport-max-width-s) {
         position: static;
       }
     }
   }
 
+
+  //////////////////// WRAPPER / BOX //////////////////////
+
+  // Der Wrapper beinhaltet die Gestaltungsangaben, die sowohl bei
+  // Seitenleiste als auch Vorschau angewendet werden.
+
+
   &-wrapper {
     @extend %block-neutral;
+    // Hintergrundfarbe für Fenster-Effekt leicht transparent setzen
     background-color: rgba($color-neutral-bg, .9);
 
-    font-size: $font-size-s;
-    padding: 0 .5em 1.5em;
-    width: $cart-width;
     overflow: auto;
     box-sizing: border-box;
+    padding: 0 .5em 1.5em;
+    width: $cart-width;
 
+    font-size: $cart-font-size;
+
+    // Auflistung der Warenkorbartikel
     ARTICLE {
       @extend %block-brand-light;
+
       margin-bottom: .0625em;
 
       &.site-cart-price,
@@ -96,29 +128,38 @@ $cart-width: 25em;
       }
     }
 
+
+    // Überschrift der Box
     H2 {
+      margin: 0;
+      padding: rp-cem(1em, $font-size-l) rp-cem(4em, $font-size-l) rp-cem(1em, $font-size-l) rp-cem(.5em, $font-size-l);
+
       font-size: $font-size-l;
       text-align: left;
-      color: $color-main;
-      padding: rp-cem(1em, $font-size-l) rp-cem(4em, $font-size-l) rp-cem(1em, $font-size-l) rp-cem(.5em, $font-size-l);
-      margin: 0;
+      color: $color-main-text;
     }
 
+
+    // Unterüberschriften (Produkte, Tarife, ...)
     H3 {
       $header-padding: .5em .5em .25em;
-      font-size: $font-size;
+
       margin: 0;
       padding: $header-padding;
-      color: $color-main-dark;
+
+      font-size: $font-size;
       text-transform: uppercase;
       text-align: center;
+      color: $color-main-dark;
 
+      // Links zu entsprechenden Seiten
       A {
-        text-decoration: none;
         display: block;
-        padding: $header-padding;
         box-sizing: border-box;
         margin: -.5em -.5em -.25em;
+        padding: $header-padding;
+        text-decoration: none;
+
         &:HOVER {
           text-decoration: underline;
         }
@@ -134,35 +175,40 @@ $cart-width: 25em;
       height: .0625em;
     }
 
+    // Schließen-Button
     .toggle-cart-preview {
       position: absolute;
       right: 1em;
       top: .75em;
     }
 
+    // Link zu benötigten Komponenten der Bestellung (z.B. Domains)
     .cart-has-requirements {
+      display: block;
       margin: 0;
       padding: .125em 0 0;
+
       font-weight: $font-weight-semibold;
-      color: $color-accent;
-      display: block;
       text-align: center;
       text-decoration: none;
+      color: $color-accent-text;
     }
     A.cart-has-requirements:HOVER {
       text-decoration: underline;
     }
+
   }
 
-  &-preview-active {
-    display: block;
-  }
+
+  //////////////////// ZWISCHENSUMME //////////////////////
+
 
   &-price {
+    position: relative;
     margin: 0;
     padding: 0;
-    position: relative;
 
+    // Überschrift
     H3 {
       padding-top: rp-cem(1em, $font-size-l);
       padding-left: rp-cem(.5em, $font-size-l);
@@ -171,19 +217,21 @@ $cart-width: 25em;
       text-align: left;
     }
 
+    // Preis
     LABEL {
+      display: block;
+      margin: rp-cem(-1.625em, $font-size-xxl) rp-cem(.5em, $font-size-xxl) rp-cem(1em, $font-size-xxl) 0;
       font-size: $font-size-xxl;
       font-weight: $font-weight-semibold;
       text-align: right;
-      display: block;
-      margin: rp-cem(-1.625em, $font-size-xxl) rp-cem(.5em, $font-size-xxl) rp-cem(1em, $font-size-xxl) 0;
       color: $color-text-dark;
     }
 
+    // Links zur Bestellung
     .button {
       margin: .5em auto 0;
       width: 85%;
-      display:block;
+      display: block;
       box-sizing: border-box;
       text-align: center;
 
@@ -192,19 +240,22 @@ $cart-width: 25em;
       }
     }
 
+    // Hauptaktion
     .button-action {
-      font-size: rp-cem($font-size-l, $font-size-s);
+      font-size: rp-cem($font-size-l, $cart-font-size);
       font-weight: $font-weight-semibold;
     }
-
   }
 
 
+  // Teaser-Text nach Zwischensumme 
   &-secure {
     border-top: .0625em solid $color-main-bg-light;
+
     H3 {
       text-transform: none;
     }
+
     P {
       margin: 0;
       padding: .5em 1em;
@@ -212,10 +263,16 @@ $cart-width: 25em;
   }
 }
 
+
+// Effekt bei Laden aktueller Warenkorbdaten
 .cart-item-updating {
   opacity: .5;
   cursor: wait;
 }
+
+
+//////////////////// LISTE DER ELEMENTE //////////////////////
+
 
 .cart-list {
   $padding-topbottom: .25em;
@@ -227,14 +284,16 @@ $cart-width: 25em;
   margin: 0;
   padding: $padding-topbottom 0;
 
+
+  // Einzelner Artikel
   LI {
     position: relative;
     padding: $padding-topbottom ($price-width + $button-width + ($padding-leftright * 3)) $padding-topbottom $padding-leftright;
+    box-sizing: border-box;
 
     list-style: none;
     color: $color-text;
     word-wrap: break-word;
-    box-sizing: border-box;
     border: .1875em solid transparent;
 
     &:HOVER {
@@ -247,6 +306,8 @@ $cart-width: 25em;
     }
   }
 
+
+  // Name des Artikels
   A,
   SPAN {
     margin: (0 - $padding-topbottom) 0 (0 - $padding-topbottom) (0 - $padding-leftright);
@@ -257,48 +318,56 @@ $cart-width: 25em;
     color: $color-text;
   }
 
+  // Links unterstreichen
   A:HOVER {
     text-decoration: underline;
   }
 
+
+  // Produktanzahl
   INPUT {
-    width: $amount-width;
-    resize: none;
-    margin: -.25em $padding-leftright 0 0;
+    position: absolute;
     display: inline-block;
     box-sizing: border-box;
-    position: absolute;
+    margin: -.25em $padding-leftright 0 0;
+    width: $amount-width;
+    resize: none;
+
+    & + A,
+    & + SPAN {
+      margin-left: ($amount-width + $padding-leftright);
+      padding-left: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
-  INPUT + SPAN,
-  INPUT + A {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin-left: ($amount-width + $padding-leftright);
-    padding-left: 0;
-    overflow: hidden;
-  }
 
+  // Button "aus Warenkorb entfernen"
   BUTTON {
     position: absolute;
     right: $padding-leftright;
     top: ($padding-topbottom * 2);
-    font-size: rp-cem(.75em, $font-size-s);
+    font-size: rp-cem(.75em, $cart-font-size);
   }
 
+
+  // Preis des Produkts
   .cart-price {
     display: inline-block;
     position: absolute;
     margin: 0;
     padding: 0;
-    text-align: right;
     top: $padding-topbottom;
     right: ($button-width + ($padding-leftright * 2));
     width: $price-width;
     white-space: nowrap;
     overflow: hidden;
+    text-align: right;
     color: $color-neutral-light;
 
+    // Attribut des Hauptelements zurücksetzen
     SPAN {
       display: inline;
     }
@@ -311,13 +380,18 @@ $cart-width: 25em;
 }
 
 
-@media screen and (min-width: $viewport-width-l) {
-  .site-cart-preview.site-cart-wrapper {
-    width: 30em;
+//////////////////// RESPONSIVE //////////////////////
+
+
+// Seitenleiste bei schmalen Bildschirmen normal (nach Inhalt?) positionieren
+@media screen and (max-width: $viewport-max-width-m) {
+  .site-cart-sidebar {
+    position: static;
+    margin: 1em auto;
   }
 }
 
-
+// Ausrichtung bei Seitenleiste an große Bildschirme anpassen
 @media screen and (min-width: $viewport-width-xl) {
   .site-cart-sidebar {
     right: 0;
@@ -327,6 +401,22 @@ $cart-width: 25em;
   }
 }
 
+
+// Breite der Vorschau in breiten Bildschirm vergrößern
+@media screen and (min-width: $viewport-width-l) {
+  .site-cart-preview.site-cart-wrapper {
+    width: ($cart-width + 5em);
+  }
+}
+
+// Schmale Bildschirme: Immer Höhe der angeklebten Menüleiste berücksichtigen
+@media screen and (max-width: $viewport-max-width-s) {
+  .site-cart-preview {
+    top: ($header-mobile-height + $header-bar-height);
+  }
+}
+
+// Sehr schmale Bildschirme: (fast) volle Bildschirmbreite ausnutzen
 @media screen and (max-width: $viewport-max-width-xs) {
   .site-cart {
     &-wrapper {
@@ -341,6 +431,7 @@ $cart-width: 25em;
   }
 }
 
+// Bildschirme mit geringer Höhe sollen Inhalt scrollen lassen
 @media screen and (min-height: 30em) and (max-height: 55em) {
   .site-cart-preview {
     bottom: 0;
@@ -366,13 +457,8 @@ $cart-width: 25em;
   }
 }
 
-@media screen and (max-width: $viewport-max-width-m) {
-  .site-cart-sidebar {
-    position: static;
-    margin: 1em auto;
-  }
-}
 
+// Inhalt bei mobilen Geräten mehr Platz geben
 @media screen and (max-width: $viewport-max-width-xxs) {
   .site-cart {
     &-sidebar {
@@ -396,6 +482,8 @@ $cart-width: 25em;
     }
   }
 
+
+  // Artikel verbrauchen weniger Abstand
   .cart-list {
     $padding-topbottom: .5em;
     $padding-leftright: .5em;
@@ -411,6 +499,7 @@ $cart-width: 25em;
       bottom: ($padding-topbottom);
     }
 
+    // Preis auf eigene Zeile schieben
     .cart-price {
       position: relative;
       width: auto;
@@ -449,6 +538,7 @@ $cart-width: 25em;
   }
 }
 
+// Mindestbreite: Rahmenbreite verkleinern
 @media screen and (max-width: $viewport-max-width-min) {
   .site-cart {
     &-wrapper {
@@ -463,3 +553,4 @@ $cart-width: 25em;
     }
   }
 }
+

@@ -1,44 +1,3 @@
-@keyframes notification {
-  0% {
-    opacity: 0;
-    transform: translateY(1em);
-    display: none;
-    max-height: 0;
-  }
-  5% {
-    display: block;
-    max-height: 0;
-  }
-  10% {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 5em;
-  }
-  90% {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 5em;
-  }
-  95% {
-    opacity: 0;
-    transform: translateY(1em);
-    max-height: 0;
-  }
-  100% {
-    display: none;
-    max-height: 0;
-  }
-}
-
-@keyframes openModal {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .notifications {
   position: fixed;
   display: block;
@@ -49,8 +8,10 @@
   right: 0;
   margin: 0 auto;
 
-  &:HOVER .notification {
-    animation-play-state: paused;
+  @if ( $use-fx ) {
+    &:HOVER .notification {
+      animation-play-state: paused;
+    }
   }
 
   @media screen and (max-width: $viewport-max-width-xs) {
@@ -63,11 +24,14 @@
     opacity: 0;
     overflow: hidden;
     transform: translateY(1em);
-    animation: notification 10s;
     text-align: left;
     max-height: 0;
     padding-left: 5%;
     padding-right: 5%;
+
+    @if ( $use-fx ) {
+      animation: notification 10s;
+    }
   }
 }
 
@@ -145,7 +109,9 @@
 
     box-shadow: 0 .125em .25em rgba($color-neutral-dark, .5);
 
-    animation: openModal $fx-duration;
+    @if ( $use-fx ) {
+      animation: fadeIn $fx-duration;
+    }
   }
 }
 

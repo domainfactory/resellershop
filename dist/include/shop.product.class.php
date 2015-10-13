@@ -2,6 +2,44 @@
 
 class shopProduct extends rpProduct {
 
+  // Zu verwendende Sprache beim Auslesen von Texten
+  const LANGUAGE = 'de';
+
+
+  //////////////////// DOMAIN-KONTINGENTE //////////////////////
+
+
+  private static $iDefaultDomConID = null;
+
+  /**
+   * ID des Standard-Domainkontingents auslesen (und cachen)
+   *
+   * @return array
+   */
+  protected static function getDefaultDomConID() {
+    if ( is_null(static::$iDefaultDomConID) ) {
+      $hDefaultDomCon = static::readDomCon(array(
+        'preset' => 1,
+      ));
+      if ( $hDefaultDomCon ) {
+        static::$iDefaultDomConID = $hDefaultDomCon['pdid'];
+      }
+    }
+    return static::$iDefaultDomConID;
+  }
+
+
+  //////////////////// LIMITS //////////////////////
+
+
+  /**
+   * Darzustellenden Namen des Limits zurückgeben
+   *
+   * @param array $hProductLimit        Daten des Limits
+   * @param array $hLimitSettings       Daten aus den Einstellungen (product.ini)
+   * @param int $iKey                   zu verwendender Schlüssel
+   * @return array
+   */
   public static function makeLimit($hProductLimit, $hLimitSettings, $iKey) {
     // Name des Limits aus products.ini verwenden?
     if ( trim($hLimitSettings['name'][$iKey]) ) {
@@ -10,14 +48,26 @@ class shopProduct extends rpProduct {
     return $hProductLimit;
   }
 
-  public static function readEntry($hParams = array()) {
+
+  //////////////////// PRODUKTE //////////////////////
+
+
+  /**
+   * Daten zu einem oder mehreren Artikeln auslesen
+   *
+   * @param array $hParams      Zusätzliche Parameter für readEntry
+   * @return array
+   */
+  public static function readEntry($hParams=array()) {
     $bRetSF    = ($hParams['return_shopformat']) ? 1 : 0;
     $bRetGroup = ($hParams['return_shopformat_grouped']) ? 1 : 0;
+
     // shopformat-Parameter nicht ans RP senden
     unset($hParams['return_shopformat']);
     unset($hParams['return_shopformat_group']);
+
     // Anpassungen fuer Shop-Aufruf
-    if ($bRetSF || $bRetGroup) {
+    if ( $bRetSF || $bRetGroup ) {
       $settings = Settings::getValue('products');
       $hParams['peid'] = $settings['products']['peid'];
       $hParams['check_orderable']      = 1;
@@ -28,10 +78,12 @@ class shopProduct extends rpProduct {
         $hParams['return_display_limits'] = 1;
       }
     }
+
     // Daten vom RP abfragen
     $data = parent::readEntry($hParams);
+
     // Ergebnisse fuer Shop weiterverarbeiten
-    if ($bRetSF && $data){
+    if ( $bRetSF && $data ) {
       // Limits vorbereiten
       foreach ( array('limits', 'limits_hidden') as $sRequiredField ) {
         if (    !array_key_exists($sRequiredField, $settings)
@@ -82,12 +134,12 @@ class shopProduct extends rpProduct {
             // Einzelne Limits
             if ( !array_key_exists($hLimit['fld'], $hAllLimits) ) {
               $hAllLimits[ $hLimit['fld'] ] = array(
-                'name' => $hLimit['name'],
+                'name'  => $hLimit['name'],
                 'descr' => $hLimit['descr'],
-                'unit' => $hLimit['unit'],
-                'fld' => $hLimit['fld'],
-                'typ' => $hLimit['typ'],
-                'val' => 0,
+                'unit'  => $hLimit['unit'],
+                'fld'   => $hLimit['fld'],
+                'typ'   => $hLimit['typ'],
+                'val'   => 0,
                 'value' => 0,
               );
               $hCurrentGroupInAllLimits['entries'][] = $hLimit['fld'];
@@ -116,7 +168,7 @@ class shopProduct extends rpProduct {
         // sobald alle Limits registriert sind, nochmal die Produkte durchsuchen
         foreach ( $data as $id => $entry ) {
           // Felder aus der product.ini mit Standardwerten fuellen
-          foreach ( array('limits', 'limits_hidden') as $sDisplayGroup ) { 
+          foreach ( array('limits', 'limits_hidden') as $sDisplayGroup ) {
             foreach ( $settings[$sDisplayGroup]['fld'] as $sFld ) {
               if ( array_key_exists($sFld, $hAllLimits ) ) {
                 $data[$id]['shop_limits'][$sDisplayGroup][$sFld] = static::makeLimit(
@@ -175,72 +227,107 @@ class shopProduct extends rpProduct {
         );
       }
     }
+
     return $data;
   }
 
 
-  public static function readInterval($hParams=array()){
+  //////////////////// INTERVALL //////////////////////
+
+
+  /**
+   * Daten der Intervalle auslesen
+   *
+   * @param array $hParams      Zusätzliche Daten für readInterval
+   * @return array
+   */
+  public static function readInterval($hParams=array()) {
+    // Zusätzliche Daten für Shop zurückgeben?
     $bRetSF = ($hParams['return_shopformat']) ? 1 : 0;
-    if ($bRetSF){
+    if ( $bRetSF ) {
       $hParams['return_lang'] = 1;
       $hParams['return_array'] = 1;
     }
     unset($hParams['return_shopformat']);
 
-    $data = parent::readInterval($hParams);
-    if ($bRetSF && $data){
-      $lang = 'de';
-      $tmp = array('descr' => array());
-      foreach($data as $item){
-        $tmp[$item['piid']] = $item['name'][$lang];
-        $tmp['descr'][$item['piid']] = $item['descr'][$lang];
+    // Daten auslesen
+    $ahIntervals = parent::readInterval($hParams);
+    if ( $bRetSF && $ahIntervals ) {
+      $hNames = array('descr' => array());
+      foreach ( $ahIntervals as $hInterval ) {
+        $hNames[$hInterval['piid']] = $hInterval['name'][static::LANGUAGE];
+        $hNames['descr'][$hInterval['piid']] = $hInterval['descr'][static::LANGUAGE];
       }
-      $data = $tmp;
-      $data[0] = 'einmalig';
-      $data['descr'][0] = 'einmalig';
+      $ahIntervals = $hNames;
+      $ahIntervals[0] = 'einmalig';
+      $ahIntervals['descr'][0] = 'einmalig';
     }
 
-    return $data;
+    return $ahIntervals;
   }
 
 
-  public static function getTLDNamesFromTLDGroup($hParams=array()) {
-    // Angegebene TLD-Gruppen-ID verwenden?
-    if ( array_key_exists('ptgid', $hParams) ) {
-      $iGroupId = $hParams['ptgid'];
-    } else {
-      $group = parent::readTldGroup(array(
-        'preset' => 1,
-      ));
-      $iGroupId = $group['ptgid'];
+  //////////////////// PREISE //////////////////////
+
+
+  /**
+   * Günstigsten Preis eines Produkts auslesen
+   *
+   * Um die Suche auf einen Produkttyp einzuschränken, geben Sie beim
+   * Aufruf der Methode in $hParams folgenden Wert an:
+   *   'norm' => 'tariff'
+   * In diesem Fall werden nur die Preise der Tarife geprüft.
+   *
+   * @param array $hParams      Zusätzliche Parameter für Aufruf von readStore
+   * @return float|null         Günstiger Preis der gesuchten Artikel
+   */
+  public static function getCheapestStorePrice($hParams=array()) {
+    // Produktgruppen auslesen
+    $ahProductGroups = shopShopping::readStore(array_merge(array(
+      'check_orderable'   => 1,  // nur bestellbare Produkte
+      'return_array'      => 1,  // Immer als Array formatieren
+      'return_shop_price' => 1,  // Preis des Shops zurückgeben
+    ), $hParams));
+
+    // Sind keine Daten vorhanden, wird als Rückgabewert null angegeben
+    $fCheapestPrice = null;
+
+    if ( $ahProductGroups && count($ahProductGroups) ) {
+      foreach ( $ahProductGroups as $hProductGroup ) {
+        // Befinden sich Produkte in der Gruppe?
+        if ( !array_key_exists('entrys', $hProductGroup) || !count($hProductGroup['entrys']) ) {
+          continue;
+        }
+
+        foreach ( $hProductGroup['entrys'] as $hProduct ) {
+          if ( $fCheapestPrice === null || $hProduct['shop_price']['price_long'] < $fCheapestPrice ) {
+            $fCheapestPrice = $hProduct['shop_price']['price_long'];
+
+            // Günstiger als kostenlos wirds nicht...
+            if ( $fCheapestPrice !== null && $fCheapestPrice === 0.00 ) {
+              return 0.00;
+            }
+          }
+        }
+      }
     }
 
-    $ahDefaultTLDs = parent::readTldMap(array(
-      'ptgid' => $iGroupId,
-    ));
-
-    // IDs zusammenfassen
-    $aiIDs = array();
-    $iTLDCount = count($ahDefaultTLDs);
-    for ( $i = 0; $i < $iTLDCount; $i++ ) {
-      $aiIDs[] = $ahDefaultTLDs[$i]['ptid'];
-    }
-
-    // Namen der TLDs auslesen
-    $hTLDData = parent::readTld(array(
-      'ptid' => $aiIDs,
-      'return_array' => 1,
-    ));
-    $hData = array();
-    $iTLDCount = count($hTLDData);
-    for ( $i = 0; $i < $iTLDCount; $i++ ) {
-      $hData[] = $hTLDData[$i]['name'];
-    }
-
-    return $hData;
+    return $fCheapestPrice;
   }
 
 
+  //////////////////// TLDS //////////////////////
+
+
+  /**
+   * Günstigste TLDs (laut Standard-Domainkontingent) zurückgeben
+   *
+   * Geben Sie das Feld "return_limit" an, so beschränken Sie die Anzahl
+   * der zurückzugebenden Domains.
+   *
+   * @param array $hParams      Zusätzliche Daten für readTLD
+   * @return array
+   */
   public static function getCheapestTLDs($hParams=array()){
     // Wie viele Top-TLDs sollen zurueckgegeben werden?
     $iCountDomains = 5;
@@ -256,42 +343,37 @@ class shopProduct extends rpProduct {
       unset($hParams['return_all']);
     }
 
-    $tlds = static::readTld(array_merge(array(
-      'active'            => 1,
-      'return_domcon'     => 1,
-      'return_product'    => 1,
-      'return_array'      => 1,
+    // Daten der TLDs auslesen
+    $ahTLDs = static::readTld(array_merge(array(
+      'active'         => 1,  // keine versteckten Produkte auslesen
+      'return_domcon'  => 1,  // Domainkontingente mitgeben
+      'return_product' => 1,  // Daten zum Produkt mitliefern
+      'return_array'   => 1,  // Immer als Array formatieren
     ), $hParams));
-    if ( !$tlds ) {
+    if ( !$ahTLDs ) {
       return array();
     }
 
-    // Standard-Defaultkontingent auslesen
-    $def_domcon = static::readDomCon(array(
-      'preset' => 1,
-    ));
-    $iDefaultDomConId = $def_domcon['pdid'];
-    unset($def_domcon);
-
-    foreach($tlds as $key => &$tld){
+    $iDefaultDomConID = static::getDefaultDomConID();
+    foreach($ahTLDs as $key => &$tld){
       // Subdomains ignorieren
       if ( count(explode('.', $tld['name'])) > 1 ) {
-        unset($tlds[$key]);
+        unset($ahTLDs[$key]);
         continue;
       }
-      $domcon = $tld['domcon'][$iDefaultDomConId];
+      $domcon = $tld['domcon'][$iDefaultDomConID];
       $tld['shop_price'] = $domcon;
     }
     unset($tld);
 
     $data = array();
     if ( $bReturnAllTlds ) {
-      usort($tlds, array('static','orderByName'));
-      $data['all'] = $tlds;
+      usort($ahTLDs, array('static','orderByName'));
+      $data['all'] = $ahTLDs;
     }
 
-    usort($tlds, array('static','getCheaperDomain'));
-    $data['highlights'] = array_slice($tlds, 0, $iCountDomains);
+    usort($ahTLDs, array('static','getCheaperDomain'));
+    $data['highlights'] = array_slice($ahTLDs, 0, $iCountDomains);
 
     if ( $bReturnAllTlds ) {
       return $data;
@@ -314,129 +396,214 @@ class shopProduct extends rpProduct {
   }
 
 
-  public static function getCheapestStorePrice($hParams=array()) {
-    $data = shopShopping::readStore(array_merge(array(
-      'check_orderable' => 1,
-      'return_array' => 1,
-      'return_shop_price' => 1,
-    ), $hParams));
-    $cheapestPrice = null;
-    foreach ( $data as $group ) {
-      foreach ( $group['entrys'] as $entry ) {
-        if ( $cheapestPrice === null || $entry['shop_price']['price_long'] < $cheapestPrice ) {
-          $cheapestPrice = $entry['shop_price']['price_long'];
+  /**
+   * Namen der TLDs einer bestimmten TLD-Gruppe auslesen
+   *
+   * Geben Sie im Feld "ptgid" des Arrays $hParams die ID der auszulesenden
+   * TLD-Gruppe an. Wenn Sie dieses Feld nicht angeben, so werden die TLDs
+   * aus der Standard-TLD-Gruppe ausgelesen.
+   *
+   * @param array $hParams      Zusätzliche Parameter für readTldMap
+   * @return array
+   */
+  public static function getTLDNamesFromTLDGroup($hParams=array()) {
+    // Angegebene TLD-Gruppen-ID verwenden?
+    if ( array_key_exists('ptgid', $hParams) ) {
+      $iGroupId = $hParams['ptgid'];
+      unset($hParams['ptgid']);
+    } else {
+      $hTLDGroup = parent::readTldGroup(array(
+        'preset' => 1,  // Standardgruppe auslesen
+      ));
+      $iGroupId = $hTLDGroup['ptgid'];
+    }
 
-          // Günstiger als kostenlos wirds nicht...
-          if ( $cheapestPrice !== null && $cheapestPrice === 0.00 ) {
-            return 0.00;
-          }
+    // Verknüpfung der TLDs zur Gruppe auslesen
+    $ahDefaultTLDs = parent::readTldMap(array_merge(array(
+      'ptgid' => $iGroupId,
+    ), $hParams));
+    if ( !$ahDefaultTLDs ) {
+      return array();
+    }
+
+    // IDs zusammenfassen
+    $aiIDs = array();
+    $iTLDCount = 0;
+    $iTLDCount = count($ahDefaultTLDs);
+    for ( $i = 0; $i < $iTLDCount; $i++ ) {
+      $aiIDs[] = $ahDefaultTLDs[$i]['ptid'];
+    }
+
+    // Namen der TLDs auslesen
+    $hTLDData = parent::readTld(array(
+      'ptid' => $aiIDs,
+      'return_array' => 1,
+    ));
+    if ( !$hTLDData ) {
+      return array();
+    }
+
+    $hData = array();
+    $iTLDCount = count($hTLDData);
+    for ( $i = 0; $i < $iTLDCount; $i++ ) {
+      $hData[] = $hTLDData[$i]['name'];
+    }
+
+    return $hData;
+  }
+
+
+  /**
+   * TLD-Preise aus dem Standard-Domainkontingent auslesen
+   *
+   * @param array $hParams      Zusätzliche Parameter für Aufruf von readTld
+   * @return array
+   */
+  public static function getDefaultTLDPrices($hParams=array()) {
+    // Daten zur TLD auslesen
+    $ahTLDs = static::readTld(array_merge(array(
+      'active'              => 1,  // keine versteckten Produkte auslesen
+      'return_domcon'       => 1,  // Domainkontingente mitgeben
+      'return_shop_price'   => 1,  // Preis des Shops zurückgeben
+      'return_product'      => 1,  // Daten zum Produkt mitliefern
+      'return_product_edit' => 1,  // übersetzte Beschreibung mitliefern
+      'return_array'        => 1,  // Immer als Array formatieren
+    ), $hParams));
+
+    $hEntries = array();
+
+    if ( !$ahTLDs ) {
+      return $hEntries;
+    }
+
+    // Produkt-IDs der beinhalteten Produkte gesammelt ablesen,
+    // um die Anzahl der RP-Anfragen zu minimieren
+    $aiContainedProductIDs = array();
+    foreach ( $ahTLDs as $hTLD ) {
+      if ( !is_null($hTLD['product']['contained']) ) {
+        foreach( $hTLD['product']['contained'] as $peid => $amount ) {
+          $aiContainedProductIDs[] = $peid;
         }
       }
     }
-    return $cheapestPrice;
-  }
-  public static function getDefaultTLDPrices($hParams=array()){
-    $def_domcon = static::readDomCon(array(
-      'preset' => 1,
-    ));
-    $iDefaultDomConId = $def_domcon['pdid'];
-    unset($def_domcon);
-
-    $tlds = static::readTld(array_merge(array(
-      'active'            => 1,
-      'return_domcon'     => 1,
+    $ahContainedProducts = parent::readEntry(array(
+      'peid'              => $aiContainedProductIDs,
       'return_shop_price' => 1,
-      'return_product'    => 1,
-      'return_product_edit' => 1,
-      'return_array'      => 1,
-    ), $hParams));
+    ));
+    unset($aiContainedProductIDs);
 
-    $entries = array();
+    // Betroffenes Domainkontaingent auslesen
+    $iDefaultDomConID = static::getDefaultDomConID();
 
-    if ( !$tlds ) {
-      return $entries;
-    }
+    // Hash der TLDs zusammenbauen
+    foreach ( $ahTLDs as $hTLD ) {
+      // Daten aus dem Domainkontingent auslesen
+      if ( array_key_exists($iDefaultDomConID, $hTLD['domcon']) ) {
+        $hDomCon = $hTLD['domcon'][$iDefaultDomConID];
+      } else {
+        $hDomCon = array(
+          'piid' => null,
+          'price_net' => null,
+          'price_long' => null,
+          'int_price_net' => null,
+          'int_price_long' => null,
+        );
+      }
 
-    foreach($tlds as $tld){
-      $domcon = null;
-      $domcon = $tld['domcon'][$iDefaultDomConId];
-      $contained = array(
+      // Preissumme der beinhalteten Produkte auslesen
+      $hContained = array(
         'sum_net'  => 0,
         'sum_long' => 0,
       );
-      if (count($tld['product']['contained'])){
-        foreach($tld['product']['contained'] as $peid=>$amount){
-          $product = parent::readEntry(array(
-            'peid'              => $peid,
-            'return_shop_price' => 1,
-          ));
-          if ($product['norm'] == 'normaly' && !$product['periodical']){
-            $contained['sum_net'] += ($product['shop_price']['price_net'] * $amount);
-            $contained['sum_long'] += ($product['shop_price']['price_long'] * $amount);
+      if ( $ahContainedProducts && !is_null($hTLD['product']['contained']) ) {
+        foreach( $hTLD['product']['contained'] as $peid => $amount ) {
+          if ( array_key_exists($peid, $ahContainedProducts) ) {
+            $hProduct = $ahContainedProducts[$peid];
+            if ( $hProduct['norm'] == 'normaly' && !$hProduct['periodical'] ) {
+              $hContained['sum_net'] += ($hProduct['shop_price']['price_net'] * $amount);
+              $hContained['sum_long'] += ($hProduct['shop_price']['price_long'] * $amount);
+            }
           }
         }
       }
-      $entries[$tld['ptid']] = array(
-        'ptid' => $tld['ptid'],
-        'name' => $tld['name'],
-        'descr' => $tld['product']['name']['de'],
-        'ptgid' => $tld['ptgid'],
-        'piid'  => $domcon['piid'],
-        'setup' => $contained,
+
+      // Hash für Rückgabe aufbereiten
+      $hEntries[$hTLD['ptid']] = array(
+        'ptid'  => $hTLD['ptid'],     // ID der TLD
+        'name'  => $hTLD['name'],
+        'descr' => $hTLD['product']['name']['de'],
+        'ptgid' => $hTLD['ptgid'],    // ID der TLD-Gruppe
+        'piid'  => $hDomCon['piid'],  // Abrechnungsintervall
+        'setup' => $hContained,
         'shop_price' => array(
-          'price_net' => $domcon['price_net'],
-          'price_long' => $domcon['price_long'],
+          'price_net'  => $hDomCon['price_net'],
+          'price_long' => $hDomCon['price_long'],
         ),
         'int_shop_price' => array(
-          'price_net' => $domcon['int_price_net'],
-          'price_long' => $domcon['int_price_long'],
+          'price_net'  => $hDomCon['int_price_net'],
+          'price_long' => $hDomCon['int_price_long'],
         ),
       );
     }
-    return $entries;
+
+    return $hEntries;
   }
 
 
-  public static function getTLDHash($hParams=array()){
+  /**
+   * Daten mit TLDs und deren Gruppen aufbereiten
+   *
+   * @param array $hParams      Zusätzliche Paramter für getDefaultTLDPrices
+   * @return array              Einträge und Gruppen
+   */
+  public static function getTLDHash($hParams=array()) {
+    // Soll das Abrechnungsintervall zurückgegeben werden?
     $bRetInterval = false;
     if ( $hParams['return_interval'] ) {
       $bRetInterval = true;
+      // Shop-Parameter "return_interval" nicht an das RP weitergeben
       unset($hParams['return_interval']);
     }
 
-    $groups = static::readTldGroup(array(
-      'return_array' => 1,
+    // Daten zu den TLDs auslesen
+    $ahTLDGroups = static::readTldGroup(array(
+      'return_array' => 1,  // Immer als Array formatieren
     ));
-    $tlds = static::getDefaultTLDPrices($hParams);
+    $ahTLDs = static::getDefaultTLDPrices($hParams);
 
     $ret = array(
-      'entries' => $tlds,
+      'entries' => $ahTLDs,
       'groups'  => array(),
     );
 
-    if ( $bRetInterval && count($tlds) ) {
-      foreach ( $tlds as $tld ) {
-        $ret['interval_piid'] = $tld['piid'];
+    // Interval der ersten TLD zurückgeben
+    if ( $bRetInterval && $ahTLDs && count($ahTLDs) ) {
+      foreach ( $ahTLDs as $hTLD ) {
+        $ret['interval_piid'] = $hTLD['piid'];
         break;
       }
     }
 
-    if ( $groups && count($groups) ) {
-      foreach ($groups as $group) {
-        $ptids = array();
-        foreach ($tlds as $tld) {
-          if ( $tld['ptgid'] == $group['ptgid'] ) {
-            $ptids[] = $tld['ptid'];
+    // Hash mit den Gruppendaten aufbereiten
+    if ( $ahTLDGroups && count($ahTLDGroups) ) {
+      foreach ( $ahTLDGroups as $hTLDGroup ) {
+        // TLDs der Gruppe zusammenfassen
+        $aiPTIDs = array();
+        foreach ( $ahTLDs as $hTLD ) {
+          if ( $hTLD['ptgid'] == $hTLDGroup['ptgid'] ) {
+            $aiPTIDs[] = $hTLD['ptid'];
           }
         }
+
         $ret['groups'][] = array(
-          'ptgid'   => $group['ptgid'],
-          'name'    => $group['name'],
-          'preset'  => $group['preset'],
-          'entries' => $ptids,
+          'ptgid'   => $hTLDGroup['ptgid'],
+          'name'    => $hTLDGroup['name'],
+          'preset'  => $hTLDGroup['preset'],
+          'entries' => $aiPTIDs,
         );
       }
     }
+
     return $ret;
   }
 

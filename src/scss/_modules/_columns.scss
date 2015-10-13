@@ -1,10 +1,14 @@
-@mixin columns-3 {
+//////////////////// SPALTEN //////////////////////
+
+// Definieren Sie hier die Spaltenbreite
+
+@mixin rp-columns-3 {
   .column {
     width: 30%;
   }
 }
 
-@mixin column-mainbox-3 {
+@mixin rp-column-mainbox-3 {
   .column {
     width: 23%;
   }
@@ -13,13 +17,13 @@
   }
 }
 
-@mixin columns-2 {
+@mixin rp-columns-2 {
   .column {
     width: 46%;
   }
 }
 
-@mixin column-mainbox-2 {
+@mixin rp-column-mainbox-2 {
   .column {
     width: 36%;
   }
@@ -48,18 +52,18 @@
   }
 
   &-multiple-3 {
-    @include columns-3;
+    @include rp-columns-3;
 
     &.column-mainbox {
-      @include column-mainbox-3;
+      @include rp-column-mainbox-3;
     }
   }
 
   &-multiple-2 {
-    @include columns-2;
+    @include rp-columns-2;
 
     &.column-mainbox {
-      @include column-mainbox-2;
+      @include rp-column-mainbox-2;
     }
   }
 

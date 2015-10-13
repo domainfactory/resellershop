@@ -33,7 +33,10 @@
   max-height: 0;
   opacity: .5;
   overflow: hidden;
-  transition: max-height ease-in $collapse-speed, opacity ease-in $collapse-speed;
+
+  @if ( $use-fx ) {
+    transition: max-height ease-in $collapse-speed, opacity ease-in $collapse-speed;
+  }
 
   H2 {
     text-align: center;
@@ -43,7 +46,10 @@
   &.section-active {
     max-height: 300em;
     opacity: 1;
-    transition: max-height ease-out $collapse-speed, opacity ease-out $collapse-speed;
+
+    @if ( $use-fx ) {
+      transition: max-height ease-out $collapse-speed, opacity ease-out $collapse-speed;
+    }
   }
 
   @media screen and (max-width: $viewport-max-width-m) {

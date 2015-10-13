@@ -76,6 +76,8 @@
     @extend %block-brand-bright;
     padding-top: 0;
     padding-bottom: 0;
-    transition: none;
+    @if ( $use-fx ) {
+      transition: none;
+    }
   }
 }
