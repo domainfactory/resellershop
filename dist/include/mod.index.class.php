@@ -19,15 +19,11 @@ class modIndex {
   // An dieser Stelle existiert pro Seite, die eigene Daten
   // erwartet, eine eigene Methode zum Aufbereiten dieser Werte.
 
-
   public static function indexAction() {
-    // Daten aus der products.ini auslesen
-    $hProductSettings = Settings::get('products');
-    Renderer::assign('product_settings', $hProductSettings);
-
     // Produkte für Tarifvergleich auslesen
-    $ahTariffCompare = shopProduct::readEntry(array(
-      'return_shopformat' => 1,
+    $ahTariffCompare = static::includeProductCompare(array(
+      'settings_file' => 'products',
+      'assign_settings' => 'product_settings',
     ));
     Renderer::assign('tariffcompare',$ahTariffCompare);
 
@@ -57,11 +53,14 @@ class modIndex {
   }
 
   public static function tarifeAction() {
-    $hProductSettings = Settings::get('products');
-    $ahTariffCompare = shopProduct::readEntry(array(
-      'return_shopformat' => 1,
+    // Daten für Tarifvergleich auslesen und bereitstellen
+    $ahTariffCompare = static::includeProductCompare(array(
       'return_shopformat_grouped' => 1,
+      'settings_file' => 'products',
+      'assign_settings' => 'product_settings',
     ));
+    Renderer::assign('tariffcompare',$ahTariffCompare);
+
     $ahTariffs = shopShopping::readStore(array(
       'norm' => 'tariff',
       'check_orderable' => 1,
@@ -70,9 +69,9 @@ class modIndex {
       'return_detail_limits' => 1,
       'return_shop_price' => 1,
     ));
-    Renderer::assign('product_settings', $hProductSettings);
-    Renderer::assign('tariffcompare',$ahTariffCompare);
     Renderer::assign('tariff_groups', $ahTariffs);
+
+    // Intervall für Preisanzeige bereitstellen
     Renderer::assign('interval',shopProduct::readInterval(array(
       'return_shopformat' => 1,
     )));
@@ -754,21 +753,38 @@ class modIndex {
   }
 
   /**
-   * Daten fuer Tarifvergleiche aufbereiten
+   * Daten fuer Produktbereiche aufbereiten
    *
+   * @param array $hParams      Parameter für shopProduct::readEntry und Assigns
    * @return array
    */
-  private static function getTariffCompare() {
-    $ahTariffCompare = shopProduct::readEntry(array(
-      'return_shopformat' => 1,
-    ));
+  protected static function includeProductCompare($hParams=array()) {
+    if ( array_key_exists('settings_file', $hParams) ) {
+      $sSettingsFile = $hParams['settings_file'] ? $hParams['settings_file'] : 'products';
+      unset($hParams['settings_file']);
+      $hParams['shop_settings'] = Settings::get($sSettingsFile);
+    }
 
-    Renderer::assign('tariffcompare', $ahTariffCompare);
-    return array(
-      'template' => Renderer::render('modules/tariff_compare.tpl'),
-      'assigns'  => array(),
-    );
+    // Einstellungen dem Renderer zuweisen
+    $sSettingsAssignName = null;
+    if ( array_key_exists('assign_settings', $hParams) ) {
+      $sSettingsAssignName = $hParams['assign_settings'];
+      Renderer::assign($sSettingsAssignName, $hParams['shop_settings']);
+      unset($hParams['assign_settings']);
+    }
+
+    // Produkt-IDs setzen
+    if ( !array_key_exists('peid', $hParams) ) {
+      $hParams['peid'] = $hParams['shop_settings']['products']['peid'];
+    }
+
+    // Daten für Vergleiche formatieren
+    $hParams['return_shopformat'] = 1;
+
+    // Daten auslesen und zurückgeben
+    return shopProduct::readEntry($hParams);
   }
+
 
 }
 

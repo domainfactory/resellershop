@@ -61,15 +61,15 @@ class shopProduct extends rpProduct {
   public static function readEntry($hParams=array()) {
     $bRetSF    = ($hParams['return_shopformat']) ? 1 : 0;
     $bRetGroup = ($hParams['return_shopformat_grouped']) ? 1 : 0;
+    $hSettings = ($hParams['shop_settings']) ? $hParams['shop_settings'] : Settings::getValue('products');
 
     // shopformat-Parameter nicht ans RP senden
     unset($hParams['return_shopformat']);
     unset($hParams['return_shopformat_group']);
+    unset($hParams['shop_settings']);
 
     // Anpassungen fuer Shop-Aufruf
     if ( $bRetSF || $bRetGroup ) {
-      $settings = Settings::getValue('products');
-      $hParams['peid'] = $settings['products']['peid'];
       $hParams['check_orderable']      = 1;
       $hParams['return_array']         = 1;
       $hParams['return_shop_price']    = 1;
@@ -86,19 +86,19 @@ class shopProduct extends rpProduct {
     if ( $bRetSF && $data ) {
       // Limits vorbereiten
       foreach ( array('limits', 'limits_hidden') as $sRequiredField ) {
-        if (    !array_key_exists($sRequiredField, $settings)
-             || !is_array($settings[$sRequiredField]) ) {
-          $settings[$sRequiredField] = false;
+        if (    !array_key_exists($sRequiredField, $hSettings)
+             || !is_array($hSettings[$sRequiredField]) ) {
+          $hSettings[$sRequiredField] = false;
         }
       }
-      $bHasLimits       = $settings['limits']        && count($settings['limits']['fld']) >= 0;
-      $bHasHiddenLimits = $settings['limits_hidden'] && count($settings['limits_hidden']['fld']) >= 0;
+      $bHasLimits       = $hSettings['limits']        && count($hSettings['limits']['fld']) >= 0;
+      $bHasHiddenLimits = $hSettings['limits_hidden'] && count($hSettings['limits_hidden']['fld']) >= 0;
       $hAllLimits = array();
       $hAllLimitGroups = array();
       // Datensaetze einzelner Produkte der API verarbeiten
       foreach ( $data as $id => $entry ) {
         // Eigene Beschreibung aus der products.ini verwenden
-        $sCustomDescr = $settings['products']['descr'][array_search($entry['peid'], $settings['products']['peid'])];
+        $sCustomDescr = $hSettings['products']['descr'][array_search($entry['peid'], $hSettings['products']['peid'])];
         if ( trim($sCustomDescr) !== '' ) {
           $data[$id]['descr'] = $sCustomDescr;
         }
@@ -153,7 +153,7 @@ class shopProduct extends rpProduct {
 
       // Sortierung der Elemente nach angegebener ID in der products.ini
       $sortedData = array();
-      foreach ( $settings['products']['peid'] as $peid ) {
+      foreach ( $hSettings['products']['peid'] as $peid ) {
         foreach ( $data as $id => $entry ) {
           if ( $entry['visible'] && $entry['peid'] == $peid ) {
             $sortedData[$id] = $entry;
@@ -169,12 +169,12 @@ class shopProduct extends rpProduct {
         foreach ( $data as $id => $entry ) {
           // Felder aus der product.ini mit Standardwerten fuellen
           foreach ( array('limits', 'limits_hidden') as $sDisplayGroup ) {
-            foreach ( $settings[$sDisplayGroup]['fld'] as $sFld ) {
+            foreach ( $hSettings[$sDisplayGroup]['fld'] as $sFld ) {
               if ( array_key_exists($sFld, $hAllLimits ) ) {
                 $data[$id]['shop_limits'][$sDisplayGroup][$sFld] = static::makeLimit(
                   $hAllLimits[$sFld],
-                  $settings[$sDisplayGroup],
-                  array_search($sFld, $settings[$sDisplayGroup]['fld'])
+                  $hSettings[$sDisplayGroup],
+                  array_search($sFld, $hSettings[$sDisplayGroup]['fld'])
                 );
               }
             }
@@ -199,10 +199,10 @@ class shopProduct extends rpProduct {
               }
 
               // Werte des Limits fuer den vergleich setzen
-              if ( $bHasLimits && ($iKey = array_search($sFld, $settings['limits']['fld'])) !== false ) {
-                $data[$id]['shop_limits']['limits'][$sFld] = static::makeLimit($hLimit, $settings['limits'], $iKey);
-              } elseif ( $bHasHiddenLimits && ($iKey = array_search($sFld, $settings['limits_hidden']['fld'])) !== false ) {
-                $data[$id]['shop_limits']['limits_hidden'][$sFld] = static::makeLimit($hLimit, $settings['limits_hidden'], $iKey);
+              if ( $bHasLimits && ($iKey = array_search($sFld, $hSettings['limits']['fld'])) !== false ) {
+                $data[$id]['shop_limits']['limits'][$sFld] = static::makeLimit($hLimit, $hSettings['limits'], $iKey);
+              } elseif ( $bHasHiddenLimits && ($iKey = array_search($sFld, $hSettings['limits_hidden']['fld'])) !== false ) {
+                $data[$id]['shop_limits']['limits_hidden'][$sFld] = static::makeLimit($hLimit, $hSettings['limits_hidden'], $iKey);
               }
             }
             unset($hLimit);
@@ -211,7 +211,7 @@ class shopProduct extends rpProduct {
         }
       }
 
-      $data = array_merge($settings,
+      $data = array_merge($hSettings,
         array(
           'entries' => $data,
           'has' => array(

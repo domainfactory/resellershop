@@ -1,5 +1,5 @@
 {% spaceless %}
-{% if tariffcompare and tariffcompare.entries|length %}
+{% if compare_data and compare_data.entries|length %}
   <section id="tarife" class="tariffcompare page-neutral product-type-tariff">
     <h2 class="a11y-header">Unsere Tarife</h2>
 
@@ -13,25 +13,25 @@
           <span>0,00</span>
         </div>
         <dl class="tariff-limits">
-          {% for limit in tariffcompare.entries[0].shop_limits.limits %}
+          {% for limit in compare_data.entries[0].shop_limits.limits %}
             <dt{% if limit.descr %} title="{{ limit.descr }}"{% endif %}>{{ limit.name }}</dt>
           {% endfor %}
           <dl class="tariff-limit-hidden">
-            {% for limit in tariffcompare.entries[0].shop_limits.limits_hidden %}
+            {% for limit in compare_data.entries[0].shop_limits.limits_hidden %}
               <dt{% if limit.descr %} title="{{ limit.descr }}"{% endif %}>{{ limit.name }}</dt>
             {% endfor %}
           </dl>
         </dl>
 
-        {% if tariffcompare.has.limits_hidden %}
+        {% if compare_data.has.limits_hidden %}
           <span class="tariff-limit-toggle icon icon-bg-brand icon-plus-small">mehr Info</span>
         {% endif %}
       </a>
     </aside>
 
     <ul class="list-horizontal list-scroll tarifflist">
-      {% for tariff in tariffcompare.entries %}
-        <li class="tariff{% if tariff.peid == product_settings.products.highlight %} tariff-highlight{% endif %}" typeof="Product">
+      {% for tariff in compare_data.entries %}
+        <li class="tariff{% if tariff.peid == compare_settings.products.highlight %} tariff-highlight{% endif %}" typeof="Product">
           {# Weitere Metadaten zum Produkt fuer Suchmaschinen #}
           <link href="http://www.productontology.org/id/Shared_web_hosting_service" property="additionalType">
 
@@ -66,7 +66,7 @@
             </dl>
 
             {# Link zum Auf- und Zuklappen der weiteren Limits #}
-            {% if tariffcompare.has.limits_hidden %}
+            {% if compare_data.has.limits_hidden %}
               <span class="tariff-limit-toggle icon icon-bg-brand icon-plus-small">mehr Info</span>
             {% endif %}
           </a>
