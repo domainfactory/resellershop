@@ -7,7 +7,7 @@
 
   var css = {
     countElement: 'site-nav-cart-itemcount',
-    countFx: 'item-cart-animation',
+    countFx: 'item-cart-updated',
     countLoading: 'item-count-loading',
     cartOverview: 'cart-overview-articles',
     inCart: 'in-cart',
@@ -98,21 +98,23 @@
       }
     };
 
+    var updateForced = arguments[0] || false;
+
     // Ladeanimation starten
     $itemCount.
-      addClass(css.countLoading).
-      removeClass(css.countFx);
+      addClass(css.countLoading);
 
     return shop.rpc.render('.'+css.wrapperElement, rpcData).
-      then(shop.cart.updateItems);
+      then(function updateItemsWithForceData(result) {
+        return shop.cart.updateItems(result, updateForced);
+      });
   };
 
 
-  shop.cart.updateItems = function updateItems(result) {
+  shop.cart.updateItems = function updateItems(result, forced) {
     // Ladeanimation beenden
     $itemCount.
-      removeClass(css.countLoading).
-      addClass(css.countFx);
+      removeClass(css.countLoading);
 
     // Abbruch bei ungueltigen Daten
     if ( !result || !result.data || !result.data.assigns ) {
@@ -121,9 +123,13 @@
 
     // Anzahl in der Navigation aktualisieren
     var cartNr = result.data.assigns.count.all > 99 ? "99+" : result.data.assigns.count.all;
-    $itemCount.
-      find('SPAN').
-        html( cartNr );
+    $itemCount.find('SPAN').html( cartNr );
+    if ( !forced ) {
+      $itemCount.addClass(css.countFx);
+      setTimeout(function removeCountChangedFx(){
+        $itemCount.removeClass(css.countFx);
+      }, 4000);
+    }
 
     // Asynchron alle Elemente aktualisieren
     setTimeout(function updateAllItemsWithCurrentResult(){
@@ -530,7 +536,7 @@
 
     shop.cart.setEventListener();
     shop.cart.getCurrentProductTypes();
-    shop.cart.update();
+    shop.cart.update(true);
   };
 
   $(document).on('ready', shop.cart.init);

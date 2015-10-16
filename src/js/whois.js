@@ -215,7 +215,9 @@
             then(shop.whois.updateDomain, function onDomainToCartFail() {
               return shop.whois.onQueryFail(data);
             }).
-            then(shop.cart.update, shop.rpc.renderMessagesFromRpcResult);
+            then(function updateCartAfterAddingDomain(){
+              return shop.cart.update();
+            }, shop.rpc.renderMessagesFromRpcResult);
   };
 
   shop.whois.onQueryFail = function whoisOnQueryFail(domainData) {

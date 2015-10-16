@@ -140,6 +140,22 @@
   }
 
 
+  //////////////////// PULSE //////////////////////
+
+
+  // Hintergrund des Warenkorbsymbols pulsieren lassen
+  @keyframes pulseItemCount {
+    0% {
+      background-color: inherit;
+      color: inherit;
+    }
+    100% {
+      background-color: $color-accent-dark;
+      color: $color-text-invert;
+    }
+  }
+
+
   //////////////////// SLIDE //////////////////////
 
 
