@@ -27,7 +27,7 @@
           {% for tariff in cart.items.tariff %}
             <li class="cart-item cart-tariff-item" tabindex="0" data-product='{"scid":"{{ tariff.scid }}","norm":"tariff"}' data-scid="{{ tariff.scid }}" title="{{ tariff.product.name }}">
               <span property="name">{{ tariff.product.name }}</span>
-              {% if tariff.int %}
+              {% if tariff.int.piid %}
                 <p class="cart-price">{{ price(tariff.int.price_long) }}</p>
               {% else %}
                 <p class="cart-price">{{ price(tariff.price.all_long) }}</p>
@@ -65,7 +65,7 @@
             <li class="cart-item cart-domain-item" tabindex="0" data-product='{"scid":"{{ domain.scid }}","norm":"domain","name":"{{ domain.attribute.name }}"}' data-scid="{{ domain.scid }}" title="{{ domain.attribute.name }}">
               <span property="name" title="{{ domain.attribute.name }}">{{ domain.attribute.name }}</span>
               {% if cart.item_count.tariff %}
-                {% if domain.int %}
+                {% if domain.int.piid  %}
                   <p class="cart-price">{{ price(domain.int.price_long) }}</p>
                 {% else %}
                   <p class="cart-price">{{ price(domain.price.all_long) }}</p>
@@ -93,7 +93,7 @@
             <li class="cart-item cart-addon-item" tabindex="0" data-product='{"scid":"{{ addon.scid }}","amount":"{{ addon.amount }}","norm":"add-on"}' data-scid="{{ addon.scid }}" title="{{ addon.product.name }}">
               <input class="cart-addon-count" type="number" step="1" min="1" max="999" value="{{ addon.amount }}" maxlength="3">
               <span property="name">{{ addon.product.name }}</span>
-              {% if addon.int %}
+              {% if addon.int.piid %}
                 <p class="cart-price">{{ price(addon.int.price_long) }}</p>
               {% else %}
                 <p class="cart-price">{{ price(addon.price.all_long) }}</p>
@@ -122,7 +122,7 @@
                 <input class="cart-article-count" type="number" step="1" min="1" max="999" value="{{ article.amount }}" maxlength="3">
               {% endif %}
               <span property="name" title="{{ article.product.name }}">{{ article.product.name }}</span>
-              {% if article.int %}
+              {% if article.int.piid %}
                 <p class="cart-price">{{ price(article.int.price_long) }}</p>
               {% else %}
                 <p class="cart-price">{{ price(article.price.all_long) }}</p>

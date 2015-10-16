@@ -48,7 +48,7 @@
 
               {# Preis #}
               <td headers="cart-price {{ group_id }} {{ id }}" class="cart-price-overview">
-                {% if tariff.int %}
+                {% if tariff.int.piid %}
                   <p class="cart-price-int">
                     {{ price(tariff.int.price_long) }}
                     <span class="cart-small-data" role="presentation"> {{ interval.descr[tariff.int.piid] }}</span>
@@ -61,7 +61,7 @@
 
               {# Abrechnungsintervall #}
               <td headers="cart-interval {{ group_id }} {{ id }}">
-                {% if tariff.int %}
+                {% if tariff.int.piid %}
                   <p class="cart-price-int">
                     {{ interval.descr[tariff.int.piid] }}
                   </p>
@@ -115,7 +115,7 @@
 
               {# Domainpreis #}
               <td headers="cart-price {{ group_id }} {{ id }}" class="cart-price-overview">
-                {% if domain.int %}
+                {% if domain.int.piid %}
                   <p class="cart-price-int">
                     {{ price(domain.int.price_long) }}
                     <span class="cart-small-data" role="presentation"> {{ interval.descr[domain.int.piid] }}</span>
@@ -128,7 +128,7 @@
 
               {# Abrechnung #}
               <td headers="cart-interval {{ group_id }} {{ id }}">
-                {% if domain.int %}
+                {% if domain.int.piid %}
                   <p class="cart-price-int">
                     {{ interval.descr[domain.int.piid] }}
                   </p>
@@ -190,7 +190,7 @@
 
               {# Addon-Preis #}
               <td headers="cart-price {{ group_id }} {{ id }}" class="cart-price-overview">
-                {% if addon.int %}
+                {% if addon.int.piid %}
                   <p class="cart-price-int">
                     {{ price(addon.int.price_long) }}
                     <span class="cart-small-data" role="presentation"> {{ interval.descr[addon.int.piid] }}</span>
@@ -203,7 +203,7 @@
 
               {# Abrechnung #}
               <td headers="cart-interval {{ group_id }} {{ id }}">
-                {% if addon.int %}
+                {% if addon.int.piid %}
                   <p class="cart-price-int">
                     {{ interval.descr[addon.int.piid] }}
                   </p>
@@ -264,7 +264,7 @@
 
               {# article-Preis #}
               <td headers="cart-price {{ group_id }} {{ id }}" class="cart-price-overview">
-                {% if article.int %}
+                {% if article.int.piid %}
                   <p class="cart-price-int">
                     {{ price(article.int.price_long) }}
                     <span class="cart-small-data" role="presentation"> {{ interval.descr[article.int.piid] }}</span>
@@ -277,7 +277,7 @@
 
               {# Abrechnung #}
               <td headers="cart-interval {{ group_id }} {{ id }}">
-                {% if article.int %}
+                {% if article.int.piid %}
                   <p class="cart-price-int">
                     {{ interval.descr[article.int.piid] }}
                   </p>
