@@ -10,12 +10,13 @@ Header always set X-Content-Type-Options "nosniff"
 
 ## Einstellungen vor Besuchern verstecken
 #RewriteEngine On
-#RewriteRule ^compiled/(.*)$ /index.php
-#RewriteRule ^compiled$ /index.php
-#RewriteRule ^include/(.*)$ /index.php
-#RewriteRule ^include$ /index.php
-#RewriteRule ^settings/(.*)$ /index.php
-#RewriteRule ^settings$ /index.php
-#RewriteRule ^templates/(.*)$ /index.php
-#RewriteRule ^templates$ index.php
 #RewriteRule ^.htaccess$ /index.php
+#RedirectMatch compiled/(.*)$ /
+#RedirectMatch compiled/?$ /
+#RedirectMatch "include/(.*)$" /
+#RedirectMatch "include/?$" /
+#RedirectMatch settings/(.*)$ /
+#RedirectMatch settings/?$ /
+#RedirectMatch templates/(.*)$ /
+#RedirectMatch templates/?$ /
+
