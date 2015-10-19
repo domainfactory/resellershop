@@ -1,7 +1,7 @@
 {
   "name": "reseller-shopdemo",
   "description": "Beispiel-Shop für domainFACTORY-Reseller",
-  "version": "1.0.0beta",
+  "version": "1.0.0",
   "homepage": "https://www.reseller-shop.eu",
   "private": true,
   "license": "BSD-3-Clause",
