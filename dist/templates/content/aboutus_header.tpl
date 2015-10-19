@@ -21,7 +21,7 @@
 
       <h3>Sichere und redundante Anbindung unserer Systeme</h3>
       <p>
-        Mittels unserer redudanten Anbindung unserer Systeme an unterschied&shy;liche Backbone-Netze, können wir Ihnen eine überdurch&shyl;schnittliche Erreich&shy;barkeit der Server von 99,9 % garantieren!
+        Mittels unserer redudanten Anbindung unserer Systeme an unterschied&shy;liche Backbone-Netze, k&ouml;nnen wir Ihnen eine &uuml;berdurch&shy;schnittliche Erreich&shy;barkeit der Server von 99,9 % garantieren!
       </p>
     </aside>
   </article>
