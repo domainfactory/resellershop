@@ -7,7 +7,11 @@
     <p>{{ customer.adress.cus.adress_1 }}</p>
     {% if customer.adress.cus.adress_2 %}<p>{{ customer.adress.cus.adress_2 }}</p>{% endif %}
     <p>{{ customer.adress.cus.zip }} {{ customer.adress.cus.city }}</p>
-    <p>{{ countries[customer.adress.cus.ccid].name }}</p>
+    {% for country in countries %}
+      {% if country.ccid == customer.adress.cus.ccid %}
+        <p>{{ country.name }}</p>
+      {% endif %}
+    {% endfor %}
   {% endset %}
 
   <div class="order-box-row">
@@ -26,7 +30,11 @@
         <p>{{ customer.adress.inv.adress_1 }}</p>
         {% if customer.adress.inv.adress_2 %}<p>{{ customer.adress.inv.adress_2 }}</p>{% endif %}
         <p>{{ customer.adress.inv.zip }} {{ customer.adress.inv.city }}</p>
-        <p>{{ countries[customer.adress.inv.ccid].name }}</p>
+        {% for country in countries %}
+          {% if country.ccid == customer.adress.inv.ccid %}
+            <p>{{ country.name }}</p>
+          {% endif %}
+        {% endfor %}
 
       {# Rechnungsadresse entsprecht Kundenadresse #}
       {% else %}

@@ -291,7 +291,13 @@ class modIndex {
       $customer = $_SESSION['customer'];
       $cart = shopShopping::getCartData();
 
+      $aiCustomerCountries = array($customer['adress']['cus']['ccid']);
+      if ( $customer['adress']['inv'] && array_key_exists('ccid', $customer['adress']['inv']) ) {
+        $aiCustomerCountries[] = $customer['adress']['inv']['ccid'];
+      }
+
       $ahCountries = shopCustomer::readCountry(array(
+        'ccid' => $aiCustomerCountries,
         'active' => 1,
         'return_array' => 1,
       ));
