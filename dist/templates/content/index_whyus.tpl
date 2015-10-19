@@ -7,12 +7,12 @@
         <p class="subheadline">Sechs gute Gr&uuml;nde sich f&uuml;r {{site.name.title}} zu entscheiden:</p>
 
         <ul class="list-boxed">
-          <li class="page-neutral icon icon-align icon-wrench">Umfang&shy;reich konfi&shy;gurier&shy;bar</li>
-          <li class="page-neutral icon icon-align icon-thumbsup">faires Preis-Leis&shy;tungs-Ver&shy;h&auml;lt&shy;nis</li>
-          <li class="page-neutral icon icon-align icon-clock24">24 Stun&shy;den Sup&shy;port erreichbar</li>
-          <li class="page-neutral icon icon-align icon-server">High&shy;end Web- und Mailserver</li>
-          <li class="page-neutral icon icon-align icon-money">Geld-zur&uuml;ck-Ga&shy;ran&shy;tie inklu&shy;sive</li>
-          <li class="page-neutral icon icon-align icon-lock">SSL-ver&shy;schl&uuml;ssel&shy;te Sys&shy;teme</li>
+          <li class="page-neutral-light icon icon-align icon-wrench">Umfang&shy;reich konfi&shy;gurier&shy;bar</li>
+          <li class="page-neutral-light icon icon-align icon-thumbsup">faires Preis-Leis&shy;tungs-Ver&shy;h&auml;lt&shy;nis</li>
+          <li class="page-neutral-light icon icon-align icon-clock24">24 Stun&shy;den Sup&shy;port erreichbar</li>
+          <li class="page-neutral-light icon icon-align icon-server">High&shy;end Web- und Mailserver</li>
+          <li class="page-neutral-light icon icon-align icon-money">Geld-zur&uuml;ck-Ga&shy;ran&shy;tie inklu&shy;sive</li>
+          <li class="page-neutral-light icon icon-align icon-lock">SSL-ver&shy;schl&uuml;ssel&shy;te Sys&shy;teme</li>
         </ul>
       </div>
     </article>
