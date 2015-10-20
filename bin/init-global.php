@@ -71,7 +71,7 @@ function askAdditionalQuestions() {
 
   if ( $bShouldAskMoreQuestions === 'false' ) {
     say(array(
-      "Sie koennen jederzeit die dist/settings/global.ini oeffnen und saemtliche ",
+      "Sie koennen jederzeit die settings/global.ini oeffnen und saemtliche ",
       "Angaben anpassen. Sie erkennen einige auszufellende Werte z.B. an Stellen ",
       'wie "{{unternehemensname}}" in Ihrem Shop. '
     ));
@@ -131,25 +131,24 @@ function checkCorrectFileRights() {
   $asWritableFiles = array(
     // Cookie für RPC-Verbindungen
     // benötigt von dist/include/bb.rpc.class.php
-    'dist/bb.rpc.cookie',
+    DIR_SETTINGS.'bb.rpc.cookie',
     // Verzeichnis kompilierter Templates
     // benötigt von Renderer
-    'dist/compiled/',
+    DIR_COMPILED,
     // Colorierte Bilder
     // benötigt für bin/color-update.sh
-    'dist/images/',
+    DIR_IMAGES,
     // Globale Einstellungen
     // benötigt für bin/init-global.php
-    'dist/settings/global.ini',
+    DIR_SETTINGS.'global.ini',
     // Farbeinstellungen
     // benötigt von bin/color-update.sh
-    'src/scss/_ci.scss',
+    DIR_SRC_SCSS.'_ci.scss',
   );
 
   $asUnwritableFiles = array();
 
-  foreach ( $asWritableFiles as $sWritableFile ) {
-    $sPath = dirname(__FILE__).'/../'.$sWritableFile;
+  foreach ( $asWritableFiles as $sPath ) {
     // Dürfen bestehende Dateien überschrieben werden?
     if ( file_exists($sPath) ) {
       if ( !is_writable($sPath) ) {
@@ -175,13 +174,13 @@ function checkCorrectFileRights() {
     say($asUnwritableFiles);
 
     // Ist die global.ini nicht beschreibbar, so koennen wir gleich aufhören.
-    if ( in_array('dist/settings/global.ini', $asUnwritableFiles) ) {
+    if ( in_array(DIR_SETTINGS.'global.ini', $asUnwritableFiles) ) {
       say(array(
         '',
         'Damit der Konfigurationsassistent kann nicht fortgefuehrt werden, ',
         'da die global.ini nicht vom aktuellen PHP-Prozess beschrieben werden darf. ',
         '',
-        'Bitte setzen Sie die korrekten Schreibrechte fuer die dist/settings/global.ini. ',
+        'Bitte setzen Sie die korrekten Schreibrechte fuer die settings/global.ini. ',
         'Informationen hierzu erhalten Sie unter ',
         'https://doku.premium-admin.eu/doku.php/handbuch/shop_2.0/installation/start#schreibrechte_setzen_optional',
       ));

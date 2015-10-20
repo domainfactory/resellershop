@@ -1,10 +1,12 @@
 dist/bb.rpc.cookie
+bb.rpc.cookie
 dist/compiled
 dist/css/*
 dist/js/*
 dist/images
 dist/fonts
 dist/settings
+settings
 node_modules
 src/scss/_ci.scss
 .sass-cache

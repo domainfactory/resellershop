@@ -5,7 +5,7 @@ require_once(dirname(__FILE__).'/../dist/include/autoloader.php');
 require_once(DIR_INCLUDE.'cli.php');
 
 say(array(
-  'Anhand Ihrer Angaben in der dist/settings/global.ini werden ',
+  'Anhand Ihrer Angaben in der settings/global.ini werden ',
   'nun die CSS-Dateien generiert und Grafiken eingefaerbt. ',
   '',
 ));

@@ -1,20 +1,27 @@
 <?php
 
 // VERZEICHNISSE
+// Bitte achten Sie darauf, dass alle Verzeichnisse mit einem / enden!
 
-define('DIR_INCLUDE', dirname(__FILE__).'/');
+// Hauptverzeichnis des Shops
+define('DIR_SHOP_ROOT', realpath(dirname(__FILE__).'/../..').'/');
 
-define('DIR_DIST', realpath(DIR_INCLUDE.'..').'/');
+// Einstellungen
+define('DIR_SETTINGS'  , DIR_SHOP_ROOT.'settings/');
+
+// Öffentliches Hauptverzeichnis
+define('DIR_DIST'      , DIR_SHOP_ROOT.'dist/');
+define('DIR_INCLUDE'   , DIR_DIST.'include/');
 define('DIR_RENDERER'  , DIR_INCLUDE.'Twig/');
 
 define('DIR_CSS'       , DIR_DIST.'css/');
 define('DIR_JS'        , DIR_DIST.'js/');
 define('DIR_IMAGES'    , DIR_DIST.'images/');
-define('DIR_SETTINGS'  , DIR_DIST.'settings/');
 define('DIR_TEMPLATES' , DIR_DIST.'templates/');
 define('DIR_COMPILED'  , DIR_DIST.'compiled/');
 
-define('DIR_SRC', realpath(DIR_INCLUDE.'../../src').'/');
+// Quellverzeichnis
+define('DIR_SRC'       , DIR_SHOP_ROOT.'src/');
 define('DIR_SRC_IMAGES', DIR_SRC.'images/');
 define('DIR_SRC_JS'    , DIR_SRC.'js/');
 define('DIR_SRC_SCSS'  , DIR_SRC.'scss/');

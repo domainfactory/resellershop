@@ -28,8 +28,7 @@ ini_set('session.gc_maxlifetime', '1800');
 // RPC-VERBINDUNG ZU RP-SYSTEM HERSTELLEN
 
 // Pfad zum Verzeichnis, in dem der RPC-Cookie gespeichert werden soll
-// Setzen Sie diese Variable nicht, so wird die Datei im dist-Ordner abgelegt
-//define('BBRPC_COOKIE','/tmp/bb.rpc.cookie');
+define('BBRPC_COOKIE', DIR_SHOP_ROOT.'bb.rpc.cookie');
 
 if ( RP_URL ) {
   bbRpc::setUrl(RP_URL);
