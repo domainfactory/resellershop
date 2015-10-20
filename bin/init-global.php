@@ -131,7 +131,7 @@ function checkCorrectFileRights() {
   $asWritableFiles = array(
     // Cookie für RPC-Verbindungen
     // benötigt von dist/include/bb.rpc.class.php
-    DIR_SETTINGS.'bb.rpc.cookie',
+    DIR_SHOP_ROOT.'bb.rpc.cookie',
     // Verzeichnis kompilierter Templates
     // benötigt von Renderer
     DIR_COMPILED,
