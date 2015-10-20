@@ -303,15 +303,15 @@ $width-button: 6.5em;
     }
 
     @media screen and (min-width: $viewport-width-l) {
-      width: $link-width * 2;
+      width: 16em;
     }
 
     @media screen and (min-width: $viewport-width-xl) {
-      width: $link-width * 3;
+      width: 25em;
     }
 
     @media screen and (min-width: $viewport-width-hd) {
-      width: $link-width * 4;
+      width: 30em;
     }
 
     @media screen and (min-width: $viewport-width-xxl) {

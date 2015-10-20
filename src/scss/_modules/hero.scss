@@ -18,7 +18,7 @@ $hero-slide-height: 20em;
 
     $fx-easing: ease-out;
     $fx-direction: both;
-    
+
     // Einblenden der Überschriften
     @if ( $use-fx ) {
       H2,
@@ -74,6 +74,7 @@ $hero-slide-height: 20em;
     .button {
       font-weight: normal;
       margin: .5em;
+      text-align: left;
     }
   }
 
@@ -105,13 +106,11 @@ $hero-slide-height: 20em;
         left: 0;
       }
 
-      H2,
-      .subheadline {
+      HEADER {
         text-align: right;
       }
 
-      H2,
-      .subheadline,
+      HEADER,
       .hero-content {
         padding-left: 52.5%;
       }
@@ -137,10 +136,9 @@ $hero-slide-height: 20em;
         right: 0;
       }
 
-      H2,
-      .subheadline,
+      HEADER,
       .hero-content {
-        padding-right: 50%;
+        width: 50%;
       }
 
       .hero-image {
@@ -166,12 +164,14 @@ $hero-slide-height: 20em;
     }
 
     &-image {
+      /*
       &-left,
       &-right {
         .hero-content {
           width: 40em;
         }
       }
+      */
 
       &-left .hero-image {
         left: 10%;
@@ -204,14 +204,15 @@ $hero-slide-height: 20em;
       }
 
       &-left {
+        HEADER,
         .hero-content {
+          text-align: left;
           padding-left: 0;
         }
       }
 
       &-right {
-        H2,
-        .subheadline,
+        HEADER,
         .hero-content {
           padding-right: 0;
         }
