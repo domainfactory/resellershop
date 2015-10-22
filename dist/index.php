@@ -5,6 +5,13 @@
 // welche selbst alle benötigteten Skripte auflistet.
 require_once(__DIR__.'/include/config.inc.php');
 
+// Produkt direkt beim Seitenaufruf in den Warenkorb legen
+if ( array_key_exists('add', $_GET) && is_numeric($_GET['add']) ) {
+  modIndex::addToCart(array(
+    'peid' => trim($_GET['add']),
+  ));
+}
+
 // Welches Modul soll dargestellt werden?
 // Die Renderer-Klasse befindet sich unter include/renderer.class.php
 $action = Renderer::getAction();
