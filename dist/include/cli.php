@@ -7,12 +7,26 @@ function ask($sQuestion) {
   return $sInput;
 }
 
-function askUrl($sQuestion) {
+function askDomain($sQuestion) {
   $sInput = ask($sQuestion);
   while ( !preg_match('#^https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?$#i', $sInput) ) {
     $sInput = ask(array(
-      "Sie haben keine URL angegeben. Bitte geben Sie eine vollstaendige URL ",
+      "Sie haben keine Domain angegeben. Bitte geben Sie eine vollstaendige Domain ",
       "mit Protokoll (https) an: (Beispiel: https://www.reseller-shop.eu) ",
+    ));
+  }
+  if ( substr($sInput, -1) !== '/' ) {
+    $sInput .= '/';
+  }
+  return $sInput;
+}
+
+function askUrl($sQuestion) {
+  $sInput = ask($sQuestion);
+  while ( !parse_url($sInput) ) {
+    $sInput = ask(array(
+      "Sie haben keine URL angegeben. Bitte geben Sie eine vollstaendige URL ",
+      "mit Protokoll (https) an: (Beispiel: https://www.reseller-shop.eu/shop/) ",
     ));
   }
   if ( substr($sInput, -1) !== '/' ) {

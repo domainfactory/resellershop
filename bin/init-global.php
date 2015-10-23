@@ -38,7 +38,7 @@ function askGlobalQuestions() {
       "Text auf dunklem Hintergrund), Ihre Farben bleiben dabei erhalten. ",
       "Moechten Sie die Farben des Shops invertieren? (j/n): ",
     )),
-    'auftrags-url-zum-rp-system' => askUrl(array(
+    'auftrags-url-zum-rp-system' => askDomain(array(
       "----------",
       "",
       "Um die Produkte und Preise aus Ihrem RP-System ausgeben zu koennen, ",
@@ -54,6 +54,16 @@ function askGlobalQuestions() {
       "Sie in den RP-Systemeinstellungen unter System > API angeben koennen. ",
       "Bitte geben Sie Ihr Gast-Token fuer API-Aufrufe an: ",
       "(Beispiel: ".$sRandomToken.") ",
+    )),
+    'url-zu-ihrem-shop' => askUrl(array(
+      "---------",
+      "",
+      "Installieren Sie Ihren Shop mehrfach unter der selben (Sub-)Domain, so ",
+      "kann es zu Problemen mit der Stabilitaet Ihrer Sitzungen kommen. Um diese zu ",
+      "vermeiden, benoetigen wir die korrekte URL des Verzeichnisses, unter dem der ",
+      "Shop erreichbar ist. Sie koennen diese Angabe spaeter noch aendern. ",
+      "Bitte geben Sie die URL des Shop-Hauptverzeichnisses an: ",
+      "(Beispiel: https://demo.reseller-shop.eu/shop/) ",
     )),
   );
 }
@@ -99,7 +109,7 @@ function askAdditionalQuestions() {
       "das Formular ab, so wird an eine hinterlegte E-Mail-Adresse eine ",
       "Nachricht gesendet. ",
       "Bitte geben Sie die E-Mail-Adresse des Empfaengers von ",
-      "Kontaktnachrichten an: (Beispiel: reseller@shop.eu) ",
+      "Kontaktnachrichten an: (Beispiel: info@reseller-shop.eu) ",
     )),
     'url-zu-ihrer-website' => askUrl(array(
       "",
@@ -107,11 +117,7 @@ function askAdditionalQuestions() {
       "Fehlern) koennen Sie die vollstaendige URL zu Ihrer Website angeben: ",
       "(Beispiel: https://www.reseller-shop.eu) ",
     )),
-    'url-zu-ihrem-shop' => askUrl(array(
-      "Bitte geben Sie die URL an, unter welcher der Shop oeffentlich erreichbar ",
-      "sein wird: (Beispiel: https://demo.reseller-shop.eu/shop/) ",
-    )),
-    'offizielle-url-zum-rp-system' => askUrl(array(
+    'offizielle-url-zum-rp-system' => askDomain(array(
       "Nutzen Sie eine eigene Subdomain fuer Ihr RP-System, so wird diese fuer ",
       "die Weiterleitung zu Ihrem RP beim Login verwendet. Wenn Sie nur die ",
       "URL mit Auftragsnummer verwenden, so verwenden Sie bitte diese hier. ",

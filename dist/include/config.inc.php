@@ -22,7 +22,8 @@ define('RP_GUEST_TOKEN', Settings::getValue(SETTINGS_FILE, 'rpc', 'token'));
 
 
 // Löschen der gecachten Sitzungsdaten nach x Sekunden
-ini_set('session.gc_maxlifetime', '1800');
+define('COOKIE_LIFETIME', 1800);
+ini_set('session.gc_maxlifetime', COOKIE_LIFETIME);
 
 
 // RPC-VERBINDUNG ZU RP-SYSTEM HERSTELLEN
@@ -43,6 +44,20 @@ bbRpc::setUTF8Native(1);
 if ( !function_exists('session_start') || !function_exists('session_write_close') ) {
   Renderer::renderFatal('Bitte stellen Sie sicher, dass das PHP-Modul "session" zur Verfügung steht.');
 }
+
+// Sitzungscookie für angegebenes Verzeichnis schreiben,
+// um versehentlichen Datenverlust zu vermeiden.
+$sBaseUrl = Settings::getValue(SETTINGS_FILE, 'url', 'base');
+if ( $sBaseUrl ) {
+  $sBaseDir = parse_url( $sBaseUrl, PHP_URL_PATH );
+  if ( $sBaseDir ) {
+    session_set_cookie_params(COOKIE_LIFETIME, $sBaseDir);
+  } else {
+    session_set_cookie_params(COOKIE_LIFETIME);
+  }
+  unset($sBaseDir);
+}
+unset($sBaseUrl);
 
 
 session_start();
