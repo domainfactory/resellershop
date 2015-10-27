@@ -32,16 +32,32 @@
   }
 }
 
+$column-padding-topbottom: 1em;
+$column-margin-topbottom: 0;
+$column-padding-leftright: 1%;
+$column-margin-leftright: 1%;
+
 .column {
   display: inline-block;
   position: relative;
   vertical-align: top;
 
   box-sizing: border-box;
-  padding: 1em 1%;
+  padding: $column-padding-topbottom $column-padding-leftright;
 
   text-align: left;
 
+  H1,
+  H2 {
+    font-family: $font-family-head;
+    font-weight: $font-weight-normal;
+    line-height: 1.2em;
+
+    // Oberen margin zu Gunsten des paddings ersetzen, um die Gestaltung des
+    // aktuellen statt des vorherigen Blocks zu verwenden
+    margin: 0 0 1em;
+    padding: 1em 0 0;
+  }
 
   &-boxed {
     padding: 0;
@@ -75,7 +91,7 @@
     margin-right: auto;
 
     .column {
-      margin: 0 1%;
+      margin: $column-margin-topbottom $column-margin-leftright;
     }
   }
 
@@ -84,14 +100,6 @@
     IMG {
       width: 100%;
     }
-  }
-
-  H1,
-  H2 {
-    font-weight: $font-weight-normal;
-    line-height: 1.2em;
-    margin: 0 0 1em;
-    padding: 1em 0 0;
   }
 
   &-subsection {

@@ -3,6 +3,7 @@
 
   H1 {
     text-align: center;
+    font-family: $font-family-head;
     color: $color-text;
     margin: 0 auto;
     line-height: 1.4em;
@@ -20,6 +21,7 @@
   max-width: $center-text-max-width;
 
   H2 {
+    font-family: $font-family-head;
     font-size: $font-size-h2;
   }
 

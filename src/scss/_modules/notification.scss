@@ -130,7 +130,9 @@
     text-align: center;
   }
 
-  H1 {
+  H1,
+  H2 {
+    font-family: $font-family-head;
     line-height: 1.25em;
   }
 

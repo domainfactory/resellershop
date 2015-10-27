@@ -16,6 +16,7 @@
   [property="name"] {
     margin: 0;
     padding: rp-cem(1em, $font-size-h1) rp-cem(.5em, $font-size-h1) rp-cem(2em, $font-size-h1);
+    font-family: $font-family-head;
     font-size: $font-size-h1;
     text-align: center;
     line-height: 1.25em;
@@ -50,6 +51,7 @@
   [property="name"] {
     padding: 0 rp-cem($price-width, $font-size-h4) 0 0;
 
+    font-family: $font-family;
     font-size: $font-size-h4;
     font-weight: $font-weight-semibold;
     line-height: 1.25em;
