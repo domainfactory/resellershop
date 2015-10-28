@@ -1,5 +1,7 @@
-@import '_global';
+//////////////////// SCHRIFTARTEN //////////////////////
 
+// Schriftstil für Wurzelelement setzen
+// sodass theoretisch auch rem-Einheiten die $font-size-root berücksichtigen
 HTML {
   font: $font-weight-normal $font-size-root $font-family;
   line-height: 1.4em;
@@ -10,13 +12,17 @@ BODY {
   line-height: 1.4em;
 }
 
+// Helfer zum manuellen Ignorieren einer text-decoration-Angabe
 .no-underline {
   text-decoration: none;
 }
 
+
+// Schriftgröße bei großen Monitoren zusätzlich erhöhen
 @media screen and (min-width: $viewport-width-fullhd) {
   HTML {
     font-size: $font-size-l;
     line-height: 1.4em;
   }
 }
+

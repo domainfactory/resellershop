@@ -1,13 +1,13 @@
 //////////////////// SPALTEN //////////////////////
 
-// Definieren Sie hier die Spaltenbreite
-
+// Drei Spalten nebeneinander
 @mixin rp-columns-3 {
   .column {
     width: 30%;
   }
 }
 
+// Drei Spalten mit einer Hauptspalte
 @mixin rp-column-mainbox-3 {
   .column {
     width: 23%;
@@ -17,12 +17,15 @@
   }
 }
 
+
+// Zwei Spalten nebeneinander
 @mixin rp-columns-2 {
   .column {
     width: 46%;
   }
 }
 
+// Zwei Spalten mit einer Hauptspalte
 @mixin rp-column-mainbox-2 {
   .column {
     width: 36%;
@@ -32,21 +35,35 @@
   }
 }
 
+
+// Abstände für weitere Berechnung von Breitenangaben
 $column-padding-topbottom: 1em;
 $column-margin-topbottom: 0;
 $column-padding-leftright: 1%;
 $column-margin-leftright: 1%;
 
-.column {
-  display: inline-block;
-  position: relative;
-  vertical-align: top;
 
+.column {
+  // Absolute Angaben auf Spalte beziehen lassen
+  position: relative;
+
+  // Padding und Rahmen in Breite miteinbeziehen, damit 45% auch wirklich 45% sind
   box-sizing: border-box;
+
   padding: $column-padding-topbottom $column-padding-leftright;
 
+  // Spalten nebeneinander setzen
+  display: inline-block;
+
+  // Text innerhalb der Box linksbündig setzen
+  // Dies muss erneut gesetzt werden, da der multiple-wrapper die Boxen zentriert
   text-align: left;
 
+  // Spalten oben bündig anordnen
+  vertical-align: top;
+
+
+  // Hauptüberschriften innerhalb der Spalten
   H1,
   H2 {
     font-family: $font-family-head;
@@ -59,6 +76,8 @@ $column-margin-leftright: 1%;
     padding: 1em 0 0;
   }
 
+
+  // Spalten mit Boxen im Inhalt
   &-boxed {
     padding: 0;
 
@@ -67,43 +86,19 @@ $column-margin-leftright: 1%;
     }
   }
 
-  &-multiple-3 {
-    @include rp-columns-3;
 
-    &.column-mainbox {
-      @include rp-column-mainbox-3;
-    }
-  }
-
-  &-multiple-2 {
-    @include rp-columns-2;
-
-    &.column-mainbox {
-      @include rp-column-mainbox-2;
-    }
-  }
-
-  &-multiple-wrapper {
-    position: relative;
-    text-align: center;
-    max-width: $center-max-width;
-    margin-left: auto;
-    margin-right: auto;
-
-    .column {
-      margin: $column-margin-topbottom $column-margin-leftright;
-    }
-  }
-
-
+  // Spalte mit Bild
   &-picture {
     IMG {
       width: 100%;
     }
   }
 
+
+  // Abgesetzter Bereich mit Trennlinie
   &-subsection {
     $subsection-distance: 1.25em;
+
     margin: $subsection-distance 0 0;
     padding: $subsection-distance 0 0;
     border-top: .0625em solid $color-neutral-bg;
@@ -121,7 +116,49 @@ $column-margin-leftright: 1%;
   }
 
 
+  // Wrapper für mehrspaltige Inhalte
+  // Diese Klasse muss dem Eltern-Element der Spalten zugewiesen werden
+  &-multiple-wrapper {
+    position: relative;
+
+    // Boxen zentrieren
+    margin-left: auto;
+    margin-right: auto;
+
+    // Spalten zentrieren
+    text-align: center;
+
+    // Spalten nicht über die gesamte Seite strecken
+    max-width: $center-max-width;
+
+    // Abstand der Spalten untereinander
+    .column {
+      margin: $column-margin-topbottom $column-margin-leftright;
+    }
+  }
+
+
+  // Breiten für drei Spalten setzen
+  &-multiple-3 {
+    @include rp-columns-3;
+
+    &.column-mainbox {
+      @include rp-column-mainbox-3;
+    }
+  }
+
+  // Breiten für zwei Spalten setzen
+  &-multiple-2 {
+    @include rp-columns-2;
+
+    &.column-mainbox {
+      @include rp-column-mainbox-2;
+    }
+  }
+
+
   @media screen and (max-width: $viewport-max-width-m) {
+    // Dreispaltiges Layout auf eine Spalte reduzieren
     &-multiple-3 {
       &,
       &.column-mainbox {
@@ -137,7 +174,9 @@ $column-margin-leftright: 1%;
     }
   }
 
+
   @media screen and (max-width: $viewport-max-width-s) {
+    // Zweispaltiges Layout auf eine Spalte reduzieren
     &-multiple-2 {
       &,
       &.column-mainbox {
@@ -152,15 +191,20 @@ $column-margin-leftright: 1%;
       }
     }
 
+    // Abstand der Boxen mobil verringern
     &-boxed {
       .column-box {
         padding: .25em .5em;
       }
     }
   }
+
 }
 
+
+// Linken Abstand von Spalten-Auflistungen entfernen
 UL.column-multiple-wrapper {
   padding-left: 0;
   margin: 0 auto;
 }
+

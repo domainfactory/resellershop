@@ -1,3 +1,6 @@
+//////////////////// KONTAKT //////////////////////
+
+// Weltkarte als iFrame
 .contact-map {
   display: block;
 
@@ -9,6 +12,8 @@
   width: 100%;
 }
 
+
+// Überschrift der Kontakt-Seite
 .contact-header {
   H1 {
     margin: rp-cem(.5em, $font-size-h1) 0;
@@ -16,6 +21,13 @@
     line-height: 1.3em;
   }
 
+  // Grußzeile
+  .contact-greeting {
+    text-align: right;
+    font-style: italic;
+  }
+
+  // Weltkarte anpassen
   .contact-map {
     min-height: 24em;
 
@@ -23,20 +35,17 @@
       padding: 0;
     }
 
+    // Bei Landscape-Bildschirmen vermeiden dass man nur die Karte scrollen kann
     @media screen and (max-height: 32em) {
       min-height: 5em;
       max-height: 70%;
       max-height: 70vh;
     }
   }
-
-  .contact-greeting {
-    text-align: right;
-    font-style: italic;
-  }
 }
 
 
+// Kontaktbereich der Kontakt-Seite
 .contact-us {
   TEXTAREA {
     min-height: 12em;
@@ -44,34 +53,47 @@
   }
 
   .contact-data-wrapper {
-    max-width: 25em;
-
+    // Sind die Boxen nebeneinander, dann Inhalt mit anderer Box bündig setzen
     @media screen and (min-width: $viewport-width-m) {
       margin-top: ($font-size-h2 + (2 * $font-size-h2));
     }
 
+    // Daten zentrieren
     @media screen and (max-width: $viewport-max-width-s) {
       margin-left: auto;
       margin-right: auto;
     }
-
-    H3 {
-      margin: 2em 0 .5em;
-      &:first-of-type {
-        margin-top: 0;
-      }
-    }
-
-    [property="legalName"],
-    [property="streetAdress"] {
-      margin: 0 0 .25em;
-    }
   }
 }
 
+
+// Zusatzdaten der Kontakt-Seite rechts (Anschrift, Bürozeiten, ...)
+.contact-data-wrapper {
+  // Maximalbreite setzen, um lesbaren Abstand zu gewähren
+  max-width: 25em;
+
+  H3 {
+    // Abstand zwischen einzelnen Bereichen
+    margin: 2em 0 .5em;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  // Einzelne Bereiche absetzen
+  [property="legalName"],
+  [property="streetAdress"] {
+    margin: 0 0 .25em;
+  }
+}
+
+
+// Einzelne Abschnitte der Kontaktdaten
 .contact-data {
   margin: .5em 0 2em;
 
+  // Beschreibung und Inhalt nebeneinander setzen
   DT,
   DD {
     display: inline-block;
@@ -84,10 +106,12 @@
     padding: 0;
   }
 
+  // Zusätzlicher Abstand zwischen Anschrift und Telefon
   &.contact-phone {
     margin-top: 1.5em;
   }
 
+  // Mehr Platz für lange Inhalte bereitstellen
   &.contact-bank,
   &.contact-phone {
     DT {
@@ -100,40 +124,43 @@
 }
 
 
+// Footer zweispaltig, aber Kontaktdaten darin einspaltig setzen
 @media screen and (min-width: $viewport-width-xs) and (max-width: $viewport-max-width-m) {
-  .site-footer-contact{
+  .site-footer-contact {
+    // Breite einer Spalte
+    $column-width: 46%; // 46%
+
+    // Abstand der rechten Spalte zum linken Rand
+    $column-fullwidth-padding: (50% + $column-padding-leftright + $column-margin-leftright); // 52%
+
+
+    // Alle Spalten nebeneinander setzen
     .column,
     .column-mainbox {
       display: inline-block;
-      width: 46%;
+      width: $column-width;
     }
 
+    // Kontaktspalte über volle Breite
     .column:last-of-type {
-      width: 94%;
+      width: (($column-width + $column-padding-leftright) * 2);  // 94%
     }
 
+    // Anschrift auf rechte Spalte
     .contact-address {
-      padding-left: 52%;
+      padding-left: $column-fullwidth-padding;
     }
 
+    // Karte auf linke Spalte
     .contact-map {
-      width: 46%;
-      margin-left: -51%;
+      width: (50% - (($column-padding-leftright + $column-margin-leftright) * 2)); // 46%
+      margin-left: (0 - $column-fullwidth-padding + $column-padding-leftright); // -51%
       position: absolute;
     }
 
     // Abgrenzende Linie mit Karte bündig setzen
     .address-vcard {
       min-height: 6em;
-    }
-  }
-
-  @media screen and (min-width: $viewport-width-s) and (max-width: $viewport-max-width-m) {
-    .address-minimap {
-      position: absolute;
-      margin-top: 1em;
-      right: 0;
-      width: 48%;
     }
   }
 }
