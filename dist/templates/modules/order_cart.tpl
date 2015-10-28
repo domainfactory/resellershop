@@ -5,3 +5,5 @@
     {% include "modules/cart_articles.tpl" %}
   </div>
 </section>
+
+<section class="notifications"></section>
