@@ -393,7 +393,7 @@ class Renderer {
     $sContent = '';
 
     // Basis für Teilung der Byte-Größen
-    $iBaseMB = Settings::getValue('products','units','mb_base');
+    $iBaseMB = Settings::getValue(SETTINGS_FILE, 'units', 'mb_base');
     if ( !$iBaseMB ) {
       $iBaseMB = 1000;
     }
