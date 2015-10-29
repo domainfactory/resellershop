@@ -58,7 +58,9 @@ class Status {
     global $asCustomErrorMessages;
 
     // Statusmeldungen der bbRpc-Klasse auslesen
-    $ahMsgs = bbRpc::getMessages();
+    $ahMsgs = bbRpc::getMessages(array(
+      'delete_previous' => 1
+    ));
 
     // Zuordnungen der bbRpc-Typen zu den Typen dieser Klasse
     $hTypeMap = array(
