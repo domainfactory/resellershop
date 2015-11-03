@@ -316,8 +316,9 @@
    */
   shop.cart.renderChangeResult = function cartRenderChangeResult(result) {
     if ( result && result.data && result.data.assigns ) {
+      var assigns = result.data.assigns;
       // Dialog fuer Tarifwechsel darstellen
-      if ( result.data.assigns.hasOwnProperty('action') && result.data.assigns.action === 'show_dialog' ) {
+      if ( assigns.hasOwnProperty('action') && assigns.action === 'show_dialog' ) {
         shop.ui.showDialog(result.data.template);
       } else {
         var target = '.' + css.wrapperElement;
@@ -330,6 +331,11 @@
         if ( $focussed.closest(target).length ) {
           focussedProductId = $focussed.closest('[data-peid]').data('peid');
           focussedShoppingCartId = $focussed.closest('[data-scid]').data('scid');
+        }
+
+        // Zusaetzliche Dialoge anzeigen und trotzdem den Warenkorb aktualisieren
+        if ( assigns.hasOwnProperty('action') && assigns.action === 'add_dialog' ) {
+          shop.ui.showDialog(assigns.dialog);
         }
 
         shop.rpc.injectRenderedResult(target, result);
@@ -358,7 +364,7 @@
   //////////////////// CHANGE AMOUNT //////////////////////
 
 
-  shop.cart.changeProductAmount = function caertChangeProductAmount(scid, newAmount) {
+  shop.cart.changeProductAmount = function cartChangeProductAmount(scid, newAmount) {
     var data = {
       scid: scid,
       amount: newAmount,

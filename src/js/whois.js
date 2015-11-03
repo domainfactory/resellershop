@@ -3,16 +3,30 @@
 
   shop.whois = {
     requestedDomains: [],
-    maxRequestCount: 10
+
+    // Maximale Anzahl gleichzeitiger Anfragen
+    maxRequestCount: 10,
+
+    // Wurden Bereits abfragen durchgeführt?
+    isFirstRequest: true
   };
 
+  // Trennzeichen fuer Whois-Begriffe
   var whoisLineSplitRegExp = /\n/g;
   var whoisTermSplitRegExp = /[\s\n:;,\/]/g;
 
+  // Cache der Vorlagen
   var itemTemplates = {};
+
+  // Nach welchen Domains wurde bereits gesucht?
+  var duplicateSearches = {};
+
+  // Standardmaße für das Eingabefeld, damit die mehrzeilige Darstellung optimal bleibt.
+  // Bei neueren Browsern wird versucht, diese Werte via getComputedStyle zu ermitteln.
   var inputPadding = 1.5;
   var inputLineHeight = 1.5;
 
+  // Klassennamen
   var cssPrefix = 'domainsearch';
   var css = {
     wrapper           : cssPrefix,
@@ -39,6 +53,12 @@
     tariffFooter      : 'domain-price-tariff-notice'
   };
 
+
+  /**
+   * Events setzen
+   *
+   * Diese Methode wird bei der Initialisierung der Seite ausgeführt.
+   */
   shop.whois.setEventListener = function whoisSetEventListener() {
     var $delegate = $(document);
     var clickEvent = 'click.shop';
@@ -46,14 +66,20 @@
     // Absenden des Suchformulars
     $delegate.on(clickEvent, '.'+css.submit, function whoisOnSubmitClick(event){
       event.preventDefault();
+
       var $formWrapper = $(this).closest('.' + css.wrapper);
       var requestedDomains = $formWrapper.find('.' + css.input).val();
+
+      // Keine TLD bei Suche angegeben -> nach Standard-TLDs suchen
       if ( requestedDomains.indexOf('.') === -1 ) {
         shop.whois.searchForAdditional($formWrapper, $formWrapper.find('.' + css.form).data('tlds'));
+
+      // Nach angegebener Domain suchen
       } else {
         shop.whois.request(requestedDomains, $formWrapper);
       }
     });
+
 
     // Klick auf einzelne Domain
     $delegate.on(clickEvent, '.'+css.result+', .'+css.result+' LABEL', function whoisAddToCartEvent(event) {
@@ -72,7 +98,7 @@
       }
 
       if ( $this.hasClass(css.transferResult) || $this.hasClass(css.unavailableResult) ) {
-        // Nur öffnen, wenn das Popup zu ist
+        // Nur öffnen, wenn das Popup geschlossen ist
         if ( !$this.hasClass(css.transferActive) || $target.is('.'+css.transferAbort) ) {
           shop.whois.toggleTransferLayer($this.data());
         }
@@ -81,9 +107,11 @@
       }
     });
 
+
     // Bestätigen eines Transfers
     $delegate.on(clickEvent, '.'+css.transferConfirm, function whoisConfirmTransferEvent(event) {
       event.preventDefault();
+
       var $wrapper = $(this).closest('.' + css.result);
       var domainData = $wrapper.data();
 
@@ -103,17 +131,22 @@
       shop.whois.addDomainToCart(domainData);
     });
 
+
     // Enter-Taste beim Such-Eingabefeld
     $delegate.on('keydown.shop', '.'+css.input, function whoisSubmitOnEnter(event){
       if ( event && event.keyCode === 13 ) {
+        // Shift-Taste -> Weitere Zeile hinzufügen
         if ( event.shiftKey ) {
           resizeFormInput(this, true);
+
+        // Normal gedrückt -> Suchen
         } else {
           event.preventDefault();
           onFormInputChange(this);
         }
       }
     });
+
 
     // Verlassen/Fokussieren des Such-Eingabefelds
     $delegate.on('blur.shop focus.shop change.shop', '.'+css.input, function whoisSubmitOnChange(event){
@@ -142,17 +175,32 @@
   //////////////////// INPUT //////////////////////
 
 
+  /**
+   * Größe des Eingabefelds nach Absenden des Formulars korrigieren
+   *
+   * @function onFormInputChange
+   * @param {DOMElement} input - Eingabefeld
+   */
   var onFormInputChange = function whoisOnFormInputChange(input) {
     var $input = $(input);
+
+    // Leerzeile am Ende entfernen
     var value = $input.val();
     var lastCharacterIndex = value.length - 1;
     if ( value.substr(lastCharacterIndex, 1) === "\n" ) {
       $input.val( $.trim(value.substr(0, lastCharacterIndex)) );
+
+      // Cursor ans Ende setzen
       if ( input.setSelectionRange ) {
         input.setSelectionRange(lastCharacterIndex, lastCharacterIndex);
       }
     }
-    $input.closest('.'+css.form).find('.'+css.submit).trigger('click.shop');
+
+    // Suchbutton drücken, um Suche zu starten
+    $input.
+      closest('.'+css.form).
+        find('.'+css.submit).
+          trigger('click.shop');
   };
 
 
@@ -160,7 +208,8 @@
    * Eingabefeld auf die korrekte Höhe aller Zeilen setzen
    *
    * @function resizeFormInput
-   * @param {} input - Eingabefeld
+   * @param {DOMElement} input - Eingabefeld
+   * @param {boolean} increase - Muss das Feld vergrößert werden?
    */
   var resizeFormInput = function whoisResizeFormInput(input, increase) {
     var $input = $(input);
@@ -185,18 +234,21 @@
   };
 
 
-  shop.whois.getElementsFromDomain = function whoisGetElementsFromDomain(domainName) {
-    return $('[data-domain="' + domainName + '"]');
-  };
+  //////////////////// CART //////////////////////
 
 
-  //////////////////// INPUT //////////////////////
-
-
+  /**
+   * Domain in den Warenkorb legen
+   *
+   * @function shop.whois.addDomainToCart
+   * @param {object} data - Daten zum Produkt
+   * @return {$.Deferred} - Promise mit dem Ergebnis
+   */
   shop.whois.addDomainToCart = function whoisAddDomainToCart(data) {
     var productData = data.product;
     var scid = data.scid;
 
+    // Keine Daten vorhanden -> Trotzdem Promise zurückgeben
     if ( !productData ) {
       var errorPromise = $.Deferred();
       errorPromise.reject('Es sind keine Daten zur Domain vorhanden');
@@ -206,20 +258,38 @@
       productData.scid = scid;
     }
 
+    // Ladezustände in Whois und Warenkorb setzen
     shop.whois.getElementsFromDomain(data.domain).addClass(css.loading);
     if ( scid ) {
       $('[data-scid="'+scid+'"]').addClass(css.cartLoading);
     }
 
     return shop.rpc.post('modIndex', 'addDomainToCart', productData).
-            then(shop.whois.updateDomain, function onDomainToCartFail() {
-              return shop.whois.onQueryFail(data);
-            }).
-            then(function updateCartAfterAddingDomain(){
-              return shop.cart.update();
-            }, shop.rpc.renderMessagesFromRpcResult);
+            then(
+              // Domain aktualisieren
+              shop.whois.updateDomain,
+              function onDomainToCartFail() {
+                return shop.whois.onQueryFail(data);
+              }
+            ).
+            then(
+              // Warenkorb aktualisieren
+              function updateCartAfterAddingDomain(){
+                // in Wrapper aufrufen, da shop.cart.update sonst den ersten Parameter verarbeitet
+                return shop.cart.update();
+              },
+              shop.rpc.renderMessagesFromRpcResult
+            );
   };
 
+
+  /**
+   * Fehler bei Whois-Abfrage verarbeiten
+   *
+   * @function shop.whois.onQueryFail
+   * @param {Object} domainData - Daten zur Identifikation der Domain
+   * @return {Object} - Daten zur Identifikation der Domain
+   */
   shop.whois.onQueryFail = function whoisOnQueryFail(domainData) {
     shop.whois.getElementsFromDomain(domainData.domain).removeClass(css.loading);
     if ( domainData.scid ) {
@@ -229,261 +299,38 @@
   };
 
 
+  /**
+   * Transfer-Dialog auf- und zuklappen
+   *
+   * @function shop.whois.toggleTransferLayer
+   * @param {Object} data - Daten zur Identifikation der Domain
+   */
   shop.whois.toggleTransferLayer = function whoisToggleTransferLayer(data) {
     var $domains = shop.whois.getElementsFromDomain(data.domain);
     $domains.toggleClass(css.transferActive);
+
+    // Fokus auf ersten Abbrechen-Button legen
     $domains.find('.'+css.transferAbort).trigger('focus');
   };
 
 
-  shop.whois.updateDomain = function whoisUpdateDomain(result) {
-    if ( !result || !result.data || !result.data.assigns ) {
-      return result;
-    }
-
-    if ( result.messages.length ) {
-      shop.rpc.renderMessagesFromRpcResult(result);
-    }
-
-    var whoisData = result.data.assigns.whois;
-    var $domain = {};
-    var isDomainFocussed = false;
-    var domainData = {};
-    var domainName = '';
-
-    for ( var domainIndex in whoisData ) {
-      if ( !whoisData.hasOwnProperty(domainIndex) ) { continue; }
-      domainData = whoisData[domainIndex];
-      if ( !domainData || !domainData.name ) {
-        continue;
-      }
-      domainName = domainData.name;
-      $domain = $('.'+css.result).filter('[data-domain="' + domainName + '"]');
-      isDomainFocussed = $domain.find('LABEL').is(':focus');
-
-      // Neue Inhalte rendern
-      if ( result.data.template ) {
-        $domain.replaceWith(result.data.template);
-
-        // Fokus wieder auf das Element setzen
-        if ( isDomainFocussed ) {
-          $domain.find('LABEL').trigger('focus');
-        }
-      }
-    }
-
-    updateTariffFooter();
-
-    return result;
-  };
+  //////////////////// ADDITIONAL //////////////////////
 
 
-
-  var isFirstRequest = true;
-
-  shop.whois.requestSingleDomain = function requestSingleDomain(requestedDomain, $formWrapper) {
-    if ( !$formWrapper ) {
-      $formWrapper = $('.' + css.wrapper);
-    }
-    var $resultWrapper = $formWrapper.find('.' + css.results);
-    var $submitButton = $formWrapper.find('.' + css.submit);
-    var submitLabels = $submitButton.data();
-    var currentLabel = '';
-
-    var rpcData = {
-      name: requestedDomain
-    };
-
-    // Label des Absende-Buttons vor der Abfrage ändern
-    if ( submitLabels.labelActive ) {
-
-      // Aktuellen Zustand zwischenspeichern, wenn nicht vorhanden
-      currentLabel = $submitButton.html();
-      if ( !submitLabels.labelOriginal && currentLabel !== submitLabels.labelActive ) {
-        $submitButton.data('label-original', currentLabel);
-        submitLabels.labelOriginal = currentLabel;
-      }
-
-      $submitButton.html(submitLabels.labelActive);
-      $formWrapper.addClass(css.formSearching);
-    }
-
-    // Wrapper einblenden
-    if ( isFirstRequest ) {
-      $resultWrapper.
-        removeAttr('hidden').
-        prop('hidden', false);
-      isFirstRequest = false;
-    }
-
-    // Ergebnisse zu den bestehenden Domains hinzufügen
-    // Achtung: Ändern Sie die Reihenfolge (z.B. prepend->append), so beachten
-    // Sie auch in der domainsearch.scss die abwechselnden Hintergrundfarben.
-    // Suchen Sie am Besten im dortigen Quelltext nach nth-of-type.
-    var $existingElement = $resultWrapper.find('[data-domain="'+requestedDomain+'"]');
-    if ( $existingElement.length ) {
-      $existingElement.addClass(css.loading);
-    } else {
-      var loadingTemplate = fillDomainTemplate(requestedDomain, itemTemplates.loading);
-      $resultWrapper.find('.' + css.resultList).prepend(loadingTemplate);
-    }
-
-    var resetSearchButton = function whoisResetSearch() {
-      // Absende-Button wieder zuruecksetzen
-      $formWrapper.removeClass(css.formSearching);
-      $submitButton.html(submitLabels.labelOriginal);
-
-    };
-
-    var renderWhoisResults = function renderWhoisResults(result){
-      resetSearchButton();
-
-      // Gueltigkeitsprüfung
-      if ( !result || !result.data || !result.data.assigns ) {
-        shop.ui.renderMessage({
-          type: "error",
-          msg: "Ung&uuml;ltige Whois-Ergebnisse erhalten"
-        });
-        return result;
-      }
-
-      // Daten einfuegen
-      var template = '';
-      if ( result.data.template ) {
-        template = result.data.template;
-      } else {
-        template = fillDomainTemplate(requestedDomain, itemTemplates.error);
-      }
-      $resultWrapper.
-        find('[data-domain="'+requestedDomain+'"]').
-          replaceWith(template);
-
-      if ( result.data.assigns.whois && result.data.assigns.whois[0].scid ) {
-        $('[data-scid="'+result.data.assigns.whois[0].scid+'"]').removeClass(css.cartLoading);
-      }
-
-      setTimeout(updateTariffFooter, 0);
-
-      return result;
-    };
-
-    var renderWhoisError = function renderWhoisError(){
-      resetSearchButton();
-      $resultWrapper.
-        find('[data-domain="'+requestedDomain+'"]').
-          replaceWith(
-            itemTemplates.error.replace('{domain.name}',requestedDomain)
-          );
-
-      var requestedDomainPosition = shop.whois.requestedDomains.indexOf(requestedDomain);
-      if ( requestedDomainPosition !== -1 ) {
-        shop.whois.requestedDomains.splice(requestedDomainPosition, 1);
-      }
-    };
-
-    // Abfrage senden
-    return shop.rpc.post('modIndex', 'checkDomain', rpcData).
-
-      // Abfrage erfolgreich
-      then(renderWhoisResults, renderWhoisError);
-
-  };
-
-  var fillDomainTemplate = function whoisFillDomainTemplate(domain, template) {
-    var $element = $(template);
-    return $element.
-            attr('data-domain', domain).
-            find('[property="name"]').
-              html(domain).
-            end();
-  };
-
-  var updateTariffFooter = function whoisUpdateTariffFooter() {
-    var $domains = $('[data-domain]');
-    var areAllPricesOriginal = true;
-    $domains.each(function isOriginalPriceMissing(){
-      var domainData = $(this).data();
-      if ( domainData.product && (domainData.product.price_missing || domainData.product.price_default) ) {
-        areAllPricesOriginal = false;
-        // return false bricht die Schleife ab
-        return false;
-      }
-    });
-
-    $('.' + css.tariffFooter).prop('hidden', areAllPricesOriginal);
-  };
-
-  var duplicateSearches = {};
-
-  shop.whois.request = function whoisRequest(requestedDomains, $formWrapper) {
-    if ( !$formWrapper ) {
-      $formWrapper = $('.' + css.wrapper);
-    }
-
-    if ( requestedDomains instanceof Array ) {
-      requestedDomains = requestedDomains.join("\n");
-    }
-
-    // Domains in Kleinbuchstaben setzen
-    requestedDomains = requestedDomains.toLowerCase();
-
-    requestedDomains = $.trim(requestedDomains).split(whoisTermSplitRegExp);
-    var requestedDomain = '';
-
-    // Nur die ersten X Domains auslesen
-    if ( requestedDomains.length > shop.whois.maxRequestCount ) {
-      shop.ui.renderMessage({
-        msg: "Es werden nur die ersten " + shop.whois.maxRequestCount + ' Domains abgefragt. Alle Domains ab "' + requestedDomains[shop.whois.maxRequestCount] + '" wurden ignoriert.',
-        type: "warning"
-      });
-      requestedDomains.splice(shop.whois.maxRequestCount, Number.MAX_VALUE);
-    }
-
-    for ( var i in requestedDomains ) {
-      if ( !requestedDomains.hasOwnProperty(i) ) { continue; }
-      requestedDomain = $.trim(requestedDomains[i]);
-
-      // Ungueltige Domain? -> Nicht suchen
-      if ( !requestedDomain ) {
-        continue;
-      }
-
-      // Nach Domain wird zum ersten Mal gesucht
-      if ( shop.whois.requestedDomains.indexOf(requestedDomain) === -1 ) {
-        shop.whois.requestedDomains.push(requestedDomain);
-
-      // Domain wurde bereits gesucht -> Überspringen
-      } else {
-        // Fehlermeldung nur einmal pro Domain anzeigen
-        if ( !duplicateSearches.hasOwnProperty(requestedDomain) ) {
-          duplicateSearches[requestedDomain] = true;
-          shop.ui.renderMessage({
-            msg: "Sie haben bereits nach "+requestedDomain+" gesucht.",
-            type: "notice"
-          });
-        }
-        continue;
-      }
-
-      shop.whois.requestSingleDomain( requestedDomain, $formWrapper );
-    }
-  };
-
-
-  shop.whois.getCurrentSearchTerms = function whoisGetCurrentSearchTerms() {
-    return $.trim( $('.' + css.input).val() ).split(whoisTermSplitRegExp);
-  };
-
-
-
+  /**
+   * WHOIS für günstigste TLD abfragen
+   *
+   * @function shop.whois.addTldFromHighlights
+   * @param {$} $domain - Angeklickte Domain
+   */
   shop.whois.addTldFromHighlights = function whoisAddTldFromHighlights($domain) {
-    var currentWhoisQueries = shop.whois.getCurrentSearchTerms();
-    var queryTerm = '';
-
     var tldToAdd = $domain.find('[property="name"]').html();
     if ( tldToAdd.substr(0, 1) !== '.' ) {
       tldToAdd = '.' + tldToAdd;
     }
+
+    var currentWhoisQueries = shop.whois.getCurrentSearchTerms();
+    var queryTerm = '';
     for ( var i in currentWhoisQueries ) {
       if ( !currentWhoisQueries.hasOwnProperty(i) ) { continue; }
       queryTerm = shop.whois.getHostname(currentWhoisQueries[i]);
@@ -500,22 +347,13 @@
   };
 
 
-  shop.whois.getHostname = function whoisGetHostname(sDomain) {
-    var queryTerm = $.trim(sDomain);
-
-    if ( !queryTerm ) {
-      return '';
-    }
-
-    var lastDotPosition = queryTerm.lastIndexOf('.');
-    if ( lastDotPosition === -1 ) {
-      return queryTerm;
-    }
-
-    return queryTerm.substr(0, lastDotPosition);
-  };
-
-
+  /**
+   * Nach zusätzlichen TLDs suchen
+   *
+   * @function shop.whois.searchForAdditional
+   * @param {$} $formWrapper - Hauptelement des aktuellen Formulars
+   * @param {Array} tlds - Abzufragende TLDs
+   */
   shop.whois.searchForAdditional = function whoisSearchForAdditional($formWrapper, tlds) {
     var requestedDomains = [];
     var requestedDomain = '';
@@ -551,6 +389,11 @@
         }
       }
 
+      // Domains in natürlicher Sortierung ausgeben.
+      // Achtung: Haben Sie in shop.whois.requestSingleDomain die Sortierung
+      // von prepend auf append geändert, so deaktivieren Sie hier den Aufruf
+      // von requestedDomains.reverse, da sonst die Sortierung der Domains
+      // umgekehrt wird.
       requestedDomains.reverse();
 
       // Abfrage absenden
@@ -566,9 +409,343 @@
   };
 
 
+  //////////////////// REQUEST //////////////////////
+
+
+  /**
+   * Daten der Domain aktualisieren
+   *
+   * @function shop.whois.updateDomain
+   * @param {Object} result - Ergebnisse der Abfrage
+   * @return {Object} - Ergebnisse der Abfrage
+   */
+  shop.whois.updateDomain = function whoisUpdateDomain(result) {
+    if ( !result || !result.data || !result.data.assigns ) {
+      return result;
+    }
+
+    var whoisData = result.data.assigns.whois;
+    var $domain = {};
+    var isDomainFocussed = false;
+    var domainData = {};
+    var domainName = '';
+
+    for ( var domainIndex in whoisData ) {
+      if ( !whoisData.hasOwnProperty(domainIndex) ) { continue; }
+      domainData = whoisData[domainIndex];
+      if ( !domainData || !domainData.name ) {
+        continue;
+      }
+      domainName = domainData.name;
+      $domain = $('.'+css.result).filter('[data-domain="' + domainName + '"]');
+      isDomainFocussed = $domain.find('LABEL').is(':focus');
+
+      // Neue Inhalte rendern
+      if ( result.data.template ) {
+        $domain.replaceWith(result.data.template);
+
+        // Fokus wieder auf das Element setzen
+        if ( isDomainFocussed ) {
+          $domain.find('LABEL').trigger('focus');
+        }
+      }
+    }
+
+    updateTariffFooter();
+
+    return result;
+  };
+
+
+  /**
+   * WHOIS-Abfrage für eine oder mehrere Domains ausführen
+   *
+   * @function shop.whois.request
+   * @param {Array|String} requestedDomains - Abzufragende Domains
+   * @param {$} $formWrapper - Hauptelement des aktuellen Formulars
+   */
+  shop.whois.request = function whoisRequest(requestedDomains, $formWrapper) {
+    if ( !$formWrapper ) {
+      $formWrapper = $('.' + css.wrapper);
+    }
+
+    if ( requestedDomains instanceof Array ) {
+      requestedDomains = requestedDomains.join("\n");
+    }
+
+    // Domains in Kleinbuchstaben setzen
+    requestedDomains = requestedDomains.toLowerCase();
+
+    // Array aus eingegenen Begriffen erstellen
+    requestedDomains = $.trim(requestedDomains).split(whoisTermSplitRegExp);
+
+    // Nur die ersten X Domains auslesen
+    if ( requestedDomains.length > shop.whois.maxRequestCount ) {
+      shop.ui.renderMessage({
+        msg: "Es werden nur die ersten " + shop.whois.maxRequestCount + ' Domains abgefragt. Alle Domains ab "' + requestedDomains[shop.whois.maxRequestCount] + '" wurden ignoriert.',
+        type: "warning"
+      });
+      requestedDomains.splice(shop.whois.maxRequestCount, Number.MAX_VALUE);
+    }
+
+    var requestedDomain = '';
+    for ( var i in requestedDomains ) {
+      if ( !requestedDomains.hasOwnProperty(i) ) { continue; }
+      requestedDomain = $.trim(requestedDomains[i]);
+
+      // Ungültige Domain? -> Nicht suchen
+      if ( !requestedDomain ) {
+        continue;
+      }
+
+      // Nach Domain wird zum ersten Mal gesucht
+      if ( shop.whois.requestedDomains.indexOf(requestedDomain) === -1 ) {
+        shop.whois.requestedDomains.push(requestedDomain);
+
+      // Domain wurde bereits gesucht -> Überspringen
+      } else {
+        // Fehlermeldung nur einmal pro Domain anzeigen
+        if ( !duplicateSearches.hasOwnProperty(requestedDomain) ) {
+          duplicateSearches[requestedDomain] = true;
+          shop.ui.renderMessage({
+            msg: "Sie haben bereits nach "+requestedDomain+" gesucht.",
+            type: "notice"
+          });
+        }
+        continue;
+      }
+
+      // Abfrage für Domain ausführen
+      shop.whois.requestSingleDomain( requestedDomain, $formWrapper );
+    }
+  };
+
+
+
+  /**
+   * WHOIS-Abfrage für einzelne Domain durchführen
+   *
+   * @function shop.whois.requestSingleDomain
+   * @param {string} requestedDomain - Abzufragende Domain
+   * @param {$} $formWrapper - Hauptelement des aktuellen Formulars
+   */
+  shop.whois.requestSingleDomain = function requestSingleDomain(requestedDomain, $formWrapper) {
+    if ( !$formWrapper ) {
+      $formWrapper = $('.' + css.wrapper);
+    }
+    var $resultWrapper = $formWrapper.find('.' + css.results);
+    var $submitButton = $formWrapper.find('.' + css.submit);
+    var submitLabels = $submitButton.data();
+    var currentLabel = '';
+
+    var rpcData = {
+      name: requestedDomain
+    };
+
+    // Label des Absende-Buttons vor der Abfrage ändern
+    if ( submitLabels.labelActive ) {
+
+      // Aktuellen Zustand zwischenspeichern, wenn nicht vorhanden
+      currentLabel = $submitButton.html();
+      if ( !submitLabels.labelOriginal && currentLabel !== submitLabels.labelActive ) {
+        $submitButton.data('label-original', currentLabel);
+        submitLabels.labelOriginal = currentLabel;
+      }
+
+      $submitButton.html(submitLabels.labelActive);
+      $formWrapper.addClass(css.formSearching);
+    }
+
+    // Wrapper einblenden
+    if ( shop.whois.isFirstRequest ) {
+      $resultWrapper.
+        removeAttr('hidden').
+        prop('hidden', false);
+      shop.whois.isFirstRequest = false;
+    }
+
+    // Ergebnisse zu den bestehenden Domains hinzufügen
+    // Achtung: Ändern Sie die Reihenfolge (z.B. prepend->append), so beachten
+    // Sie auch in der domainsearch.scss die abwechselnden Hintergrundfarben.
+    // Suchen Sie am Besten im dortigen Quelltext nach nth-of-type.
+    // Bearbeiten Sie außerdem den Aufruf von requestedDomains.reverse() in
+    // der Methode shop.whois.searchForAdditional
+    var $existingElement = $resultWrapper.find('[data-domain="'+requestedDomain+'"]');
+    if ( $existingElement.length ) {
+      $existingElement.addClass(css.loading);
+    } else {
+      var loadingTemplate = fillDomainTemplate(requestedDomain, itemTemplates.loading);
+      $resultWrapper.find('.' + css.resultList).prepend(loadingTemplate);
+    }
+
+
+    // Die folgenden Methoden sind inline angegeben, um die bestehenden Variablen
+    // wiederzuverwenden. Der RPC-Aufruf findet am Ende dieser Methode statt.
+
+
+    var resetSearchButton = function whoisResetSearch() {
+      // Absende-Button wieder zuruecksetzen
+      $formWrapper.removeClass(css.formSearching);
+      $submitButton.html(submitLabels.labelOriginal);
+    };
+
+    /**
+     * WHOIS-Ergebnisse rendern
+     *
+     * @param {Object} result - Ergebnisse der Abfrage
+     * @result {Object} - Ergebnisse der Abfrage
+     */
+    var renderWhoisResults = function renderWhoisResults(result){
+      resetSearchButton();
+
+      // Gültigkeitsprüfung
+      if ( !result || !result.data || !result.data.assigns ) {
+        shop.ui.renderMessage({
+          type: "error",
+          msg: "Ung&uuml;ltige Whois-Ergebnisse erhalten"
+        });
+        return result;
+      }
+
+      // Daten einfügen
+      var template = '';
+      if ( result.data.template ) {
+        template = result.data.template;
+      } else {
+        template = fillDomainTemplate(requestedDomain, itemTemplates.error);
+      }
+      $resultWrapper.
+        find('[data-domain="'+requestedDomain+'"]').
+          replaceWith(template);
+
+      if ( result.data.assigns.whois && result.data.assigns.whois[0].scid ) {
+        $('[data-scid="'+result.data.assigns.whois[0].scid+'"]').removeClass(css.cartLoading);
+      }
+
+      setTimeout(updateTariffFooter, 0);
+
+      return result;
+    };
+
+    // Fehler des WHOIS anzeigen
+    var renderWhoisError = function renderWhoisError(){
+      resetSearchButton();
+
+      // Domainnamen in Platzhaltern einfügen
+      $resultWrapper.
+        find('[data-domain="' + requestedDomain + '"]').
+          replaceWith(
+            itemTemplates.error.replace('{domain.name}', requestedDomain)
+          );
+
+      // Domain als "noch nicht gesucht" markieren, damit sie bei Fehlern
+      // evtl. erneut gesucht werden kann (z.B. wegen temporärer Probleme)
+      var requestedDomainPosition = shop.whois.requestedDomains.indexOf(requestedDomain);
+      if ( requestedDomainPosition !== -1 ) {
+        shop.whois.requestedDomains.splice(requestedDomainPosition, 1);
+      }
+    };
+
+
+    // Abfrage absenden
+    return shop.rpc.post('modIndex', 'checkDomain', rpcData).
+            then(
+              renderWhoisResults,
+              renderWhoisError
+            );
+  };
+
+
+  //////////////////// HELFER //////////////////////
+
+
+  /**
+   * Sternchentext bei unbestelltem Tarif ein-/ausblenden
+   *
+   * @function updateTariffFooter
+   */
+  var updateTariffFooter = function whoisUpdateTariffFooter() {
+    var areAllPricesOriginal = true;
+
+    var $domains = $('[data-domain]');
+    $domains.each(function isOriginalPriceMissing(){
+      var domainData = $(this).data();
+      if ( domainData.product && (domainData.product.price_missing || domainData.product.price_default) ) {
+        areAllPricesOriginal = false;
+        // return false bricht die Schleife ab
+        return false;
+      }
+    });
+
+    $('.' + css.tariffFooter).prop('hidden', areAllPricesOriginal);
+  };
+
+
+  /**
+   * Alle eingegebenen Suchbegriffe des Suchfelds auslesen
+   *
+   * @function shop.whois.getCurrentSearchTerms
+   * @return {Array} Liste aller Begriffe im Sucheingabefeld
+   */
+  shop.whois.getCurrentSearchTerms = function whoisGetCurrentSearchTerms() {
+    return $.trim( $('.' + css.input).val() ).split(whoisTermSplitRegExp);
+  };
+
+
+  /**
+   * Alle bestehenden DOM-Elemente ($) zur gesuchten Domain suchen
+   *
+   * @function shop.whois.getElementsFromDomain
+   * @param {string} domainName - Zu suchende Domain
+   * @return {$} Objekt mit allen Elementen der gesuchten Domain
+   */
+  shop.whois.getElementsFromDomain = function whoisGetElementsFromDomain(domainName) {
+    return $('[data-domain="' + domainName + '"]');
+  };
+
+
+  /**
+   * Hostname eines Domainnamens extrahieren
+   *
+   * @function shop.whois.getHostname
+   * @param {String} sDomain - Domainname
+   * @return {String} - Hostname
+   */
+  shop.whois.getHostname = function whoisGetHostname(sDomain) {
+    var queryTerm = $.trim(sDomain);
+
+    if ( !queryTerm ) {
+      return '';
+    }
+
+    var lastDotPosition = queryTerm.lastIndexOf('.');
+    if ( lastDotPosition === -1 ) {
+      return queryTerm;
+    }
+
+    return queryTerm.substr(0, lastDotPosition);
+  };
+
+
+  /**
+   * Befindet sich bereits ein Whois-Formular auf der Seite?
+   *
+   * @function shop.whois.isVisible
+   * @return {Number} - Anzahl der vorhanden $formWrapper
+   */
+  shop.whois.isVisible = function whoisIsVisible() {
+    return $('.' + css.wrapper).length;
+  };
+
+
   //////////////////// VORLAGEN //////////////////////
 
 
+  /**
+   * Vorlagen cachen
+   *
+   * @function shop.whois.cacheItemTemplates
+   */
   shop.whois.cacheItemTemplates = function whoisCacheItemTemplates() {
     var $itemTemplate = $('.' + css.wrapper).find('TEMPLATE');
     var selector = '';
@@ -590,8 +767,22 @@
     $itemTemplate.remove();
   };
 
-  shop.whois.isVisible = function whoisIsVisible() {
-    return $('.' + css.wrapper).length;
+
+  /**
+   * Vorlage einer Whois-Domain ausfüllen
+   *
+   * @function fillDomainTemplate
+   * @param {Object} domain - Daten der Domain
+   * @param {String} template - Auszufüllende Vorlage
+   * @return {$} - Generiertes Element
+   */
+  var fillDomainTemplate = function whoisFillDomainTemplate(domain, template) {
+    var $element = $(template);
+    return $element.
+            attr('data-domain', domain).
+            find('[property="name"]').
+              html(domain).
+            end();
   };
 
 
@@ -599,10 +790,17 @@
   //////////////////// INIT //////////////////////
 
 
+  /**
+   * Modul initialisieren
+   */
   shop.whois.init = function whoisInit() {
     shop.whois.setEventListener();
     shop.whois.cacheItemTemplates();
+
+    // Standardmäßig Sternchentext ausblenden
     $('.' + css.tariffFooter).prop('hidden', true);
+
+    // Styledaten auslesen kann UI blocken -> asynchroner Aufruf
     setTimeout(shop.whois.getInputLineHeight, 0);
   };
 

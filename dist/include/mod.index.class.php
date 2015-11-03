@@ -13,6 +13,9 @@ class modIndex {
   // Anzahl der günstigsten TLDs, die dargestellt werden sollen
   const TLD_CHEAPEST_COUNT = 5;
 
+  // Dialog nach dem Hinzufügen des Tarifs in den Warenkorb darstellen?
+  const SHOW_TARIFF_UPSELL = false;
+
 
   //////////////////// ACTIONS //////////////////////
 
@@ -167,7 +170,6 @@ class modIndex {
       'return_array' => 1,
     ));
 
-    // Fehlender API-Call: shHelper::getOptions('lang_active')
     $ahLanguages = array(
       1 => array(
         'laid' => 1,
@@ -621,10 +623,27 @@ class modIndex {
       // Speichern des Artikels im Warenkorb
       if ( $iScid = shopShopping::saveCartItem($hNewCartItem) ){
 
+        if ( !Status::hasErrors() ) {
+          if ( $hNewCartItem['amount'] ) {
+            Status::addSuccess($hProduct['name']." wurde in den Warenkorb gelegt.");
+          } else {
+            Status::addSuccess($hProduct['name']." wurde aus dem Warenkorb entfernt.");
+          }
+        }
+
         // Speichern erfolgreich -> Warenkorb auslesen
         $returnCart = static::getCart($hParams);
         $returnCart['assigns']['scid'] = $iScid;
         $returnCart['assigns']['peid'] = $hProduct['peid'];
+
+        // Dialog nach dem Hinzufügen eines Tarifs darstellen
+        // Prüfung auf signed -> nur einmal statt bei jedem Tarif anzeigen
+        if ( static::SHOW_TARIFF_UPSELL && $hProduct['norm'] === 'tariff' && !$hParams['signed'] ) {
+          Renderer::assign('tariff', $hProduct);
+          $returnCart['assigns']['dialog'] = Renderer::render('content/modal_upsell_tariff.tpl');
+          $returnCart['assigns']['action'] = 'add_dialog';
+        }
+
         return $returnCart;
 
       // Speichern nicht erfolgreich
@@ -683,6 +702,11 @@ class modIndex {
 
     $hParams['scid'] = $newScid;
 
+    if ( $newScid !== null ) {
+      Status::addSuccess($hDomainData[0]['name'].' wurde in den Warenkorb gelegt');
+    } else {
+      Status::addSuccess($hDomainData[0]['name'].' wurde aus dem Warenkorb entfernt');
+    }
 
     // Domain mit den neuen Daten rendern
     $returnDomain = static::renderDomainData($hDomainData, $hParams);
@@ -732,6 +756,7 @@ class modIndex {
       'items' => $cart['items'],
       'norms' => $hTypeItems,
     );
+
 
     Renderer::assign('cart', $cart);
     if ( $bReturnCartOrder ) {
