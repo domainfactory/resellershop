@@ -90,6 +90,7 @@
                 {% if domain.price_default %}ab {% endif %}
                 {{ price(domain.price_long) }}
                 <span property="duration">{{ interval[domain.piid] }}</span>
+                {% if domain.price_default %}*{% endif %}
               </p>
             {% else %}
               <p>
