@@ -12,6 +12,11 @@
   text-align: center;
   z-index: 10;
 
+  // Farbige Rahmenlinie am oberen Seitenrand erneut setzen,
+  // damit sie bei geöffnetem Login erneut dargestellt wird
+  border-bottom: $header-bar-height solid $header-bar-color;
+
+
   HEADER {
     padding: .5em 0;
   }
@@ -48,7 +53,7 @@
 
   @media screen and (min-width: $viewport-width-s) {
     max-height: $login-height + $header-bar-height;
-    top: (0 - $login-height);
+    top: (0 - $login-height - $header-bar-height);
 
     .form-line {
       display: inline-block;

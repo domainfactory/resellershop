@@ -1,16 +1,50 @@
-$header-height: 8.125em;
-$header-mobile-height: 4em;
-$header-bar-height: .5em;
-$header-contact-height: 2.375em;
-$header-contact-margin: 1.25em;
-$header-nav-height: 4em;
+//////////////////// KOPF-BEREICH //////////////////////
 
+// Hier befinden sich Überschrift, Kundenlogin, Warenkorb und mehr
+
+
+//////////////////// DATEN ZUR BERECHNUNG DER MAßEN //////////////////////
+
+// Vergessen Sie bitte bei Änderungen der Header-Höhen nicht, auch die
+// Logogrößen der dist/images/logo/sprite.svg entsprechend anzupassen.
+// Mehr Informationen hierzu erhalten Sie in der Shop-Dokumentation:
+// https://doku.premium-admin.eu/doku.php/handbuch/shop_2.0/personalisierung/logo
+
+// ACHTUNG: Die folgenden Werte haben Auswirkungen auf die Höhe des Headers!
+// Passen Sie bitte bei Änderungen die Variable startPosition in der Methode
+// initStickyHeader() der Datei src/js/ui.js mit dem korrigierten Wert an:
+// ($header-height - $header-nav-height - $header-bar-height - .5em) in Pixel
+$header-height: 8.125em;  // Höhe des gesamten Kopfbereichs
+$header-bar-height: .5em; // Höhe der Farbleiste im Seitenkopf
+$header-nav-height: 4em;  // Höhe der Navigationsleiste
+
+// Höhe des Kopfbereichs bei Mobilgeräten
+$header-mobile-height: 4em;
+
+// Höhe der Kontakt-Navigation
+$header-contact-height: 2.375em;
+
+// Anmeldebereich
 $login-height: 9em;
 $login-mobile-height: 19em;
 $login-fx-duration: $fx-duration-slow;
 
+// Media Queries für den Header
 $media-mobile: "(max-width: #{$viewport-max-width-s})";
 $media-login-desktop: "(min-width: #{$viewport-width-s})";
+
+
+// Breite der Header-Buttons
+$header-cart-width: 4.5em;
+$header-toggle-width: 4.5em;
+
+
+// Farbe der Linie am Seitenkopf
+$header-bar-color: $color-main;
+
+
+//////////////////// SEITENHÖHE //////////////////////
+
 
 HTML,
 BODY {
@@ -22,56 +56,59 @@ HTML {
   overflow-y: scroll;
 }
 
-// Footer an den unteren Seitenrand kleben
-.page {
-  min-height: 100%;
-  margin-bottom: -3.375em;
-  padding-bottom: 0;
-  padding-top: $header-height;
-  margin-top: (0 - $header-height);
-
-  // Sicherstellen, dass der Footer nicht den Inhalt überlappt
-  &:AFTER {
-    content: '';
-    height: 3.25em;
-    display: block;
-  }
-}
-
 BODY {
+  // Farbige Rahmenlinie am oberen Seitenrand setzen
+  // ACHTUNG: Wenn Sie die farbige Leiste entfernen möchten,
+  // so setzen Sie bitte den Wert der Varable $header-bar-height auf 0.
+  border-top: $header-bar-height solid $header-bar-color;
+
+  // Inhalt unter dem Header beginnen lassen
   padding-top: ($header-height - $header-bar-height);
   box-sizing: border-box;
-  border-top: $header-bar-height solid $color-main;
 
+  // Seite beim Aufklappen des Logins nach unten schieben
   &.login-opened {
+    // Tablet
     padding-top: ($header-mobile-height + $login-height);
 
+    // >= Desktop
     @media #{$media-login-desktop} {
       padding-top: ($header-height - $header-bar-height + $login-height);
     }
 
+    // Mobil
     @media #{$media-mobile} {
       padding-top: ($header-mobile-height + $login-mobile-height);
     }
 
-
+    // Mobil bis Tablet
     @media #{$media-mobile} and #{$media-login-desktop} {
       padding-top: ($header-mobile-height + $login-height);
     }
   }
 
+  // Inhalt auf Höhe des mobilen Headers beginnen lassen
   @media screen and #{$media-mobile} {
     padding-top: ($header-mobile-height);
   }
 }
 
 
+// Inhalt unter dem Header beginnen lassen
+.page {
+  margin-top: (0 - $header-height);
+  padding-top: $header-height;
+}
+
+
 .site {
+  // Hintergrund des Headers
   &-header-sticky,
   &-header-contact A {
     @extend %block-brand-bright;
   }
 
+  // Alle Headerelemente am oberen Seitenrand ankleben
   &-nav,
   &-header-sticky,
   &-header-contact {
@@ -82,6 +119,10 @@ BODY {
       color: $color-text;
     }
   }
+
+
+  //////////////////// HEADER-BEREICH //////////////////////
+
 
   &-header-sticky {
     top: 0;
@@ -94,6 +135,7 @@ BODY {
 
     box-shadow: 0 0 .0625em 0 rgba(0,0,0,.3);
 
+    // Header nach unten schieben, wenn der Login dargestellt wird
     .login-opened & {
       top: $login-mobile-height;
 
@@ -102,6 +144,10 @@ BODY {
       }
     }
   }
+
+
+  //////////////////// LOGO //////////////////////
+
 
   &-logo {
     @extend %icon-logo-complete;
@@ -119,8 +165,12 @@ BODY {
 
     width: sprite-scaled($sprite-logo-complete-width);
     height: auto;
+
+    // Grafik nur innerhalb des Inhaltbereichs anzeigen, damit extra Padding
+    // nicht versehentlich einen weiteren Teil des Sprites darstellt
     background-clip: content-box;
 
+    // Bei Wechsel der Breakpoints dezent animieren
     @if ( $use-fx ) {
       -webkit-transition: left $fx-duration, right $fx-duration;
          -moz-transition: left $fx-duration, right $fx-duration;
@@ -129,6 +179,7 @@ BODY {
               transition: left $fx-duration, right $fx-duration;
     }
 
+    // Text verstecken
     H1 {
       opacity: 0;
       margin: 0;
@@ -142,17 +193,23 @@ BODY {
     }
   }
 
+
+  //////////////////// KONTAKT-NAVIGATION //////////////////////
+
+
   &-header-contact {
+    $highlight-radius: .625em;
+
     top: $header-bar-height;
     right: 0;
     z-index: 11;
 
     height: $header-contact-height;
     max-height: $header-contact-height;
-    overflow: hidden;
 
     text-align: right;
 
+    // Bei geöffnetem Login nach unten schieben
     .login-opened & {
       top: ($login-mobile-height + $header-bar-height);
 
@@ -161,63 +218,94 @@ BODY {
       }
     }
 
+    // Links der Kontakt-Navigation
     A {
+      $link-padding-topbottom: rp-cem(.5em, $font-size-s);
+
       display: inline-block;
 
       text-decoration: none;
 
       margin: 0 0 0 .625em;
-      padding-top: .4375em;
-      padding-bottom: .4375em;
+
+      // Linken Padding nicht setzen, da dieser vom Symbol übernommen wird
+      padding-top: $link-padding-topbottom;
+      padding-bottom: $link-padding-topbottom;
       padding-right: .5em;
 
       font-size: $font-size-s;
 
-      &:HOVER {
+      &:HOVER,
+      &:FOCUS {
+        @include rp-choose-color((
+          bg: $color-neutral-bg,
+          color: $color-text-light,
+          invert: $color-text-invert
+        ));
         text-decoration: underline;
       }
 
       &:FOCUS {
         background-color: $color-neutral-bg;
-        color: $color-text-dark;
+        outline: none;
       }
 
+      // Link mit besonderer Hervorhebung (z.B. Kundenlogin)
       &.site-contact-highlight {
         @extend %block-brand-invert;
 
-        margin-top: (0 - $header-bar-height);
-        padding-top: $header-bar-height;
+        margin-top: (0 - rp-cem($header-bar-height, $font-size-s));
+        padding-top: ($link-padding-topbottom);
         padding-right: 1em;
         padding-left: 1em;
 
         font-weight: $font-weight-semibold;
 
         border: 0;
-        border-radius: 0 0 0 .625em;
+        border-radius: 0 0 0 $highlight-radius;
+
+        // Zusätzliche Linie über dem Button in Farbe der oberen Linie
+        // hinzufügen, um Klickfläche des Links zu vergrößern
+        border-top: rp-cem($header-bar-height, $font-size-s) solid $header-bar-color;
+
+        // Schriftfarbe vom Focus-Zustand übernehmen
+        &:HOVER {
+          @include rp-choose-color((
+            bg: $color-main-dark,
+            color: $color-text,
+            invert: $color-text-invert
+          ));
+        }
 
         &:FOCUS {
-          background-color: $color-neutral-dark;
-          color: $color-text-invert;
+          @extend %block-brand-invert-dark;
         }
       }
     }
 
+    // Navigation bei schmalen Geräten komplett ausblenden
     @media screen and (max-width: $viewport-max-width-s) {
-      max-height: 0;
-      top: -0.5em - ($header-contact-height);
+      display: none;
     }
 
+    // Tablet: Navigation neben Warenkorbsymbol
     @media screen and (max-width: $viewport-max-width-m) {
-      right: rp-cem(4.5em, $font-size-s);
+      right: rp-cem($header-cart-width, $font-size-s);
+
+      // Zusätzliche Abrundung rechts unten
       A.site-contact-highlight {
-        border-radius: 0 0 .625em .625em;
+        border-radius: 0 0 $highlight-radius $highlight-radius;
       }
+
+      // Links mit niedriger Priorität ausblenden
       .list-low-priority {
         display: none;
       }
     }
 
+    // Desktop: Mehr Platz verwenden
     @media screen and (max-width: $viewport-max-width-l) {
+      // Abstand zwischen Links vergrößern
       A {
         margin-left: .25em;
       }
@@ -225,9 +313,12 @@ BODY {
   }
 
 
+  //////////////////// HAUPT-NAVIGATION //////////////////////
+
+
   &-nav {
     $link-padding: .375em;
-    $link-margin: .125em;
+    @include rp-header-nav($link-padding, .125em); // $link-padding, $link-margin
 
     top: 0;
     right: 0;
@@ -235,6 +326,7 @@ BODY {
 
     margin-top: $header-height - $header-nav-height;
 
+    // bei geöffnetem Login nach unten schieben
     .login-opened & {
       top: $login-mobile-height;
 
@@ -243,6 +335,7 @@ BODY {
       }
     }
 
+    // Liste und Warenkorbsymbol nebeneinander anzeigen
     &-list,
     &-cart {
       display: inline-block;
@@ -250,9 +343,13 @@ BODY {
 
     &-list {
       @extend %list-horizontal-xs;
+
+      // Hintergrundfarbe für mobiles Popout erneut setzen
       @extend %block-brand-bright;
     }
 
+
+    // Button zum Auf-/Zuklappen der mobilen Navigation
     &-toggle {
       position: absolute;
       left: 0;
@@ -261,29 +358,35 @@ BODY {
       padding: 0;
       margin: 0;
 
+      // Button selbst
       BUTTON {
         @extend %block-brand-text-light;
-        margin: 0;
-        padding: 0;
-        position: relative;
-        box-sizing: border-box;
-        width: 4.5em;
-        height: $header-mobile-height;
-        max-height: $header-mobile-height;
-        display: block;
-        word-break: break-all;
-        overflow: hidden;
 
-        border: 0;
+        position: relative;
+        margin: 0;
         padding: .5em .5em;
 
+        width: $header-toggle-width;
+        height: $header-mobile-height;
+        max-height: $header-mobile-height;
+
+        display: block;
+        overflow: hidden;
+        box-sizing: border-box;
+
+        border: 0;
+
+        // Buttontext verstecken (nur für Screenreader zugänglich)
         color: transparent;
+        word-break: break-all;
 
         &:HOVER {
           background-color: $color-main-bg;
         }
 
+        // Symbol als Pseudoelement einfügen
         &:BEFORE {
+          // Symbol "menu-open" aus dem Sprite "default" verwenden
           @extend %sprite-default;
           @extend %icon-menu-open;
           @extend %icon-menu-open-size;
@@ -296,9 +399,12 @@ BODY {
           right: 0;
         }
 
+        // Symbol bei geöffnetem Menü auswechseln
         .site-nav-mobile-active &:BEFORE {
           @extend %icon-menu-close;
         }
+
+        // Breite für schmälere Bildschirme verringern
 
         @media screen and (max-width: $viewport-max-width-xxs) {
           width: 3.5em;
@@ -308,10 +414,145 @@ BODY {
           width: 2.5em;
         }
       }
+    }
 
+    & &-mobileonly {
+      display: none;
+    }
+
+
+    //////////////////// LINKS DER NAVIGATION //////////////////////
+
+
+    A {
+      display: inline-block;
+      box-sizing: border-box;
+
+      height: $header-nav-height;
+      padding-top: ($header-nav-height / 3);
+      padding-bottom: ($header-nav-height / 3);
+      margin-top: 0;
+      margin-bottom: 0;
+
+      font-size: $font-size;
+      font-weight: $font-weight-semibold;
+      vertical-align: baseline;
+      text-decoration: none;
+      text-transform: uppercase;
+
+      &:FOCUS {
+        @extend %block-neutral-light;
+        outline: .125em solid $color-neutral-dark;
+      }
+
+      &:HOVER,
+      &:ACTIVE {
+        @extend %block-neutral;
+      }
+    }
+
+
+    // Auf Seiten der Bestellung ausblenden
+    .shop-order &-notinorder {
+      display: none;
+    }
+
+
+    // Aktive Seite hervorheben
+    [aria-current=true] {
+      @extend %block-brand-invert;
+    }
+
+
+    //////////////////// WARENKORB //////////////////////
+
+
+    &-cart {
+      display: inline-block;
+      margin: 0;
+      vertical-align: top;
+
+      // Trennlinie zwischen Navigation und Warenkorb
+      &:BEFORE {
+        $margin-topbottom: .5em;
+        content: '';
+
+        position: absolute;
+        top: $margin-topbottom;
+        height: ($header-nav-height - ($margin-topbottom * 2));
+        box-sizing: border-box;
+
+        border-left: .0625em solid $color-neutral;
+      }
+
+      A {
+        // Unterstreichung der Anzahl verhindern
+        text-transform: none;
+
+        // Farben der Anzahl setzen
+        color: $color-accent-text;
+
+        &:HOVER SPAN {
+          color: $color-accent-dark;
+        }
+      }
+
+      // Darstellung der Produktanzahl
+      &-itemcount {
+        position: relative;
+        vertical-align: top;
+
+        SPAN {
+          @extend %sprite-default;
+          @extend %icon-cart-text;
+
+          display: inline-block;
+          box-sizing: border-box;
+
+          margin: 0;
+          padding: ($header-nav-height / 12) .5em ($header-nav-height / 4) 1.25em;
+          max-width: $header-cart-width;
+
+          // Höhenangaben aus dem Sprite auslesen
+          $cart-dimensions: map-get($sprite-default-dimensions, "cart-text");
+          width: sprite-scaled(nth($cart-dimensions, 1));
+          height: sprite-scaled(nth($cart-dimensions, 2));
+
+          text-align: center;
+          vertical-align: top;
+        }
+      }
+
+
+      // Hervorhebung, wenn Warenkorb verändert wurde
+      // ACHTUNG: Passen Sie die Dauer der Animation an, so ändern Sie ebenfalls
+      // die Dauer der Animation in der Methode shop.cart.updateItems(). Suchen
+      // Sie in der src/js/cart.js nach "Animation nach x Sekunden deaktivieren"
+      // und ändern Sie den (in Millisekunden angegebenen) Zahlenwert.
+      .item-cart-updated {
+        -webkit-animation: pulseItemCount $fx-duration-slow 2 alternate none;
+           -moz-animation: pulseItemCount $fx-duration-slow 2 alternate none;
+            -ms-animation: pulseItemCount $fx-duration-slow 2 alternate none;
+                animation: pulseItemCount $fx-duration-slow 2 alternate none;
+      }
+
+      // Auf zu kleinen Bildschirmen wird der Link ausgeblendet
+      @media screen and (max-width: $viewport-max-width-min) {
+        display: none;
+      }
+    }
+
+    // Link bei geöffneter Warenkorbvorschau
+    &-cart-preview-active .site-nav-cart {
+      &,
+      &:HOVER,
+      &:ACTIVE {
+        background-color: $color-neutral-bg;
+      }
     }
 
     @media screen and (max-width: $viewport-max-width-m) {
+      // Warenkorblink für kleine Bildschirme
       &-cart {
         position: absolute;
         top: (-0.125em - $header-nav-height + $header-bar-height);
@@ -328,202 +569,23 @@ BODY {
       }
     }
 
-    & &-mobileonly {
-      display: none;
-    }
 
-    A {
-      display: inline-block;
-      box-sizing: border-box;
-
-      height: $header-nav-height;
-      padding: ($header-nav-height / 3) $link-padding;
-      margin: 0 $link-margin;
-
-      font-size: $font-size;
-      font-weight: $font-weight-semibold;
-      vertical-align: baseline;
-      text-decoration: none;
-      text-transform: uppercase;
-
-      &:FOCUS {
-        background-color: $color-neutral-bg-light;
-        color: $color-text;
-        outline: .125em solid $color-neutral-dark;
-      }
-
-      &:HOVER,
-      &:ACTIVE {
-        background-color: $color-neutral-bg;
-        color: $color-text;
-      }
-    }
-
-
-    // Auf Seiten der Bestellung ausblenden
-    .shop-order &-notinorder {
-      display: none;
-    }
-
-
-    [aria-current=true] {
-      @extend %block-brand-invert;
-    }
-
-    &-cart-preview-active .site-nav-cart {
-      &,
-      &:HOVER,
-      &:ACTIVE {
-        background-color: $color-neutral-bg;
-      }
-    }
-
-    &-cart {
-      display: inline-block;
-      padding-left: $link-padding;
-      margin: 0;
-      vertical-align: top;
-
-      &:BEFORE {
-        content: '';
-
-        position: absolute;
-        top: .5em;
-        height: 3em;
-        box-sizing: border-box;
-        margin: 0 0 0 (-.25em - $link-padding);
-
-        border-left: .0625em solid $color-neutral;
-      }
-
-      .site-nav-cart-itemcount {
-        margin: 0 0 0 (0-$link-padding);
-        padding: .75em $link-padding;
-        border-right: .0625em solid transparent;
-        position: relative;
-        border-bottom: .5em solid transparent;
-        color: $color-accent-text;
-
-        vertical-align: top;
-
-        SPAN {
-          @extend %sprite-default;
-          @extend %icon-cart-text;
-          display: inline-block;
-          box-sizing: border-box;
-
-          margin: 0;
-          padding: ($header-nav-height / 12) .5em ($header-nav-height / 4) 1.25em;
-
-          $cart-dimensions: map-get($sprite-default-dimensions, "cart-text");
-          width: sprite-scaled(nth($cart-dimensions, 1));
-          height: sprite-scaled(nth($cart-dimensions, 2));
-
-          text-align: center;
-          vertical-align: top;
-
-        }
-
-        &:HOVER SPAN {
-          color: $color-accent-dark;
-        }
-      }
-
-      .item-cart-updated {
-        -webkit-animation: pulseItemCount $fx-duration-slow 2 alternate none;
-           -moz-animation: pulseItemCount $fx-duration-slow 2 alternate none;
-            -ms-animation: pulseItemCount $fx-duration-slow 2 alternate none;
-                animation: pulseItemCount $fx-duration-slow 2 alternate none;
-      }
-
-      .site-nav-cart-submit {
-        @extend %block-accent;
-        position: relative;
-
-        // Farben des Hintergrunds ueber Layer legen
-        &:BEFORE,
-        &:AFTER {
-          @extend %block-brand-bright;
-
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          height: .5em;
-        }
-
-        &:BEFORE {
-          top: 0;
-        }
-
-        &:AFTER {
-          bottom: 0;
-        }
-
-        @media screen and (max-width: $viewport-max-width-min) {
-          display: none;
-        }
-      }
-
-      A {
-        text-transform: none;
-      }
-
-      @media screen and (max-width: $viewport-max-width-min) {
-        display: none;
-      }
-    }
-
+    // Mehr Klickfläche auf Desktop-Bildschirmen
     @media screen and (min-width: $viewport-width-l) {
-      $link-padding: .5em;
-      $link-margin: .125em;
-
-      A {
-        padding-left: $link-padding;
-        padding-right: $link-padding;
-        margin-left: $link-margin;
-        margin-right: $link-margin;
-      }
-
-      &-cart {
-        padding-left: $link-padding;
-
-        &:BEFORE {
-          margin-left: (0 - $link-margin - $link-padding);
-        }
-
-        .site-nav-cart-itemcount {
-          margin: 0 0 0 (0-$link-padding);
-          padding: .75em $link-padding;
-        }
-      }
+      @include rp-header-nav(.5em, .125em);
     }
 
+
+    // Noch mehr Klickfläche für sehr große Bildschirme
     @media screen and (min-width: $viewport-width-xl) {
-      A {
-        $link-padding: 1em;
-        $link-margin: .125em;
-
-        padding-left: $link-padding;
-        padding-right: $link-padding;
-        margin-left: $link-margin;
-        margin-right: $link-margin;
-      }
-
-      &-cart {
-        padding-left: $link-padding;
-
-        &:BEFORE {
-          margin-left: (0 - $link-margin - $link-padding);
-        }
-
-        .site-nav-cart-itemcount {
-          margin: 0 0 0 (0-$link-padding);
-          padding: .75em $link-padding;
-        }
-      }
+      @include rp-header-nav(1em, .125em); // $link-padding, $link-margin
     }
   }
+
+
+
+  //////////////////// ANGEKLEBTER HEADER-BEREICH //////////////////////
+
 
   &-header-fixed {
     $fixed-height: 4em;
@@ -559,7 +621,11 @@ BODY {
       }
     }
   }
+
 }
+
+
+//////////////////// MOBILER HEADER //////////////////////
 
 
 @mixin site-mobile-header {
@@ -571,12 +637,13 @@ BODY {
     @include logo-wordmark;
     padding-top: 0;
     padding-bottom: 0;
-    left: 4.5em;
-    right: 4.5em;
+    left: $header-toggle-width;
+    right: $header-cart-width;
     width: auto;
   }
 
   .site-nav {
+    // Navigationsleiste über volle Breite erstrecken
     left: 0;
 
     &-list {
@@ -591,6 +658,7 @@ BODY {
       overflow: hidden;
     }
 
+    // Navigationsleiste aufgeklappt
     &.site-nav-mobile-active .site-nav-list {
       top: $header-mobile-height;
       margin-top: 0;
@@ -629,6 +697,8 @@ BODY {
   }
 }
 
+
+// Bei mobilen Geräten immer nur den mobilen Header verwenden
 @media screen and #{$media-mobile} {
   @include site-mobile-header;
 
@@ -643,6 +713,8 @@ BODY {
   }
 }
 
+
+// Schmale Geräte: Navigation-Aufklapp-Button verkleinern
 @media screen and (max-width: $viewport-max-width-xxs) {
   .site-nav-toggle BUTTON {
     width: 2.5em;
@@ -672,3 +744,4 @@ BODY {
     background-position: center (sprite-scaled(.125em - $sprite-logo-complete-height + $sprite-margin-vertical) + .0625em);
   }
 }
+

@@ -1,70 +1,105 @@
+//////////////////// TARIFVERGLEICH //////////////////////
+
+// Geöffnetes Tariflimit
 %tariff-limit-shown {
   opacity: 1;
-  -webkit-transform: translateY(0);
-     -moz-transform: translateY(0);
-      -ms-transform: translateY(0);
-       -o-transform: translateY(0);
-          transform: translateY(0);
   max-height: 25em;
+
+  $transform: translateY(0);
+  -webkit-transform: $transform;
+     -moz-transform: $transform;
+      -ms-transform: $transform;
+       -o-transform: $transform;
+          transform: $transform;
 }
 
+
+// Bereich der Tarifvergleiche
 .tariffcompare {
-  text-align: center;
 
   $tariff-height-highlight: 1.5em;
   $tariff-padding-topbottom: 1em;
   $tariff-padding-leftright: .75em;
+  $tariff-section-padding-topbottom: 2em;
+
+  // Boxen zentriert anzeigen
+  text-align: center;
+
+
+  //////////////////// EINZELNER TARIF //////////////////////
+
 
   .tariff {
     @extend %block-brand-light;
 
     margin: $tariff-height-highlight .0625em;
     padding: $tariff-padding-topbottom $tariff-padding-leftright;
+    max-width: 12.5em;
+
     box-sizing: border-box;
     vertical-align: top;
 
-    @if ( $use-fx ) {
-      $ease: ease-out;
-      -webkit-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-         -moz-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-          -ms-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-           -o-transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-              transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
-    }
-
     white-space: normal;
 
-    max-width: 12.5em;
+    // Tarif bei Mouseover schön ausfahren lassen
+    @if ( $use-fx ) {
+      $ease: ease-out;
+      $transition: background-color $fx-duration-fast $ease, padding $fx-duration-fast $ease, margin $fx-duration-fast $ease;
+      -webkit-transition: $transition;
+         -moz-transition: $transition;
+          -ms-transition: $transition;
+           -o-transition: $transition;
+              transition: $transition;
+    }
 
+    // Auflistung der zu vergleichenden Tarife
     &list {
       position: relative;
       margin: 0 auto;
-      padding: 2em 0;
+      padding: $tariff-section-padding-topbottom 0;
     }
 
+
+    // Bereich der Überschriften
+    HEADER {
+      // Maximale Höhe setzen, damit die Preise auf selber Höhe beginnen
+      $header-height: 7em;
+      height: $header-height;
+      max-height: $header-height;
+
+      // Längere Beschreibungstexte abschneiden
+      overflow: hidden;
+    }
+
+    // Überschrift (Tarifname)
     H3 {
-      color: $color-text-dark;
-      font-size: $font-size-xl;
       margin: 0;
       padding: 0;
       display: block;
+
+      font-size: $font-size-xl;
       line-height: 1.33333em;
+
+      // Dunklere Schriftfarbe für bessere Hervorherbung
+      color: $color-text-dark;
     }
 
+    // Unterüberschrift (Beschreibung)
     .subheadline {
       margin: .25em 0;
       min-height: 1.5em;
+
+      // Maximale Höhe setzen, da sonst bei zu langen Beschreibungen die vierte
+      // Zeile leicht abgeschnitten dargestellt wird.
       max-height: 4.5em;
+
+      // Vielleicht werden ja eines Tages mehrzeilige ... unterstützt
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    HEADER {
-      height: 7em;
-      max-height: 7em;
-      overflow: hidden;
-    }
 
+    // Preis
     .price {
       @extend %block-brand-invert;
 
@@ -74,28 +109,34 @@
       margin: .5em auto;
       padding: ($price-size / 2 - ($font-size-xxxl/4)) 0 0;
 
-      font-size: $font-size-xxxl;
-
       display: block;
       box-sizing: border-box;
       border-radius: 50%;
+
+      font-size: $font-size-xxxl;
 
       text-align: center;
       vertical-align: middle;
     }
 
+
+    // Gesamter Link zum Umschalten der weiteren Tariflimitdetails
+    // (streckt sich auch über Überschrift und Preis)
     &-limit-details {
-      display: block;
-      padding: 0 ($tariff-padding-leftright);
       margin: 0 (0 - $tariff-padding-leftright);
+      padding: 0 ($tariff-padding-leftright);
+
+      display: block;
 
       text-decoration: none;
 
       &:HOVER {
+        // Stärkere Farbe für bessere Lesbarkeit der Beschreibungen verwenden
         DT {
           color: $color-text;
         }
 
+        // Linktext "mehr Info" hervorheben
         .tariff-limit-toggle {
           color: $color-text-dark;
           text-decoration: underline;
@@ -104,67 +145,88 @@
 
       &:FOCUS,
       &:FOCUS:HOVER {
+        // Bei Fokus die Outline um das gesamte Element entfernen...
         outline: none;
 
+        // ...und den Link "mehr Info" dunkel hinterlegen
         .tariff-limit-toggle {
           @extend %block-invert;
         }
       }
     }
 
+
+    // Auflistung der Tariflimits
     &-limits {
+      // Breite eines Limitwerts
       $limit-width: 4.25em;
+
       margin: 0 auto .0625em;
       position: relative;
 
+      // Auflistung der versteckten Tariflimits
       .tariff-limit-hidden {
         margin-top: 0;
         margin-bottom: 0;
       }
 
+      // Beschreibung des Limits
       DT {
-        color: $color-text-light;
-        font-weight: $font-weight-light;
-        text-align: left;
-
-        padding: .25em ($limit-width + .5em) .25em 0;
         margin: 0;
+        padding: .25em ($limit-width + .5em) .25em 0;
 
         display: block;
         width: 100%;
         box-sizing: border-box;
+
+        color: $color-text-light;
+        font-weight: $font-weight-light;
+
+        // Text linksbündig setzen, um align:center des Hauptelements zu überschreiben
+        text-align: left;
+
         border-bottom: rp-cem(.0625em, $font-size-s) solid $color-neutral-bg;
         hyphens: auto;
 
         @if ( $use-fx ) {
-          -webkit-transition: color $fx-duration-fast;
-             -moz-transition: color $fx-duration-fast;
-              -ms-transition: color $fx-duration-fast;
-               -o-transition: color $fx-duration-fast;
-                  transition: color $fx-duration-fast;
+          $transition: color $fx-duration-fast;
+          -webkit-transition: $transition;
+             -moz-transition: $transition;
+              -ms-transition: $transition;
+               -o-transition: $transition;
+                  transition: $transition;
         }
       }
 
+      // Wert des Limits
       DD {
         position: absolute;
         right: 0;
-        width: $limit-width;
-        padding: 0;
+
         margin: -1.75em 0 0;
-        color: $color-text-dark;
+        padding: 0;
+        width: $limit-width;
+
         display: block;
-        text-align: center;
         box-sizing: border-box;
+
+        text-align: center;
+
+        color: $color-text-dark;
       }
     }
 
+
+    // Link "mehr Info"
     &-limit-toggle {
+      margin: 0 (0 - ($tariff-padding-leftright));
+      padding: .25em $tariff-padding-leftright .5em (.0625em + $tariff-padding-leftright);
+
       display: block;
+
       text-align: left;
 
       font-weight: $font-weight-bold;
-      padding: .25em $tariff-padding-leftright .5em (.0625em + $tariff-padding-leftright);
-      margin: 0 (0 - ($tariff-padding-leftright));
 
       &:BEFORE {
         margin-top: -.125em;
@@ -172,57 +234,58 @@
       }
     }
 
+    // Verstecktes Limit
     &-limit-hidden {
       opacity: 0;
-      -webkit-transform: translateY(-1em);
-         -moz-transform: translateY(-1em);
-          -ms-transform: translateY(-1em);
-           -o-transform: translateY(-1em);
-              transform: translateY(-1em);
       max-height: 0;
       overflow: hidden;
+
+      $transform: translateY(-1em);
+      -webkit-transform: $transform;
+         -moz-transform: $transform;
+          -ms-transform: $transform;
+           -o-transform: $transform;
+              transform: $transform;
     }
 
+    // Auf- und Zuklappen der versteckten Limits animieren
     @if ( $use-fx ) {
       &-limit-hidden,
       &-limits {
         $ease: ease-in-out;
         $duration: $fx-duration-fast;
-        -webkit-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-           -moz-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-            -ms-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-             -o-transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
-                transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+        $transition: opacity $duration $ease, transform $duration $ease, max-height $duration $ease;
+        -webkit-transition: $transition;
+           -moz-transition: $transition;
+            -ms-transition: $transition;
+             -o-transition: $transition;
+                transition: $transition;
       }
     }
 
+
+    // Button "In den Warenkorb"
     .button {
-      display: block;
       margin: 1em auto 0;
       width: 100%;
+
+      display: block;
     }
+
 
     &:HOVER {
       @extend %block-brand;
-      margin-top: 0;
-      margin-bottom: 0;
     }
+
+
+    //////////////////// HERVORGEHOBENER TARIF //////////////////////
 
 
     &-highlight.tariff {
       @extend %block-brand-invert;
 
-      margin-top: 0;
-      margin-bottom: 0;
-      padding-top: ($tariff-height-highlight + $tariff-padding-topbottom);
-      padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom);
-
       H3 {
-        @include rp-choose-color((
-          bg: $color-main,
-          color: $color-text,
-          invert: $color-text-invert
-        ));
+        @extend %block-brand-invert;
       }
 
       .subheadline {
@@ -244,6 +307,7 @@
         }
       }
 
+      // Spezielle Hintergrundfarbe beim Icon
       .tariff-limit-toggle:BEFORE {
         background-color: $color-text-light;
       }
@@ -251,11 +315,7 @@
       .tariff-limits DD,
       .tariff-limit-toggle,
       .tariff-limit-details:HOVER DT {
-        @include rp-choose-color((
-          bg: $color-main,
-          color: $color-text,
-          invert: $color-text-invert
-        ));
+        @extend %block-brand-invert;
       }
 
       .tariff-limit-details:FOCUS .tariff-limit-toggle {
@@ -273,31 +333,46 @@
 
   }
 
-  & &-labels.tariff,
-  .tariff:HOVER {
+
+  // Tarif auf volle Höhe setzen
+  .tariff-highlight.tariff, // Hervorgehobener Tarif
+  .tariff:HOVER {           // Mouseover Tarif
+    margin-top: 0;
+    margin-bottom: 0;
     padding-top: ($tariff-height-highlight + $tariff-padding-topbottom);
     padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom);
   }
 
 
+  // Aufzuklappende Tarife anzeigen
+  // Unterschiedliche Stati für Mobil und Desktop unterstützen
   .tariff-limit-shown .tariff-limits,
   &.tariff-limits-shown .tariff-limit-hidden {
     @extend %tariff-limit-shown;
   }
 
+
+  //////////////////// SEITENLEISTE (TABLET-BREITE) //////////////////////
+
+
   & &-labels {
+    // Spaltennamen im Desktop ausblenden
     display: none;
 
     &.tariff {
       position: absolute;
-      margin-top: 2em;
+
+      // Texte der Seitenleiste mit Inhalt gleich setzen
+      margin-top: $tariff-section-padding-topbottom;
       margin-bottom: 0;
-      padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom + 3.75em);
       margin-left: 0;
+      padding-top: ($tariff-height-highlight + $tariff-padding-topbottom);
+      padding-bottom: ($tariff-height-highlight + $tariff-padding-topbottom + $tariff-section-padding-topbottom + 1.75em);
       left: 0;
       z-index: 10;
       text-align: left;
 
+      // Linkfarben
       .tariff-limit-details {
         & DT,
         &:HOVER DT {
@@ -313,6 +388,7 @@
         }
       }
 
+      // Ein bisschen Transparenz für "Glaseffekt"
       &,
       &:HOVER {
         background-color: transparent;
@@ -324,11 +400,13 @@
       }
     }
 
+    // Pseudoelemente für korrekte Positionierung ausblenden
     [role="presentation"] {
       visibility: hidden;
     }
   }
 
+  // Mehr Platz auf breiten Bildschirmen
   @media screen and (min-width: $viewport-width-xl) {
     .tariff {
       max-width: 14em;
@@ -348,7 +426,12 @@
     }
   }
 
+
+  //////////////////// TABLET-DARSTELLUNG //////////////////////
+
+
   @media screen and (min-width: $viewport-width-xs) and (max-width: $viewport-max-width-m) {
+    // Spaltennamen anzeigen
     & &-labels {
       display: inline-block;
     }
@@ -356,22 +439,37 @@
     .tariff {
       max-width: 9em;
 
+      // Standardabstand nach links, um die Tarife auch schon ohne scrollen zu sehen
       &list {
         padding-left: 9em;
         padding-right: 0;
       }
 
-      H3 {
-        font-size: $font-size;
-        height: 4.75em;
-        vertical-align: middle;
-        word-wrap: break-word;
+
+      // Maximale Höhe setzen, damit die Preise auf selber Höhe beginnen
+      $header-height: 4.75em;
+
+      // Höhe der Überschrift verringern, wenn Unterüberschrift ausgeblendet wird
+      HEADER {
+        height: $header-height;
+        max-height: $header-height;
       }
 
+      // Textgröße der Überschrift normalisieren
+      H3 {
+        height: $header-height;
+        vertical-align: middle;
+        word-wrap: break-word;
+        font-size: $font-size;
+      }
+
+      // Unterüberschrift ausblenden
       .subheadline {
         display: none;
       }
 
+
+      // Preis
       .price {
         $price-size: rp-cem(5.25em, $font-size-xl);
         width: $price-size;
@@ -382,6 +480,8 @@
         font-size: $font-size-xl;
       }
 
+
+      // Hervorgehobener Tarif
       &-highlight.tariff .tariff-limit-details,
       .tariff-limit-details {
         & DT,
@@ -402,16 +502,23 @@
     }
   }
 
+
+  //////////////////// MOBILE DARSTELLUNG //////////////////////
+
+
   @media screen and (max-width: $viewport-max-width-xxs) {
+    // Seitenleiste wieder ausblenden
     & &-labels.tariff {
       display: none;
     }
 
+    // Einzelne Tarife auf volle Breite des Bildschirms setzen
     .tariff {
       width: 80%;
       max-width: none;
       min-width: 12em;
 
+      // Tarife untereinander anzeigen
       &list {
         white-space: normal;
       }
@@ -420,6 +527,8 @@
         display: block;
       }
 
+
+      // Höhe bleibt mobil immer gleich
       &,
       &:HOVER,
       &-highlight.tariff,
@@ -429,12 +538,15 @@
         padding-bottom: 1em;
       }
 
+
+      // Preis ist jetzt kein Kreis mehr
       .price {
+        margin: .5em auto -1.5em;
         padding: .5em .25em;
-        border-radius: 0;
         width: auto;
         height: auto;
-        margin: .5em auto -1.5em;
+        border-radius: 0;
+
         text-align: right;
       }
 
@@ -453,37 +565,46 @@
       &-limit-details.tariff-limit-shown .price {
         background-color: transparent;
         color: $color-main-text;
-      } 
-
-      &-limits {
-        opacity: 0;
-        -webkit-transform: translateY(-1em);
-           -moz-transform: translateY(-1em);
-            -ms-transform: translateY(-1em);
-             -o-transform: translateY(-1em);
-                transform: translateY(-1em);
-        max-height: 0;
-        overflow: hidden;
       }
+
 
       .button {
         width: 72%;
       }
 
+
+      // Alle Limits ausblenden
+      &-limits {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+
+        $transform: translateY(-1em);
+        -webkit-transform: $transform;
+           -moz-transform: $transform;
+            -ms-transform: $transform;
+             -o-transform: $transform;
+                transform: $transform;
+      }
     }
 
+    // Einblenden eines einzelnen Limits
     & .tariff-limit-hidden {
       // @extend %tariff-limit-shown;
       opacity: 1;
-      -webkit-transform: translateY(0);
-         -moz-transform: translateY(0);
-          -ms-transform: translateY(0);
-           -o-transform: translateY(0);
-              transform: translateY(0);
       max-height: 25em;
+
+      $transform: translateY(0);
+      -webkit-transform: $transform;
+         -moz-transform: $transform;
+          -ms-transform: $transform;
+           -o-transform: $transform;
+              transform: $transform;
     }
   }
 
+
+  // Breite der Tarife bei kleinen Bildschirmen erhöhen
   @media screen and (max-width: $viewport-max-width-min) {
     .tariff {
       width: 92%;
@@ -495,6 +616,10 @@
   }
 }
 
+
+//////////////////// NOSCRIPT //////////////////////
+
+// Ohne JavaScript kein Auf-/Zuklappen, daher einfach alles anzeigen
 .no-js .tariff {
   &compare .tariff-limit-hidden {
     @extend %tariff-limit-shown;
@@ -504,3 +629,4 @@
     display: none;
   }
 }
+

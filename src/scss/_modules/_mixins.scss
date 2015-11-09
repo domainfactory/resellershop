@@ -34,7 +34,7 @@
 }
 
 
-// Schriftfarbe auf Basis der angegeben Helligkeit auswählen
+// Schriftfarbe auf Basis der angegebenen Helligkeit auswählen
 @mixin rp-choose-color($colors, $use-link: false) {
   $prefix: "";
   @if ( $use-link ) {
@@ -98,3 +98,53 @@
     }
   }
 }
+
+
+// Abstand für Links der Navigation setzen
+@mixin rp-header-nav($link-padding, $link-margin) {
+  A {
+    padding-left: $link-padding;
+    padding-right: $link-padding;
+    margin-left: $link-margin;
+    margin-right: $link-margin;
+  }
+
+  &-cart {
+    padding-left: $link-padding;
+
+    &:BEFORE {
+      margin: 0 0 0 (0 - $link-margin - $link-padding);
+    }
+
+    .site-nav-cart-itemcount {
+      margin: 0 0 0 (0-$link-padding);
+      padding: .75em $link-padding;
+    }
+  }
+}
+
+
+// Farbwerte für Links auf Profile der sozialen Netzwerke
+@mixin rp-social-color($color-social) {
+  &:FOCUS {
+    @include rp-block((
+      bg: $color-social,
+      color: $color-text-dark,
+      invert: $color-text-invert
+    ));
+
+    P {
+      @include rp-choose-color((
+        bg: $color-social,
+        color: $color-text-light,
+        invert: $color-text-invert-light
+      ));
+    }
+  }
+
+  &:BEFORE {
+    background-color: $color-social;
+    border-color: $color-social;
+  }
+}
+

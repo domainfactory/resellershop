@@ -126,6 +126,8 @@
     $itemCount.find('SPAN').html( cartNr );
     if ( !forced ) {
       $itemCount.addClass(css.countFx);
+
+      // Animation nach x Sekunden deaktivieren
       setTimeout(function removeCountChangedFx(){
         $itemCount.removeClass(css.countFx);
       }, 4000);

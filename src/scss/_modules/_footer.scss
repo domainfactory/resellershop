@@ -1,13 +1,36 @@
+//////////////////// FOOTER //////////////////////
+
+// Footer (Impressumslinks) an den unteren Seitenrand kleben
+.page {
+  $footer-height: 3.25em;
+  margin-bottom: (0 - $footer-height - .125em);
+  padding-bottom: 0;
+  min-height: 100%;
+
+  // Sicherstellen, dass der Footer nicht den Inhalt überlagert
+  &:AFTER {
+    content: '';
+    height: $footer-height;
+    display: block;
+  }
+}
+
+
+//////////////////// SOCIAL MEDIA //////////////////////
+
 .site-footer-social {
   text-align: center;
 
   .social-links {
     LI {
       vertical-align: top;
+
+      // zweispaltig bei Tabletbreite
       @media screen and (max-width: $viewport-max-width-m) {
         width: 48%;
       }
 
+      // einspaltig bei mobilen Geräten
       @media screen and (max-width: $viewport-max-width-xxs) {
         width: 100%;
       }
@@ -15,12 +38,16 @@
 
     A {
       position: relative;
-      display: block;
-      text-align: left;
-      text-decoration: none;
       padding: .25em .5em 1.75em 4.5em;
       margin: 0 .25em;
+      display: block;
 
+      text-align: left;
+
+      // Standardmäßig Links nicht unterstreichen
+      text-decoration: none;
+
+      // Rahmen um Logo setzen
       &:BEFORE {
         border-width: .1875em;
         border-style: solid;
@@ -29,7 +56,6 @@
       }
 
       &:FOCUS {
-        color: $color-text-invert;
         outline: none;
         &:BEFORE {
           border-color: $color-neutral-dark;
@@ -37,13 +63,13 @@
       }
 
       &:HOVER {
-        color: $color-text-invert;
-
+        // Nur Überschrift bei Mouseover unterstreichen
         H3 {
           text-decoration: underline;
         }
       }
 
+      // Bei breiten Bildschirmen mehr Abstand zwischen Links
       @media screen and (min-width: $viewport-width-hd) {
         padding-left: 5.5em;
         padding-right: 1.25em;
@@ -57,68 +83,44 @@
     }
 
     P {
+      margin: 0;
+
       color: $color-text-invert-light;
       font-weight: $font-weight-light;
       font-size: $font-size-s;
-      margin: 0;
     }
+
   }
 
+  // Farben der jeweiligen Dienste verwenden
   .icon {
     &-facebook {
-      &:FOCUS {
-        background-color: $color-social-facebook;
-      }
-      &:BEFORE {
-       background-color: $color-social-facebook;
-       border-color: $color-social-facebook;
-      }
+      @include rp-social-color($color-social-facebook);
     }
     &-twitter {
-      &:FOCUS {
-        background-color: $color-social-twitter;
-        color: $color-text-invert;
-      }
-      &:BEFORE {
-       background-color: $color-social-twitter;
-       border-color: $color-social-twitter;
-      }
+      @include rp-social-color($color-social-twitter);
     }
     &-linkedin {
-      &:FOCUS {
-        background-color: $color-social-linkedin;
-      }
-      &:BEFORE {
-       background-color: $color-social-linkedin;
-       border-color: $color-social-linkedin;
-      }
+      @include rp-social-color($color-social-linkedin);
     }
     &-gplus {
-      &:FOCUS {
-        background-color: $color-social-googleplus;
-      }
-      &:BEFORE {
-       background-color: $color-social-googleplus;
-       border-color: $color-social-googleplus;
-      }
+      @include rp-social-color($color-social-googleplus);
     }
   }
+
 }
-/*
-.page {
-  padding-bottom: (0 + 2em + .75em + 1em + 1em);
-}
-*/
+
+
+//////////////////// IMPRESSUMSLINKS //////////////////////
+
 
 .site-footer-imprint {
-  @extend %block-invert-dark;
   @extend %bevel-invert-dark;
 
   position: relative;
   bottom: 0;
   left: 0;
   right: 0;
-  //margin-top: (0 - 2em - .75em - 1em - 1em);
   text-align: center;
   padding: 0 .25em;
   z-index: 0;
@@ -127,26 +129,6 @@
     font-size: $font-size-s;
     padding: .75em 0 1em;
     color: $color-text-invert-light;
-
-    A {
-      display: inline-block;
-      text-decoration: none;
-      margin: -.75em 0 -1em;
-      padding: .75em 0;
-      border-bottom: .5em solid transparent;
-      color: $color-text-invert-light;
-
-      &:HOVER {
-        text-decoration: underline;
-        color: $color-text-invert;
-      }
-
-      &:FOCUS {
-        border-bottom-color: $color-text-invert;
-        color: $color-text-invert;
-        outline: none;
-      }
-    }
 
     &:AFTER {
       content: '-';
@@ -158,6 +140,27 @@
     }
   }
 
+  A {
+    display: inline-block;
+    text-decoration: none;
+    margin: -.75em 0 -1em;
+    padding: .75em 0;
+    border-bottom: .5em solid transparent;
+    color: $color-text-invert-light;
+
+    &:HOVER {
+      text-decoration: underline;
+      color: $color-text-invert;
+    }
+
+    &:FOCUS {
+      border-bottom-color: $color-text-invert;
+      color: $color-text-invert;
+      outline: none;
+    }
+  }
+
+  // Bei schmalen Bildschirmen Links untereinander setzen
   @media screen and (max-width: $viewport-max-width-xxs) {
     LI {
       display: block;
@@ -168,18 +171,19 @@
         content: '';
         padding: 0;
       }
-
-      A {
-        display: block;
-        text-align: center;
-        border-bottom: 0;
-        border-top: .0625em solid $color-neutral;
-
-        &:FOCUS {
-          outline: .125em solid $color-neutral-bg;
-        }
-      }
     }
 
+    A {
+      display: block;
+      text-align: center;
+      border-bottom: 0;
+      border-top: .0625em solid $color-neutral;
+
+      &:FOCUS {
+        outline: .125em solid $color-neutral-bg;
+      }
+    }
   }
+
 }
+
