@@ -15,7 +15,7 @@ var shop=shop||{};
     cache: false,     // Ergebnisse nicht cachen
     dataType: "json", // Nur JSON als Rueckgabe akzeptieren
     method: "POST",   // HTTP-Methode
-    timeout: 10000    // Dauer in Millisekunden, nach dem die Abfrage abgebrochen wird
+    timeout: 60000    // Dauer in Millisekunden, nach dem die Abfrage abgebrochen wird
   };
 
 
